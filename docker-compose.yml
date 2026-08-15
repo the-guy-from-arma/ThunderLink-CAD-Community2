@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: roleplay
+      POSTGRES_USER: roleplay
+      POSTGRES_PASSWORD: roleplay
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      APP_DATABASE_ROLE: cad2
+      COMMUNITY_ID: community_2
+      DATABASE_URL: postgresql://roleplay:roleplay@postgres:5432/roleplay
+      ARMA_SERVER_ID: community-2-arma
+      ARMA_BRIDGE_API_KEY: ${ARMA_BRIDGE_API_KEY:?Set ARMA_BRIDGE_API_KEY before starting CAD 2}
+      FCX_API_URL: http://host.docker.internal:8090
+      FCX_COMMUNITY_ID: community_2
+      FCX_API_KEY: ${FCX_API_KEY:?Set FCX_API_KEY before starting CAD 2}
+      FCX_REMOTE_MARKET_ENABLED: "true"
+      FCX_GLOBAL_ADMIN_ENABLED: "false"
+      FCX_RUN_INTEGRATED_ENGINE: "0"
+      FCX_BANK_ADAPTER_ENABLED: "true"
+      FCX_BANK_SETTLEMENT_SECRET: ${FCX_BANK_SETTLEMENT_SECRET:?Set FCX_BANK_SETTLEMENT_SECRET before starting CAD 2}
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY before starting CAD 2}
+      OWNER_EMAIL: owner@rp.local
+      OWNER_PASSWORD: ${OWNER_PASSWORD:?Set OWNER_PASSWORD before starting CAD 2}
+      COOKIE_SECURE: "0"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:

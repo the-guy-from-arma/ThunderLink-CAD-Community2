@@ -1,0 +1,2206 @@
+{
+  "version": "0.4.1",
+  "entries": [
+    {
+      "date": "2026-08-14",
+      "version": "0.4.1",
+      "title": "RP OS 0.4.1 - Ravenhood Autonomous Exchange",
+      "added": [
+        "Added the FCX Autonomous Market Engine, a persistent server-authoritative simulation layer with PostgreSQL advisory locking, isolated engine records, auditable cycles, a global kill switch, and strict separation from resident cash, resident holdings, Bank Bridge commands, and Arma records.",
+        "Added a one-click FCX deployment workflow that creates or repairs 30 operating-company listings, rebuilds the eight-company FCXS stability basket and six-company FCXV volatility basket, seeds the configured simulated-investor population, enables the scheduler, and runs the opening market cycles.",
+        "Added persistent simulated investors with configurable market personalities, capital allocation, long and short activity, liquidity behavior, sentiment, risk limits, paused personalities, and per-security participation controls.",
+        "Added FCX Engine controls for cycle speed, population, deployed capital, price floors, interval timing, order caps, human priority, market-maker spread and depth, execution budgets, panic participation, event probability, short selling, IPO uncertainty, bankruptcy, delisting, and circuit-breaker thresholds.",
+        "Added deterministic 1-day, 7-day, 30-day, and 365-day market sandboxes, manual engine cycles, investor reseeding, stock splits, cash dividends, cycle ledgers, audit summaries, and pre-deployment readiness checks.",
+        "Added an upgraded Ravenhood trade ticket that opens as a desktop modal or mobile bottom sheet with Buy and Sell modes, share or cash sizing, whole-share sliders, fractional manual entry, live commission estimates, and final order totals.",
+        "Added isolated long and short margin positions with developer-controlled leverage ceilings from 5x through 80x, collateral and liquidation previews, queued after-hours entry, market-session enforcement, server-side liquidation, and permanent open and closed position ledgers.",
+        "Added interactive Ravenhood chart navigation with wheel zoom, drag-to-pan, keyboard controls, touch gestures, reset and history controls, recorded OHLC and volume reprojection, and temporary refresh suspension while a resident examines the chart.",
+        "Added a dedicated FEC Investigator role that receives the Admin Tools launcher but is strictly scoped to the FEC Investigations workspace and receives read-only Ravenhood market access without resident trading controls.",
+        "Added FEC resident-account restrictions for share trading, leverage trading, or complete Ravenhood access, including case references, public notices, release controls, and server-side enforcement on direct and queued executions.",
+        "Added FEC security intervention tools for individual or bulk trading halts, one-click selected or full-market resumption, reversible delisting and relisting, and developer retirement of empty preserved listings.",
+        "Added the FEC Consolidated Trade Tape with searchable and sortable resident executions, flagged high-value withdrawals, resident portfolio intelligence, and net residential profit and loss views for 12-hour, 1-day, and 1-week investigation windows.",
+        "Added guarded developer actions to clear all settled Ravenhood equity cash or all resident share positions, with explicit certification, preserved historical records, and permanent reset audit ledgers.",
+        "Added FEC IPO admission review so resident filings require approval before Bank Bridge capitalization, scheduled IPOs require at least 24 hours of lead time, and developers can enforce a configurable minimum capitalization, maximum public float, and sector capacity limits.",
+        "Added controlled market-maker liquidation hunts for qualifying high-buying-power accounts with configurable thresholds, probability, intensity, maximum movement, cooldown, market-hours rules, and privacy isolation from external AI providers.",
+        "Added issuer intelligence for reported-revenue valuation changes, timestamped capitalization history, resident investors, aggregated Brokerage Account market-maker holdings, recent company executions, and expanded company performance statistics.",
+        "Added FCXV continuous-session controls so developers may permit 24-hour equity and leveraged trading in the volatility index while the rest of the exchange follows the configured market schedule.",
+        "Added market-cap ranking, per-security market capitalization, 24-hour performance labeling, average position cost, live anonymous buy and sell flow, and Brokerage Account activity throughout the Ravenhood market experience."
+      ],
+      "changed": [
+        "Changed Ravenhood automation so enabling the FCX Autonomous Market Engine disables the legacy local and AI quote writers, preventing multiple automated systems from racing the same security price.",
+        "Changed market-session behavior so ordinary stocks and margin orders wait for the next opening quote while the autonomous simulation may continue building off-hours market state; FCXV can be independently configured for continuous execution.",
+        "Changed Ravenhood order entry from a persistent right-side rail into a focused, responsive trade workspace that preserves chart width and remains usable on phones and narrow browser windows.",
+        "Changed Ravenhood live refresh behavior so chart exploration and active order editing are not interrupted, erased, or repositioned by a background synchronization cycle.",
+        "Changed scheduled price programs to support one security, several selected securities, either index, or the complete operating market using percentage targets, exact target prices, immediate starts, or precise future New York times.",
+        "Changed directional automation to reach its configured Bullish or Bearish target through a live multi-step path with counter-moves instead of applying a single vertical jump or a weak market average.",
+        "Changed FEC Market Integrity into a dedicated delegated workspace and moved resident portfolios, execution surveillance, high-value withdrawal review, asset custody, listing enforcement, and account controls out of general Stock Market Settings.",
+        "Changed routine FEC halt and resume operations to direct one-click actions after selection, while destructive delisting, retirement, custody, and systemwide reset actions retain stronger authorization requirements.",
+        "Changed simulated-investor presentation from NPC and automated-market-maker wording to named Brokerage Account records while keeping resident identity and market-maker activity clearly separated.",
+        "Changed resident IPO rules to a default FC$3,000,000 minimum with developer-adjustable capitalization, float, and sector limits enforced by Railway rather than browser-only validation.",
+        "Changed issuer revenue funding to the resident-facing Report Revenue action and made completed Bank Bridge revenue settlement update the linked FCX company's recorded valuation without changing issued shares.",
+        "Changed the Ravenhood launcher and exchange header to use dedicated Ravenhood branding, higher-contrast market sidebars, a cleaner anonymous execution feed, and improved mobile layouts.",
+        "Changed FCXS and FCXV composition reporting to include resident units, simulated Brokerage Account exposure, total fund shares, current constituent weights, and complete fund capitalization.",
+        "Changed empty-market and fresh-deployment behavior to archive and clear stale live FCXS or FCXV units before rebuilding valid constituent baskets, without changing resident game-bank balances or Arma data."
+      ],
+      "fixed": [
+        "Fixed leveraged-position profits and losses disappearing at close by atomically settling realized position equity back into Ravenhood buying power and recording the completed margin ledger entry.",
+        "Fixed PostgreSQL numeric rounding failures when closing leveraged positions by applying compatible numeric casts before updating resident cash.",
+        "Fixed FCX one-click deployment readiness failures caused by an invalid constituent identifier and legacy internal fund keys, including the incorrect 0-of-8 and 0-of-6 index readiness result.",
+        "Fixed stale or bankrupt securities remaining in FCXS or FCXV after operating listings were removed, and fixed empty indexes retaining live constituent or share data during a clean market launch.",
+        "Fixed FCXV simulated Brokerage Account exposure reporting zero when sell-heavy or balanced constituent flow should still contribute to the fund's derived shares and capitalization.",
+        "Fixed scheduled and overlapping price programs returning to their original baseline, activating from stale quotes, or losing their final target when another worker completed in the same cycle.",
+        "Fixed local automation getting stuck or failing against the wrong system-settings column, and made manual and sequenced cycles enter the Market Control Log before background work begins.",
+        "Fixed Gemini and DeepSeek 429 or 503 failures causing repeated requests by adding provider-aware cooldowns, ordered failover, single-attempt briefing calls, duplicate-briefing protection, and deterministic local fallback.",
+        "Fixed Company Wire publishing interpreting the announcements route segment as a numeric company identifier.",
+        "Fixed issuer revenue reporting failing because PostgreSQL could not apply FOR UPDATE to the nullable side of an outer join, and limited the lock to the required funding batch.",
+        "Fixed market liquidation-hunt eligibility using a stale default threshold instead of the saved developer policy and improved no-hunt reporting for cash-only versus leveraged exposure.",
+        "Fixed Ravenhood chart controls being cut off, compressed, or unusable on mobile and fixed chart interaction being disrupted by automatic refresh while zooming, panning, or editing an order.",
+        "Fixed oversized residential profit-and-loss values overlapping realized, unrealized, cash-equity, leverage, and resident-count fields in FEC Investigations.",
+        "Fixed FEC investigators inheriting unrelated Developer Tools sections or gaining the ability to place Ravenhood share and leverage orders.",
+        "Fixed automated volatility cycles excluding valid scheduled listings and fixed the engine reporting zero eligible listings when operating securities were available.",
+        "Fixed legacy delisted securities and inactive constituent records remaining actionable in active exchange controls after a clean FCX deployment."
+      ],
+      "removed": [
+        "Removed the legacy Ravenhood quote writers from active control whenever the FCX Autonomous Market Engine owns market automation.",
+        "Removed the fixed Ravenhood order-entry sidebar that reduced chart space and became inaccessible behind narrow browser edges.",
+        "Removed general resident portfolio surveillance and FEC asset-custody actions from Stock Market Settings; those records now live in the dedicated FEC Investigations workspace.",
+        "Removed trading access and unrelated Admin Tools navigation from the scoped FEC Investigator role.",
+        "Removed the typed-reason and confirmation requirement from routine FEC trading resumptions, including selected and Resume All operations.",
+        "Removed NPC, NPC broker, and automated-liquidity wording from resident-facing issuer records in favor of Brokerage Account labels.",
+        "Removed stale empty-index constituents, invalid live index units, and retired legacy listing artifacts from active Ravenhood market views during controlled cleanup or fresh deployment."
+      ]
+    },
+    {
+      "date": "2026-08-11",
+      "version": "0.4.0",
+      "title": "RP OS 0.4.0 - Capital Formation and Market Integrity",
+      "added": [
+        "Added the Faircroft Office of Capital Formation, a resident-facing FCX issuer system that replaces the retired business-license application experience with direct company and IPO creation.",
+        "Added a guided IPO filing workflow for company identity, FCX ticker, sector, headquarters, investor brief, opening market capitalization, opening share price, public float, and scheduled market release.",
+        "Added authoritative IPO capitalization through the linked in-game bank and Bank Bridge, including split funding commands, settlement tracking, retry support, and creation of the FCX security only after capitalization completes.",
+        "Added resident issuer boardrooms with live company value, treasury balance, paid-in capital, authorized shares, funding progress, capital history, and controller-funded revenue contributions.",
+        "Added Company Wire publishing so resident issuers can file immediate or scheduled operating announcements, earnings notices, product releases, leadership updates, and risk notices directly into Ravenhood.",
+        "Added resident-controlled bankruptcy filings that halt issuer operations for review while preserving security, shareholder, transaction, and Company Wire history.",
+        "Added Developer Tools Business Settings for resident issuer oversight, IPO status review, and explicit assignment of an existing FCX security to a resident without reconnecting retired license records.",
+        "Added full market integration for resident-created and developer-assigned companies so scheduled movements, market administration, Gemini activity, capitalization reporting, and Ravenhood discovery recognize their securities.",
+        "Added a live anonymous Ravenhood execution tape for resident and Gemini buy or sell fills alongside the issuer Company Wire feed.",
+        "Added FEC Market Integrity asset custody with resident-specific seizure filings, a protected custody pool, supporting rationale, typed authorization, and a permanent audit ledger.",
+        "Added FEC custody dispositions for permanent forfeiture, market-cap reinvestment, and full return to the original resident without penalty.",
+        "Added a one-time official FEC clearance notice and inbox message when held assets are returned, confirming that the resident was cleared and Ravenhood buying power was restored.",
+        "Added returnable-account intelligence in FEC Market Integrity so staff can select the exact original Ravenhood account and return only its remaining held balance.",
+        "Added persistent FEC return totals and cleared-return entries to the Market Integrity ledger for complete post-disposition accountability.",
+        "Added exact-time Ravenhood price programs so developers can stage a single security, an index, a selected group, or the operating market for a future New York execution time.",
+        "Added Ravenhood Autopilot profiles for Light, Aggressive, and Extremely Volatile operation with adjustable cycle timing and minimum-to-maximum fluctuation boundaries.",
+        "Added independent Gemini market reviews with configurable timing, provider status, last-success reporting, and audited changes layered over the continuous local volatility engine.",
+        "Added selectable Local, Gemini, and DeepSeek Ravenhood movement engines with alternate-AI failover, provider cooldowns, and a deterministic local fallback when external AI is unavailable.",
+        "Added separate controls for AI review frequency and failure cooldown so developers can reduce provider rate pressure without slowing exact-time price programs.",
+        "Added numbered Ravenhood automation cycles with live provider, posture, cooldown, fallback, quote-count, and completion reporting in the Market Control Log."
+      ],
+      "changed": [
+        "Changed the Business application from an approval-and-license registry into a dedicated Faircroft primary-market and issuer workspace.",
+        "Changed retired business records to remain preserved but detached from resident issuer accounts; only an explicit developer assignment can connect an existing FCX security to a resident.",
+        "Changed the issuer landing experience to the Faircroft Office of Capital Formation with a focused filing sequence, verified-capital status, portfolio intelligence, and responsive FCX branding.",
+        "Changed Ravenhood account performance wording from all-time gain or loss to current gain or loss so the label matches the displayed account position.",
+        "Changed Ravenhood market discovery to place anonymous executions and Company Wire releases beneath Market Pulse instead of crowding the horizontal quote tape.",
+        "Changed Market Integrity return processing to restore the entire remaining resident-specific custody balance in one audited clearance action.",
+        "Changed installed PWA cache identifiers and release metadata to RP OS 0.4.0 so the new issuer and FEC interfaces replace cached 0.3.1 assets.",
+        "Changed Ravenhood automation so developers choose one primary movement engine while scheduled movements remain independent and capture their live opening quote only when they activate.",
+        "Changed AI automation to try the configured alternate provider after Gemini or DeepSeek fails, then run one local profiled cycle only when both external providers are unavailable.",
+        "Changed Ravenhood Autopilot timing controls to show Local movement timing only for the local engine and AI review timing only for Gemini or DeepSeek."
+      ],
+      "fixed": [
+        "Fixed the Business icon opening the retired New Application and licensing interface instead of the new IPO formation workspace.",
+        "Fixed the resident issuer entrance, company portfolio, and IPO filing content appearing off-center or visually detached on large screens.",
+        "Fixed Company Wire content being clipped behind Ravenhood's persistent left market sidebar.",
+        "Fixed low-contrast secondary labels in the Ravenhood Market Pulse, execution tape, and issuer feed.",
+        "Fixed FEC disposition selection colliding with the browser form action property and preventing the intended custody action from being submitted.",
+        "Fixed returned FEC assets lacking a resident-facing resolution state by adding targeted clearance delivery and acknowledgement tracking.",
+        "Fixed Gemini provider delays and failures pausing Ravenhood's core volatility cycle or causing immediate repeated provider requests.",
+        "Fixed future market movements appearing active before their scheduled start or using a stale quote captured when the program was created.",
+        "Fixed provider rate-limit failures immediately repeating by recording each attempt and applying a configurable Gemini or DeepSeek cooldown before another external request.",
+        "Fixed an old legacy Gemini 429 notice reappearing after the active provider error had already been cleared or replaced."
+      ],
+      "removed": [
+        "Removed the retired resident-facing business approval, license-class, inspection, and application workflow from the active Business application.",
+        "Removed automatic conversion or attachment of legacy business-license records to resident FCX issuer companies."
+      ]
+    },
+    {
+      "date": "2026-08-09",
+      "version": "0.3.1",
+      "title": "RP OS 0.3.1 · Markets, Protection and Platform Control",
+      "added": [
+        "Added automated Ravenhood order flow so Gemini, volatility cycles, and index NAV movements contribute bounded trades, volume, VWAP, buy pressure, and sell pressure without changing resident cash or holdings.",
+        "Added two resident-tradable Ravenhood index funds: the Faircroft Stability Index (FCXS) and Faircroft Volatility Index (FCXV), both using the existing order ticket, buying power, portfolio, and transaction history.",
+        "Added automatic index classification and capped constituent weighting based on recorded volatility, quote depth, market capitalization, liquidity, and verified shareholder activity without resetting existing securities or holdings.",
+        "Added an Index Operations desk in Developer Tools with live composition, fund capitalization, company market capitalization, manual rebalancing, and per-company inclusion controls.",
+        "Added an automatic Ravenhood trading session using configurable New York open and close times, weekend trading by default, an optional weekend closure toggle, and audited Force Open, Force Closed, and Return to Schedule controls.",
+        "Added true executed-order VWAP analytics to Ravenhood, including traded volume, trade count, buy and sell flow, and buy-pressure reporting for each selected market range.",
+        "Added recorded OHLC market candles, dynamic EMA trend guidance, volatility bands, synchronized spike and drop markers, and exact hover details for price, time, volume, and VWAP.",
+        "Added persistent 1-day, 1-week, 1-month, and 1-year Ravenhood views that use recorded quote timestamps instead of rebuilding artificial history in the browser.",
+        "Added Ravenhood company administration for new listings, generated companies, shareholder exposure, invested assets, and Chapter of Bankruptcy closure controls.",
+        "Added separate Ravenhood movement controls: Stop and keep current price preserves the live quote, while Stop and restore baseline performs an explicit rollback.",
+        "Added in-app bank transaction history for supported RP OS debits, deposits, wagers, premiums, market transfers, and payouts while clearly separating unsupported in-game purchases and transfers.",
+        "Added casino-only account restrictions, bulk pending-command recovery controls, command resend actions, and clearer Bank Bridge status filtering for authorized staff.",
+        "Added configurable Lottery ticket pricing, Quick Pick purchases, rollover jackpots, expanded purchase allowances, pending-ticket controls, and split payouts for awards above the per-command bridge limit.",
+        "Added Faircroft Continuity plan terms, optional everyday-loss protection, enhanced owned-property protection, stock-loss protection, manual claims, policy cancellation, and official resident insurance certificates.",
+        "Added audited emergency coverage locks that freeze each active continuity policy at its latest synchronized in-game bank balance when a State of Emergency is declared.",
+        "Added mandatory EULA, Terms of Use, Acceptable Use, and Privacy acceptance tracking for new and existing accounts with a Developer Tools compliance ledger."
+      ],
+      "changed": [
+        "Changed Ravenhood chart navigation to Live, 15-minute, 1-hour, 1-day, 1-week, 1-month, and 1-year recorded windows with independently filterable close, EMA, VWAP, and volatility-band series.",
+        "Rebuilt the Ravenhood live price desk around continuous recorded market movement so authentic scheduled spikes, crashes, and recoveries remain visible at every supported range.",
+        "Expanded the Ravenhood order ticket with live share-cost, commission, and total-order estimates before execution and whole-dollar withdrawal enforcement.",
+        "Modernized the Faircroft Casino floor, game navigation, result animations, wager history, and operational controls while keeping internal return and house-performance metrics restricted to staff.",
+        "Modernized Lottery, Insurance, Statistics, Sportsbook, Banking Settings, and Developer Tools layouts for clearer navigation, mobile behavior, and faster read-only loading.",
+        "Changed Insurance claims to authorized manual review and approval, including multi-command payouts when approved compensation exceeds the Bank Bridge command limit.",
+        "Changed Continuity coverage to follow authoritative game-bank synchronization throughout the policy term, then resume live tracking after an emergency closes.",
+        "Changed RP OS command protections to limit user-originated outstanding purchases without throttling valid Bank Bridge delivery after the player becomes available."
+      ],
+      "fixed": [
+        "Fixed Live and 15-minute Ravenhood OHLC candles collapsing into isolated vertical marks by connecting verified bucket opens to the preceding recorded close and preserving true high/low wicks.",
+        "Fixed ambiguous red short-range candles by using a labeled emerald-up, gold-down, and neutral-silver direction system across every market range.",
+        "Fixed the Faircroft Insurance icon failing to open after the latest policy-certificate and Stock Protection upgrade.",
+        "Fixed Ravenhood chart hover prices being clipped when inspecting a quote near the top edge of the graph.",
+        "Fixed Ravenhood fractional-share order previews rounding stock subtotal, commission, and total cost or proceeds to zero before display.",
+        "Fixed Ravenhood history flattening or hiding genuine price spikes and drops during long-range sampling.",
+        "Fixed market charts displaying disconnected vertical price bars, synthetic low-price points, and range buttons that did not retain the selected recorded period.",
+        "Fixed the Ravenhood Market Direction signal becoming oversized or obscured by persistent footer controls in full-screen layouts.",
+        "Fixed excessive read-only Developer Tools requests competing for PostgreSQL connection slots during background market, SFTP, and presence synchronization.",
+        "Fixed Lottery Scratch navigation bypassing purchase limits, stale pending tickets leaving accounts locked, and cash prizes displaying stock-code redemption instructions.",
+        "Fixed command-ledger status counters and pending-command controls not opening their matching Completed, Failed, Cancelled, or Pending records.",
+        "Fixed cancelled or failed commerce commands leaving the originating insurance, casino, lottery, or market purchase permanently reserved.",
+        "Fixed Insurance add-on confirmation prompts appearing beneath the workspace and blocking residents from modifying existing policies.",
+        "Fixed Continuity policies remaining limited to the bank balance recorded when the resident originally purchased the plan."
+      ],
+      "removed": [
+        "Removed decorative browser-generated market forecasts that could disagree with recorded Ravenhood prices.",
+        "Removed resident-facing casino return multipliers, target-return figures, and scheduled-return wording reserved for authorized operations staff.",
+        "Removed automatic Insurance claim approval and payout timing in favor of documented manual decisions in Insurance Settings."
+      ]
+    },
+    {
+      "date": "2026-08-07",
+      "version": "0.3.0",
+      "title": "Faircroft Commerce and Play Systems",
+      "added": [
+        "Added Bank Bridge settlement for Lottery, Sportsbook, Ravenhood, and Insurance purchases using linked in-game bank balances.",
+        "Added configurable Lottery ticket prices for Weekly Pick 5, Quick Draw, and Instant Scratch purchases.",
+        "Added developer-configurable Scratch-off prize pools with randomized in-game cash rewards and audited payout commands.",
+        "Added a ten-card Scratch-off purchase cap per account with remaining allowance visibility and server-side enforcement.",
+        "Added Lottery Settings scratch activity logs showing resident, reward amount, status, and Bank Bridge settlement state.",
+        "Added Kalshi market synchronization for Faircroft Sportsbook prediction markets with readable category grouping and YES/NO pricing.",
+        "Added a redesigned Sportsbook betting center with clearer prediction questions, high-contrast odds tiles, parlay labeling, animated selections, and improved bet-slip hierarchy.",
+        "Added Insurance purchases through linked in-game funds without the legacy four-digit receipt PIN flow.",
+        "Added responsive mobile Lottery layouts that prevent desktop overflow, clipping, and unreadable number grids."
+      ],
+      "changed": [
+        "Lottery scratch rewards now settle through the authoritative in-game bank instead of the retired Railway wallet credit system.",
+        "Sportsbook presentation now treats Kalshi questions as prediction markets rather than displaying them as artificial team matchups.",
+        "Lottery mobile navigation, hero content, number selection, and purchase controls now adapt to phone-width screens.",
+        "Insurance purchase instructions now explain direct Bank Bridge debit authorization and no longer instruct residents to obtain a PIN."
+      ],
+      "fixed": [
+        "Fixed Scratch-off purchases bypassing the account-wide purchase limit across multiple days.",
+        "Fixed Lottery settings not exposing configurable Scratch-off reward amounts.",
+        "Fixed Sportsbook event lists being presented as one unreadable continuous feed.",
+        "Fixed mobile Lottery content overflowing horizontally and cutting off headings and controls.",
+        "Fixed Insurance purchase UI requiring a four-digit payment receipt even though the backend queues the in-game debit directly."
+      ],
+      "removed": [
+        "Removed the retired Lottery Wallet daily-credit purchase path from the active Lottery settings experience.",
+        "Removed the legacy four-digit payment receipt field from Insurance policy purchases."
+      ]
+    },
+    {
+      "date": "2026-07-31",
+      "version": "0.2.2",
+    "title": "RP OS 0.2.2",
+    "added": [
+      "Added a persistent Ravenhood market-history ledger that records automated, Gemini-directed, scheduled, restored, and manual security prices for genuine day, week, month, and year performance views.",
+      "Added an economy-derived Faircroft Dollar purchasing-power index with FC$/USD reference, reciprocal rate, 100-FC comparison, market breadth, and an explicit RP-only non-redeemable notice.",
+      "Added Statewide Intelligence 2.0 with detailed violent and non-violent crime families, traffic-enforcement categories, active warrants and BOLOs, court disposition flow, Fire and EMS incident mix, monthly crime movement, and per-capita public-safety rates.",
+      "Added privacy-safe economic and market intelligence covering game-bank circulation, resident-held securities value, exchange assets, executed volume, market breadth and movers, public obligations, taxes, fines, housing assessed value, and the active lottery pool.",
+      "Added a controlled Developer Tools DMV car-link reset beside the identity and money migration controls, clearing resident vehicle attachments, registrations, insurance links, and stale Railway vehicle mirrors while preserving driver licenses and authoritative game-server save files.",
+      "Added the public Faircroft Statistics Bureau application with live statewide views for population, server activity, public safety, courts, Fire and EMS, housing, mobility, commerce, and economic health.",
+      "Added a privacy-enforced public statistics API that publishes only totals, averages, medians, rates, and distribution bands while withholding resident names, CIV numbers, account identifiers, and individual bank balances.",
+      "Added animated statewide intelligence views with public-safety filing classifications, violent and non-violent crime shares, court throughput, emergency clearance rates, housing occupancy, vehicle compliance, business activity, platform mix, and average tracked server time.",
+      "Added a public Server Life intelligence view using aggregate leaderboard telemetry for collective playtime, verified sessions, live participation, thirty-day activity, kills, deaths, suicides, and the community-wide combat ratio without publishing player identities.",
+      "Added a dedicated ICE undocumented-resident enforcement roster opened directly from the live undocumented count, with identity search, active-character correlation, citizenship and passport status, linked profile access, and active federal-warrant visibility.",
+      "Added a separate audited ICE warrant ledger with one-click issuance from the enforcement roster or linked ICE profile, duplicate-active-warrant protection, subject notification, probable cause, issuing officer, and character-specific identity attachment.",
+      "Added a permanent Faircroft Lottery Purchased Tickets area that keeps Weekly Pick 5 and Quick Draw lines visible after purchase, separates active tickets from completed drawings, and records selected numbers, official winning numbers, purchase cost, draw time, winner or non-winner status, and awarded prize value.",
+      "Added a developer-only Account Deletion Command dashboard with resident search, protected-account status, linked-record impact previews, typed confirmation, and permanent deletion authorization.",
+      "Added a dedicated developer-only Account Deletion directory endpoint that searches by resident name, email, CIV number, account ID, linked Arma identity, or linked player name without arming a deletion.",
+      "Added a non-editable account deletion evidence ledger that preserves the deleted identity snapshot, linked Arma identity, reason, affected-record totals, authorizing developer, and timestamp after the account is removed.",
+      "Added the Faircroft Lottery Wallet with a configurable recurring $10 daily play credit that is isolated from game-bank currency and carries forward for future tickets.",
+      "Added resident-selected Weekly Pick 5 tickets with five unique numbers from 1 through 49, exact-match official drawings, permanent ticket ledgers, and configurable per-line pricing.",
+      "Added frequent Quick Draw rounds with resident-selected three-digit lines, configurable scheduling, per-round purchase limits, exact-match results, and automatic Lottery Wallet prizes.",
+      "Added wallet-funded Faircroft Instant Scratch purchases while preserving the physical scratch-to-reveal experience and single-use Ravenhood cash or stock reward codes.",
+      "Added interactive Faircroft Instant Scratch tickets that residents physically clear with a pointer or finger to reveal a single-use Ravenhood cash or stock reward code, with every generated code retained in Stock Market Settings for staff audit.",
+      "Added a server-authoritative Faircroft Lottery attendance engine that reads the live Anti-Cheat player roster and adjusts the prize pool by elapsed seconds using the verified online-player count.",
+      "Added Developer Tools Lottery controls for enabling player-driven pool movement, selecting increase or decrease behavior, setting the per-player per-minute rate, viewing live per-second and per-minute velocity, and auditing recent timed accruals.",
+      "Added direct MyFaircroft property-tax bill payment using the same unassigned, audited four-digit receipt PIN authority used for fines, business taxes, and Ravenhood, with paid receipts contributing to the Faircroft Lottery fund.",
+      "Added Faircroft Realty Group, a public full-screen property market where residents can explore synchronized homes for sale or rent, review editorial property presentations and photography, select an exact character, and submit verified auction bids.",
+      "Added the private Realty Dash application and Realty Owner role, with a brokerage command center connected only to that owner's linked owned and rented property records, listing drafts, market publication, live offer oversight, and closing archives.",
+      "Added character-specific Faircroft Realty closings that record winning sale bidders as deed holders and winning rental bidders as tenants in an audited RP OS ownership overlay without writing into protected game-server property files.",
+      "Added role-aware Admin Tools access with developer-controlled switches for selectively delegating restricted operational sections to administrators.",
+      "Added server-enforced Admin Tools section authorization so locked administrator sections cannot be accessed by calling their protected endpoints directly.",
+        "Added Faircroft Housing Conditions intelligence with live availability, occupancy, demand coverage, estimated unhoused-account rate, additional-home requirements, and market-pressure status derived from verified accounts and synchronized TBS ownership records.",
+        "Added a Developer Tools Property Tax command with exact-property 14% assessments, owner portfolios, source-value projections, unpaid balances, permanent resident notices, and staff auditing without writing into the game property files.",
+        "Added exact-property tax liens, required lien-before-seizure enforcement, release actions, and business-tax property enforcement restricted to synchronized properties owned by the registered business owner.",
+        "Added Business Tax & License Enforcement inside Developer Tools Settlement Operations, with government-wide unpaid, accrued, and weekly tax totals plus exact-license suspension, revocation, and restoration controls.",
+        "Added permanent tax-enforcement violations, owner notifications, required enforcement reasons, and staff audit records for every business-license action.",
+        "Added Faircroft Continuity Protection with monthly $3,500, $4,250, and $5,000 policy tiers covering 50%, 70%, or 90% of a verified protected game-bank balance after an authorized server reset or wipe.",
+        "Added resident wipe-claim filing with exact character and policy ownership, verified bank snapshots, calculated recovery values, duplicate-review protection, and a persistent pending-to-completed claim ledger.",
+        "Added a Developer Tools Insurance Claims command center with open-exposure totals, resident and character intelligence, protected-balance verification, approval and denial decisions, paid-compensation confirmation, resident notifications, and permanent staff auditing.",
+        "Added the Faircroft Insurance Authority application with character-specific vehicle, property, life, business, and general policies, tiered coverage questionnaires, universal four-digit receipt PIN settlement, and official expiring digital insurance certificates.",
+        "Added the Faircroft Gang Network with character-bound gang creation and membership, secure four-digit recruitment PINs, private leader command, member ranks, roster control, and strict prevention of cross-character membership leakage.",
+        "Added Developer Tools Gang Settings with creation and membership limits, complete organization and recruitment-PIN ledgers, roster governance, member locks, organization shutdown controls, and hidden gang-leader role intelligence.",
+        "Added ICE MDT Gang Intelligence with active affiliation flags, exact character identities, matched CIV and passport records, citizenship status, search, and one-click access to the linked CAD intelligence profile.",
+        "Fixed vehicle migration account isolation by correlating imported vehicles only to the exact stable Arma identity linked to the authenticated Faircroft account; unresolved legacy imports remain quarantined until ownership is confirmed.",
+        "Added Developer Tools Ravenhood promotional campaigns under Active Campaigns, with generated or custom codes, expiration windows, redemption inventories, pause and resume controls, and a permanent claimant audit ledger.",
+        "Added resident Ravenhood promotional redemption for exchange buying power, a selected free security, or unique randomized starter portfolios containing 3, 5, or 9 active stocks, with automatic account creation and one claim per campaign.",
+        "Added Ravenhood continuous market automation with configurable short-cycle volatility, bounded mixed gains and losses, automatic protection for developer-scheduled price programs, and a manual Volatility Cycle event control.",
+        "Added optional Gemini exchange autopilot that reads current listings and recent market events, applies constrained audited adjustments on a configurable interval, and records every AI-directed movement in the market control log.",
+        "Added complete linked and unlinked Faircroft account directories to Game Intelligence with live search, identity status, character counts, synchronized game-bank balances, and direct access to each full player intelligence record.",
+        "Added an internal economy-intelligence profile with circulation phase, expansion outlook, median synchronized balance, high-value account count, and distribution scoring derived from the live economy snapshot.",
+        "Added a dedicated Parking Tickets division in Judge Court Operations and Resident Court Files, separating parking enforcement from traffic and criminal dockets.",
+        "Added automatic guilty disposition for parking violations at issuance, with direct resident delivery, no judge assignment or hearing date, and immediate MyFaircroft payment availability.",
+        "Added a Developer Tools Settlement notification command with live resident, filing, and outstanding-balance tallies plus individual or bulk next-login delivery.",
+        "Added persistent Faircroft settlement warnings for driver-license suspension, driver-license revocation, and arrest-warrant escalation, with resident acknowledgment and a permanent delivery ledger.",
+        "Added a complete Account Management directory inside Developer Tools that mirrors the existing Admin account controls for verification, roles, agency assignment, name-change recovery, password resets, RP OS/CAD enforcement, Arma enforcement, and authorized account deletion without removing the Admin workspace.",
+        "Added developer-only sign-in email resets with normalized validation, duplicate-address protection, explicit confirmation, resident notification, and permanent staff audit records.",
+        "Added a Developer Tools Lottery special-prize vault for Steam, Xbox, PlayStation, Discord, Faircroft, and custom rewards with quantities, sponsors, private fulfillment instructions, activation controls, winner assignment, and permanent auditing.",
+        "Added a Developer Tools Housing Market tab that indexes Shadow Haven TBS Property Mod housing records, separates available and sold properties, resolves linked Faircroft owners from OwnerUid values, and displays tenure, rent payments, lock state, guest access, source property IDs, and sync status.",
+        "Added a Faircroft Lottery Quick Draw development preview marked Coming Soon for future rapid drawing rounds.",
+        "Added ICE Agent recruitment to Faircroft Careers with a 20-question multiple-choice federal-service qualification, a mandatory internal 20/20 advancement threshold, and character-specific application records.",
+        "Added an ICE Commander Applications desk inside ICE MDT for qualification review, interview and training advancement, command denial, and final appointment that automatically grants the ICE Agent role and notifies the candidate.",
+        "Added an independent ICE Agent application-intake switch in Developer Tools so federal recruiting can open or close without affecting any other Faircroft job posting.",
+        "Added a permission-neutral Staff role that excludes assigned accounts from every public Leaderboard category while preserving their economy balances, telemetry, Developer Tools records, and operational totals.",
+        "Opened Leaderboards and Ravenhood Wallstreet to every verified Faircroft resident while retaining exchange policy, pricing automation, receipt issuance, and administrative controls exclusively inside Developer Tools.",
+        "Added a once-per-news-cycle FNN Top Story assignment in the Press Desk, with an exclusive newsroom checkbox, visible reservation status, Gemini lead-story prioritization, conflict protection, and automatic release only after a successful manual or scheduled edition publication.",
+        "Added audited manual lottery funding inside Developer Tools Lottery Settings, including immediate prize-pool updates, required funding reasons, issuing-developer attribution, timestamps, and a permanent adjustment ledger.",
+        "Added a full-screen Faircroft Leaderboards application with 27 synchronized rankings across Wealth and Credit, Activity, Combat, Public Safety, and Community divisions.",
+        "Added Top Earners, monthly wealth growth, Credit Elite, credit improvement, Server Veterans, current-session activity, role-service time, K/D, kills, deaths, suicides, arrests, citations, warrants, court, DMV, CAD reporting, Press Desk, clean-driver, and Public Safety MVP rankings.",
+        "Added top-three podiums, compact ranked ledgers, online indicators, authoritative source labels, division navigation, and responsive mobile leaderboard controls.",
+        "Added daily SHS bank and MedicalHud reputation snapshots for monthly wealth-growth and credit-improvement comparisons.",
+        "Added authoritative Thunder Buddies lifetime playtime and combat telemetry from the SHS tb_player_database.json source.",
+        "Added the Faircroft Citizenship and Passport program with an official Passport application, citizenship registry, digital passport credential, and status history.",
+        "Added a one-time migration that grants Valid Faircroft Citizenship and passports to accounts that existed before the citizenship program.",
+        "Added a six-question Faircroft civics examination for new residents with automatic citizenship and passport issuance after a passing result.",
+        "Added ICE Agent and ICE Commander roles with restricted access to a dedicated full-screen ICE MDT.",
+        "Added ICE citizenship and NCIC search, immigration case creation, detainers, case notes, command dispositions, and citizenship-status statistics.",
+        "Added Developer Tools ICE Settings with an ICE personnel roster and a control for enforcing the Faircroft local-information ordinance.",
+        "Added citizenship status and passport numbers to LEO NCIC records and search results."
+        ,"Added a full-screen Faircroft Financial workspace with live game checking, in-game credit scoring, account health, and an official FCIC coverage notice."
+        ,"Added a professionally issued Faircroft driver license with an official portrait, license number, class, status, issue and expiration dates, endorsements, restrictions, holder signature, security pattern, authentication barcode, ghost image, and digital hologram."
+        ,"Added character-specific ownership across citations, criminal cases, bookings, vehicles, insurance, job applications, business applications, and business licenses."
+        ,"Added a mandatory legacy-record assignment workflow so existing account-level records can be permanently assigned to the correct character."
+        ,"Added Developer Tools Court Settings with independent, typed-confirmation controls for wiping citations or criminal charges and their dependent workflow records."
+        ,"Added a Developer Tools DMV vehicle-database migration control that clears old imported game vehicles and cached vehicle snapshots while preserving manual Faircroft DMV filings."
+        ,"Added separate Traffic Violations and Criminal Charges dockets for judges and residents, with every issued character-specific citation retained in the Court application."
+        ,"Added direct MyFaircroft fine payments using resident-specific four-digit receipt codes issued by developers only after in-game currency is received."
+        ,"Added a MyFaircroft receipt-code authority and ledger under Admin 2FA showing the issuing developer, authorized resident and amount, redemption status, redeeming user, and court case."
+        ,"Added Ravenhood Markets, a full-screen Faircroft investing and day-trading application with animated onboarding, live market tape, portfolio analytics, fractional trading, bonds, volatile securities, and order history."
+        ,"Added 20 Faircroft securities spanning media, finance, logistics, mining, utilities, healthcare, energy, municipal bonds, infrastructure bonds, and high-volatility day trading."
+        ,"Added resident-to-resident securities transfers with configurable fees held outside the active RP economy."
+        ,"Added audited four-digit Ravenhood deposit and withdrawal receipts that require an in-game administrator handoff and never directly edit the Arma database."
+        ,"Added Developer Tools Stock Market Settings with market open/close control, trade and transfer fees, hidden fee-holding balance, timed percentage programs, $1 gain/loss examples, crash/rally/skyrocket presets, and a live market event console."
+        ,"Added Gemini-assisted market briefings that read current listings and staff market scenarios, then recommend optional price programs without applying them automatically."
+        ,"Added Admin Content Control for deleting individual CAD after-action reports, submitted Press Desk stories, and individual published FNN stories without clearing an entire archive."
+        ,"Added a full-screen read-only System Changelog workspace with a patch navigator, release summaries, and dedicated Added, Changed, Fixed, and Removed ledgers."
+        ,"Added a full-screen Faircroft Careers recruitment workspace with a vacancy directory, department-specific opening briefs, personal application tracking, and focused application dialogs."
+        ,"Added an animated FNN live headline ticker sourced from the published lead story, public-safety desk, and supporting newsroom coverage."
+        ,"Added FNN News Cycle Autopilot with configurable morning and evening publication times, timezone validation, duplicate-run protection, and an on/off control inside Developer Tools FNN Settings."
+        ,"Added Ravenhood scenario projections with animated defensive, current-path, and growth outlooks calculated from each selected security and the resident's current position."
+        ,"Added verified CIV recipient lookup for securities transfers, including matched resident identity confirmation before shares can be submitted."
+        ,"Added the Faircroft Lottery with three resident entries per day, a Tuesday 11:59 PM Eastern drawing schedule, animated prize-pool presentation, verified entry ledger, and winner notifications."
+        ,"Added a lottery funding ledger sourced from collected MyFaircroft fine receipts, completed settlement fines, and Ravenhood exchange fees, with previous awards deducted to prevent duplicate funding."
+        ,"Added Developer Tools Lottery Settings with drawing controls, daily-entry limits, payout percentages, timezone scheduling, role-based winning weights, role exclusions, supervised drawings, entry review, and fraud flags."
+        ,"Added an active scheduled-movement ledger to Ravenhood Stock Market Settings with affected securities, target percentage, schedule timing, live progress, and immediate stop controls."
+      ],
+    "changed": [
+      "Rebuilt Ravenhood as a focused investment workstation with a clear account summary, selected-security research view, compact portfolio ledger, exchange discovery directory, persistent order ticket, and responsive mobile trading flow.",
+      "Rebuilt Ravenhood into a responsive live exchange desk with a compact navigation rail, animated market tape, ranked Hot Picks, selected-instrument research, portfolio ledger, sparkline market scanner, and a persistent order ticket that collapses cleanly for phones and tablets.",
+      "Expanded Statewide Intelligence economy reporting with a state balance sheet, total modeled assets, net position, resident market assets, per-resident liquidity, obligation load, and market liquidity.",
+      "Rebuilt the public Stats application as an animated Faircroft statewide command experience with a live signal wire, traced data visualizations, detailed intelligence chapters, responsive operational layouts, and significantly denser public insight without exposing resident records.",
+      "Rebuilt Faircroft Continuity Protection as a cinematic resident asset-defense command with a live recovery shield, synchronized exposure telemetry, character-specific protection loadouts, animated policy intelligence, and a responsive activation experience that preserves all policy, claim, and four-digit receipt workflows.",
+      "Changed Admin Tools navigation so Account Deletion remains visible but greyed out for administrators and cannot be delegated through administrator section-access switches.",
+      "Changed the weekly lottery from complimentary automatic entries to purchased, resident-selected number lines funded exclusively through the recurring Lottery Wallet.",
+      "Changed live lottery pool growth to a sliding anti-cheat attendance curve: zero verified players pauses growth, one player moves the pool slowly, and additional verified players progressively increase its velocity.",
+      "Changed the public Faircroft Lottery broadcast to display verified players online, live prize velocity, and a smoothly advancing jackpot amount tied to the configured attendance rate.",
+      "Changed residential property-tax assessment to a fixed $350,000 Faircroft basis with one-click authorized 12%, 14%, and 18% rate controls, producing exact bills of $42,000, $49,000, or $63,000 without manual valuation entry.",
+      "Rebuilt Admin Tools Housing Market as an owner-centered property command dashboard that consolidates every synchronized residence under one resident portfolio, adds expandable asset drawers and direct intelligence access, and separates vacant inventory from ownership records.",
+      "Renamed Developer Tools to Admin Tools, gave administrators the Command Center, Account Management, Game Intelligence, Housing Market, Anti-Cheat, and Activity Log by default, and retained unrestricted access for developers and owners.",
+      "Removed the separate Admin application icon and consolidated account administration into the unified Admin Tools workspace.",
+        "Rebuilt the Insurance application as the official Faircroft Continuity Authority workspace with an animated protection seal, continuous policy certificate, recovery-level presentation, synchronized bank position, claim-status timeline, and responsive enrollment flow instead of stacked policy widgets.",
+        "Restored Shadow Haven as the canonical SFTP game-data provider, removed LoafHosts environment-variable overrides, and separated public A2S and game endpoints from Arma's local 0.0.0.0 bind addresses.",
+        "Extended the RP OS application registry, visibility controls, responsive full-screen workspaces, and Faircroft navigation iconography for Insurance and the Gang Network without exposing the hidden gang-leader authorization role to residents.",
+        "Changed Ravenhood promotional-code administration to show full live promo codes in Developer Tools, expose codes in redemption/audit logs, and add audited hard-delete controls beside Pause and Resume.",
+        "Reworked Ravenhood around a visible account portfolio desk so residents can immediately review total account value, buying power, invested balance, unrealized movement, every owned position, per-stock gain or loss, allocation weight, and jump from a holding directly into that security's trade view.",
+        "Rebuilt Ravenhood's active trading workspace into a resident-first brokerage canvas with a premium portfolio landing area, connected security spotlight, softer watchlist and holdings flow, product-style modals, improved mobile trading actions, and a less boxed exchange presentation.",
+        "Added a persistent Ravenhood dark and light theme switch and converted the Market Movers card rail into an operational exchange scanner with price, sector, movement, and selected-security command rows instead of a generated-looking horizontal card strip.",
+        "Upgraded Ravenhood into a denser 2026 trader surface with a compact account-standing rail, portfolio allocation telemetry, selected-instrument ticker masthead, richer live quote card, bid/ask/spread chart readouts, animated market-depth bands, and reduced sidebar footprint.",
+        "Rebuilt Ravenhood's trading floor structure again into a full-width exchange desk with account standing across the top, compact instrument command view, right-side trade rail, candlestick-style market overlays, tighter scanner rows, and a dramatically reduced utility sidebar footprint.",
+        "Reworked Ravenhood with an E-Trade-inspired brokerage workstation layer: broker-style command header, smoother live ticker, account/watchlist rail, dimensional quote and chart workspace, stronger Day/Week/Month/Year chart controls, refined order ticket, and phone-safe bottom trading actions.",
+        "Reworked Ravenhood into a cleaner exchange experience with a compact discovery rail instead of a long stock ledger, phone-safe quick actions, and dedicated modal sheets for deposits, withdrawals, transfers, and promotional redemptions.",
+        "Expanded Stock Market Settings with independent volatility and Gemini automation controls, cycle timing, intensity limits, last-run status, and immediate developer execution while retaining manual overrides.",
+        "Expanded Game Intelligence beyond its top-ten summaries while preserving the existing dashboard design, making every account and balance investigable from the same workspace.",
+        "Restricted Developer role assignment and removal to owners only across Admin and Developer Tools account management, with server-side enforcement, a visibly locked control for non-owner staff, and permanent audit records for every change.",
+        "Changed fine settlement into a resident notification and verified-payment workflow that preserves MyFaircroft four-digit receipt PIN verification after staff receives payment in game.",
+        "Kept every active lottery special prize completely confidential from residents until the drawing completes; the winner then receives the revealed prize and fulfillment notification while the public result records the official bonus award.",
+        "Reshaped the Faircroft Lottery into a more continuous live draw floor with a connected prize chamber, physical entry ticket, flowing drawing story, post-draw surprise reveal, and cinematic Quick Draw preview instead of stacked dashboard widgets.",
+        "Rebuilt Leaderboards as a true competitive gaming arena with a live season HUD, animated three-player podium, crown, apex, diamond, platinum, and contender divisions, player emblems, online markers, personal rank progression, advancement targets, and a dense global ladder optimized for daily competition.",
+        "Simplified business taxes into an issued-bill workflow: staff assesses the tax, residents receive a MyFaircroft notice, and payment is completed directly from the Taxes tab with a verified four-digit receipt PIN instead of a confusing settlement batch.",
+        "Added verified business-tax receipts to the Faircroft Lottery public-service funding pool with resident notification and permanent payment auditing.",
+        "Rebuilt ICE MDT as a branded Faircroft federal operations terminal with dedicated Command Overview, Identity Intelligence, Case Operations, Detainers, and Command Applications navigation while preserving the local-ordinance data restriction.",
+        "Upgraded the ICE FLUCK Camera System into a Faircroft-branded federal camera command desk with distinct camera-source visibility, linked/unlinked observation status, a polished intelligence-file inspector, and one-click matched CAD profile review.",
+        "Added a branded FLUCK Camera Search intelligence module with an animated federal network preview and a clearly locked Coming Soon state for federal law enforcement.",
+        "Added FLUCK camera-source indexing, linked-profile counts, and CAD account-match payloads so ICE can identify whether Shadow Haven is exporting one camera or multiple camera feeds.",
+        "Integrated the official Faircroft emblem throughout the citizen passport cover, issuing header, document seal, security watermark, holographic validation mark, and live-registry authentication treatment.",
+        "Rebuilt Faircroft Careers as an animated public-service recruitment campaign with cinematic department mastheads, live opportunity navigation, connected selection journeys, stronger career storytelling, prominent application actions, and responsive candidate files without the former boxed administrative layout.",
+        "Removed the verified-status, CIV-number, and role-list strip from the RP OS home header while preserving all underlying identity permissions and account data.",
+        "Unified new MyFaircroft and Ravenhood four-digit receipts as unassigned, amount-free bearer PINs that can be redeemed once in either system, record the first redeeming resident, and are consumed across both ledgers to prevent reuse.",
+        "Reimagined Leaderboards as a live Faircroft competitive season with a kinetic championship stage, animated title defense, closest-challenger pressure, personal return goals, exact next-rank progress, live status signals, and a continuous contender climb designed to reward daily competition.",
+        "Rebuilt Faircroft Financial around a familiar consumer-banking flow with a dedicated account rail, compact greeting, primary checking workspace, integrated debit card, verified activity ledger, credit progress, financial wellness detail, and responsive mobile navigation without the previous oversized split-grid presentation.",
+        "Changed the Windows desktop release endpoint from a GitHub browser redirect to an authenticated Faircroft-hosted attachment response, keeping Beta members on Faircroft while directly downloading Faircroft-RP-Desktop-Setup.exe.",
+        "Corrected the MDT citation subject workflow so selecting a civilian immediately loads that account's active character identities, automatically chooses the active or sole character, and requires an explicit choice only when multiple valid characters exist.",
+        "Reimagined Leaderboards as an open championship arena with circular rank stages, an animated podium track, floating verified scores, integrated live-position intelligence, and a continuous standings field without card or widget containers.",
+        "Replaced the oversized linear Leaderboards page with a responsive competitive-network dashboard featuring a compact live header, swipeable championship podium, personal chase intelligence, advancement meters, and dense mobile-first standings.",
+        "Rebuilt Ravenhood around selectable Day, Week, Month, and Year market views for every security, with animated recorded and projected paths, range-specific timelines, a continuous borderless ticker tape, and streamlined trading rails.",
+        "Replaced the boxed Leaderboards podium with a continuous ranking runway: a single editorial leader feature, streamlined challenger flow, integrated personal position, fast division and category navigation, and one uninterrupted responsive standings sequence.",
+        "Rebuilt the Faircroft Lottery as an immersive live drawing experience with a kinetic draw chamber, circulating numbered balls, physical resident entry ticket, prize and countdown stage, live drawing tape, transparent entry-to-winner journey, verified chance record, and integrated prize-funding story.",
+        "Reimagined Faircroft Financial as a flagship private-client banking experience with a dimensional resident credential, cinematic account command center, live financial-position narratives, credit threshold guidance, authoritative activity presentation, identity assurance, and premium responsive motion.",
+        "Moved audited CAD, Press Desk, and published-story content maintenance out of Administration and into Developer Tools FNN Settings, with complete source-file review dialogs required before deletion controls are exposed.",
+        "Rebuilt Leaderboards as a full championship arena with a dominant first-place stage, staggered challengers, live leader advantage, signed-in player chase intelligence, continuous contender standings, division-scale typography, and responsive competitive motion.",
+        "Rebuilt Ravenhood into a more continuous exchange-floor experience with ambient market motion, animated projection intelligence, verified position delivery, and a persistent workspace exit control.",
+        "Established RP OS 0.2.2 as the active development release; additional completed work will be appended to this release entry before publication.",
+        "Leaderboards now combine live FCRPMUSSALO bank balances, Thunder Buddies player telemetry, MedicalHud reputation-based credit, and RP OS public-safety records.",
+        "Restricted SHS leaderboard ingestion to the authoritative profile/profile/TB/tb_player_database.json player database.",
+        "Separated local law-enforcement intelligence from federal immigration operations while preserving NCIC, citizenship, DMV, and vehicle safety access for ICE.",
+        "Reports, BOLOs, and warrants are withheld from ICE whenever the local-information restriction is enabled in Developer Tools.",
+        "Added the Faircroft Local Ordinance advisory to both LEO MDT and ICE MDT when the federal information boundary is active.",
+        "Expanded Developer Tools application visibility controls to include Citizenship and ICE applications.",
+        "Advanced the visible RP OS release designation and PWA installation cache to version 0.2.2."
+        ,"Moved resident banking out of the simulated phone and into a responsive modern financial dashboard while preserving the authoritative game-bank and credit data flows."
+        ,"Replaced the DMV identity-record card with a presentation-grade resident driver credential designed to feel like an authentic character license on desktop and mobile."
+        ,"Court, MyFaircroft, DMV, Jobs, and Business workspaces now resolve records against the selected or active character rather than the parent website account."
+        ,"FCRPMUSSALO persistence scans now reconcile Railway against the complete authoritative SHS file snapshot and prune records that no longer exist on the current server."
+        ,"MyFaircroft direct receipts now record partial payments and mark a citation paid only when its full remaining balance is verified, without writing any change to the Arma database."
+        ,"Ravenhood deposits and withdrawals now settle through a separate RP investment ledger so the authoritative in-game bank remains unchanged until an administrator completes the physical roleplay exchange."
+        ,"Content deletion is now enforced by the server for Owner and Admin accounts and records the deleted report number, headline, author or officer, and acting administrator in the audit log."
+        ,"Moved Changelog outside the simulated phone and aligned its release presentation with the Faircroft Roadmap visual system while preserving a distinct update-archive identity."
+        ,"Changelog content remains deployment controlled and exposes no owner or administrator editing tools inside RP OS."
+        ,"Moved Jobs outside the simulated phone and reorganized department, legal, emergency-service, and FNN recruitment into a responsive professional hiring portal."
+        ,"FNN automatic publishing now defaults to 5:00 AM and 5:00 PM Faircroft time while retaining manual newsroom regeneration controls."
+        ,"Temporarily restricted Leaderboards and Ravenhood Markets visibility and API access to Owner and Developer accounts during controlled testing."
+        ,"Established Ravenhood Markets as Faircroft's official in-world securities exchange throughout resident and developer interfaces."
+        ,"Rebuilt the complete Ravenhood trading floor with an animated live price curve, instrument quotes, market pulse, exchange ticker, order-entry dock, position book, execution ledger, securities directory, portfolio allocation, and responsive terminal navigation."
+        ,"Reworked System Changelog into a guided release-story experience with an animated chapter route, focused Added, Changed, Fixed, and Removed views, release-impact highlights, and progressive disclosure instead of one continuous ledger."
+        ,"Restored the Faircroft local-involvement ordinance control directly inside Developer Tools ICE Settings while keeping it synchronized with MDT Settings."
+        ,"Upgraded Leaderboards with animated competitive podiums, flame effects for leading placements, rank-progression meters, leader margins, and exact performance needed to advance to the next position."
+        ,"Added a persistent leaderboard progression layer with rank points, eight prestige divisions, promotion thresholds, a personal next-division track, and a points vault for redeeming bonus lottery entries or starter market shares; staff observer accounts remain excluded from competition without changing economy totals."
+        ,"Rebuilt Faircroft Financial as a continuous personal-banking experience with persistent account navigation, checking activity, account actions, synchronized balance history, integrated credit insights, and a restrained institutional banking design."
+        ,"Rebuilt Developer Tools Game Intelligence as a continuous live-economy operations screen with circulation concentration, funded-account coverage, identity-match rates, integrated financial rankings, and streamlined persistence ledgers driven by the FCRPMUSSALO mirror."
+        ,"Rebuilt the Faircroft Lottery as a continuous 2026-style resident prize campaign with a prominent weekly-winnings billboard, live drawing countdown, streamlined full-width entry runway, open participation timeline, winner spotlight, and compact transparent prize funding without stacked widget cards."
+        ,"Rebuilt Faircroft Commerce as a modern licensing authority with an editorial filing masthead, connected application journey, contextual section guidance, document-style controls, streamlined operational telemetry, and responsive Commerce branding instead of boxed form widgets."
+        ,"Rebuilt the Faircroft citizen passport as a presentation-grade digital booklet with an official embossed cover, security artwork, portrait and ghost image, bilingual identity fields, verification hologram, holder signature, ten-year validity, issuing authority, live registry authentication, and machine-readable travel-document zone."
+        ,"Changed all newly issued MyFaircroft and Ravenhood four-digit receipt PINs to unassigned bearer codes that permanently record the issuing administrator and first eligible resident who redeems them."
+      ],
+    "fixed": [
+      "Replaced Ravenhood's decorative synthetic chart with recorded price history, explicit projected momentum, period open/high/low/current values, a range-position marker, truthful observation counts, and cache-safe delivery of the new interface.",
+      "Fixed Ravenhood live pricing so the workspace polls verified market quotes every 12 seconds, displays the latest synchronization time, redraws only when the authoritative price changes, and plots projected high, mean, and low paths on the same scale as recorded trades.",
+      "Fixed large Statewide Intelligence currency totals being cut off with ellipses in overview and economy panels.",
+      "Fixed Account Deletion searches returning no residents by separating directory lookup from the general Admin Tools payload while preserving owner, self-account, preview, and permanent-deletion safeguards.",
+      "Fixed ICE recruitment eligibility so undocumented residents are denied before an application record is created, with citizenship checked again before command may advance, interview, or appoint a candidate.",
+      "Fixed Ravenhood stock-funding PIN issuance so developers can bind the exact approved deposit or withdrawal amount to a one-click four-digit stock PIN without selecting a resident or typing an authorization phrase; redemption applies that locked amount to the first eligible resident and permanently records both issuer and redeemer.",
+      "Fixed Ravenhood promotion redemption so Redeem into my portfolio uses a persistent submit controller, visibly reports progress and validation errors, refreshes the authoritative account immediately, and confirms the credited cash or securities on success.",
+      "Fixed MyFaircroft, Realty, and Settlement rental-property filters triggering PostgreSQL placeholder errors when loading resident tax and property records.",
+      "Fixed permanent account removal to preserve restrictive government and financial authorship records by reassigning their staff attribution to the authorizing developer before cascading account deletion.",
+        "Fixed lottery prestige-point redemptions so each resident can add no more than five prestige entries to the same weekly drawing, with the limit enforced under a database lock to prevent rapid duplicate submissions.",
+        "Fixed Faircroft Lottery entry submissions colliding after a same-day drawing rollover by allocating entry numbers across the resident's full calendar day and serializing concurrent requests, while keeping bonus entries separate from the complimentary daily limit.",
+        "Fixed the ICE MDT FLUCK Camera System opening to a blank workspace by removing a stale legacy visibility rule that hid the redesigned operations center, tightening the selector to the active module boundary, and safely normalizing camera and occupant payload collections.",
+        "Fixed property-tax ownership isolation so rented-property source records are excluded from the taxable deed inventory, resident bills, liens, seizures, owner totals, and enforcement endpoints.",
+        "Serialized Shadow Haven SFTP sessions and added bounded authentication retries so bank, anti-cheat, FLUCK, persistence, property, and reputation workers no longer overwhelm the host with simultaneous startup logins; missing-file errors now identify the exact configured remote path.",
+        "Fixed Developer Tools Housing Market imports so nested TBS Property Mod housing lists are recursively read from raw JSON containers instead of only accepting shallow normalized property arrays.",
+        "Fixed Ravenhood promotional redemption feedback by canonicalizing newly issued promo codes, preserving compatibility with older codes, refreshing the portfolio immediately after a claim, and showing a dedicated success confirmation receipt.",
+        "Consolidated duplicate changelog records that shared the same release version so RP OS 0.2.2 appears once while preserving every unique release note.",
+        "Replaced boxed changelog overview widgets with a connected Roadmap-style release route, animated milestone chapters, continuous editorial change ledgers, and responsive release navigation.",
+        "Reworked the FNN New Story Brief into a wide responsive newsroom intake workspace, eliminating its cramped nested scrollbar while retaining every source, verification, context, quotation, and Top Story field.",
+        "Removed the competing fixed-height scroll container from desktop Developer Tools so the workspace follows the document, no empty page opens beneath it, and Save or Sync preserves the operator's position.",
+        "Enforced server-side four-digit PIN verification before any direct MyFaircroft fine payment can be recorded or a citation can move to paid status.",
+        "Removed the unnecessary authorized-amount field from four-digit PIN issuance; residents now enter the actual fine payment, Ravenhood deposit, or Ravenhood withdrawal amount only when redeeming the receipt.",
+        "Fixed Ravenhood's persistent interaction controller so Market Overview, Deposit, Withdrawal, Transfer, ticker selection, time ranges, refresh, and both Exit controls remain functional after every workspace redraw.",
+        "Fixed Ravenhood Gemini market briefings failing before generation when PostgreSQL numeric market prices and volatility values were returned as Decimal objects.",
+        "Stopping an active Ravenhood price movement now cancels every related security program and restores affected prices to their recorded pre-event baselines so normal market operation can resume.",
+        "Prevented temporary anti-cheat event and outbox records from contaminating persistent leaderboard rankings.",
+        "Added responsive layouts for leaderboard divisions, digital passports, citizenship testing, ICE search, federal case files, and ICE Developer Settings.",
+        "Updated the PWA asset cache so RP OS 0.2.2 interfaces and permissions load immediately after deployment."
+        ,"Fixed citations, criminal records, registered vehicles, insured vehicles, applications, jobs, and licenses incorrectly appearing across every character on an account."
+        ,"Fixed legacy account data migration by preserving unassigned records until the owner explicitly selects the responsible character."
+        ,"Fixed retired-server vehicle records being recreated after a DMV wipe by resetting both the imported DMV layer and its cached Vehicles source."
+        ,"Fixed the Getting Started final-stage controls overflowing the guide panel by moving progress to its own row and sizing both navigation actions to the available width."
+        ,"Fixed traffic citations and criminal charges sharing one congested Court docket and restored resident Court visibility for issued citations."
+        ,"Added responsive desktop and mobile market workspaces, bottom-sheet settlement dialogs, protected receipt instructions, and overflow-safe ticker and portfolio layouts."
+        ,"Replaced the block-by-block Ravenhood dashboard and decorative bar chart with a continuous professional exchange terminal and animated security-level market visualization."
+        ,"Fixed content-maintenance controls being unreachable when an administrator did not also hold an LEO or Press role by adding the complete maintenance ledger to the Admin workspace."
+        ,"Replaced the basic vertically stacked changelog cards with responsive desktop navigation and a mobile horizontal patch selector."
+        ,"Fixed long job advertisements and application questionnaires stretching one continuous page by opening each packet in an overflow-safe application dialog."
+        ,"Fixed PostgreSQL startup and Leaderboards failures caused by literal SQL wildcard patterns being interpreted as unsupported Psycopg placeholders."
+        ,"Fixed the bounded Developer Tools canvas cutting off final Anti-Cheat roster records and page controls by adding reliable end-of-scroll clearance."
+        ,"Rebuilt Anti-Cheat Intelligence as a professional animated operations console with a command masthead, continuous telemetry rail, evidence ledger, staged record entrances, live-status motion, and Roadmap-inspired transitions."
+        ,"Removed the simulated phone frame and fixed handset-width container from RP OS while preserving every application, permission, icon, and workflow in a responsive full-browser workspace."
+        ,"Moved the local-law-enforcement immigration restriction switch from ICE Settings into a dedicated Developer Tools MDT Settings tab while preserving the existing audited policy enforcement."
+        ,"Rebuilt MyFaircroft as a full-screen animated resident-services dashboard with synchronized game-bank status, civic-account navigation, obligation summaries, court calendars, payment ledgers, taxes, appeals, and records outside the retired compact panel."
+        ,"Fixed MyFaircroft game-bank, payment, contest, appeal, and expungement requests failing because the active-character database resolver received a user dictionary instead of a numeric account ID."
+        ,"Added a persistent, explicitly labeled Exit Ravenhood control that remains visible across desktop, tablet, and mobile exchange layouts."
+        ,"Upgraded Ravenhood with professional bid, ask, spread, venue, and order-flow telemetry; staged workstation entrances; animated depth scanning; stronger exchange hierarchy; and refined execution, directory, and order-entry surfaces."
+        ,"Fixed the home-screen application grid being clipped beneath the RP OS footer by adding a dedicated scroll region and device-safe bottom clearance."
+        ,"Fixed the Developer Tools operations sidebar cutting off lower navigation entries by adding an independent height-aware navigation scroller while keeping staff identity controls anchored."
+        ,"Fixed large changelog releases rendering every category as an overwhelming, uninterrupted list by introducing selectable chapters and compact release previews on desktop and mobile."
+        ,"Fixed PC anti-cheat records being displayed as PlayStation by correcting the Arma PlatformKind mapping and replacing raw enum numbers with explicit platform names in new telemetry."
+        ,"Added an anti-cheat review acknowledgment layer: staff can clear the current review alert without deleting detection history, while higher flag counts or newly synchronized evidence automatically raises a fresh alert."
+        ,"Fixed Ravenhood structural entrance animations and the inherited RP OS app container intermittently hiding the exchange header, navigation, instrument details, order entry, and portfolio controls behind oversized empty regions."
+        ,"Stabilized the Ravenhood desktop, tablet, and mobile viewport with a bounded trading canvas, persistent structural panels, compact chart proportions, responsive order controls, and reliable workspace exit placement."
+      ]
+    },
+    {
+      "date": "2026-07-31",
+      "version": "0.2.2",
+      "title": "RP OS 0.2.2 · Platform Operations",
+      "added": [
+        "Added focused anti-cheat popup interfaces for online players, known identities, flagged players, grey-screened profiles, active locks, and recent evidence.",
+        "Added search and direct player-intelligence drill-down inside every anti-cheat summary popup.",
+        "Added a dedicated Settlement Operations tab to Developer Tools with a live animated execution console.",
+        "Added batch driver-license suspension for unpaid fines with automatic player notifications.",
+        "Added an animated FNN generation console showing source scanning, model generation, validation, completion, and errors."
+        ,"Added independent Dev Tools intake controls for every government, legal, emergency-services, and FNN application.",
+        "Rebuilt the anti-cheat player popup as a continuous intelligence dossier with platform identity, telemetry assessment, evidence, and alternate-account records."
+        ,"Added dedicated Auto Pilot and System Update workspaces inside Developer Tools.",
+        "Added a Faircroft-branded limited-service update experience that preserves essential resident and authorized public-safety access.",
+        "Added a full-width Faircroft Administration workspace with an operational overview, identity-readiness ledger, searchable resident directory, and direct account-file controls.",
+        "Expanded the FNN newsroom source archive to include court petitions, license suspensions, criminal warrants, wanted-person BOLOs, and reporter-submitted Press Desk stories.",
+        "Added an official Faircroft Judiciary order treatment and digital court seal to the findings workflow.",
+        "Added a restricted DMV Settings workspace in Developer Tools for suspending, revoking, expiring, restoring, classifying, and endorsing driver credentials.",
+        "Added configurable primary license classes and endorsements with resident credential display.",
+        "Added statewide Mark All Expired and Mark All Revoked controls with typed confirmation, audit history, and resident notifications.",
+        "Added optional driver-license restoration fees that enter Settlement Operations as DMV administrative charges for the manual midnight deduction process.",
+        "Added mandatory Faircroft DMV entrance notices for license suspension, revocation, and expiration that appear immediately on login or refresh and require resident acknowledgement."
+        ,"Added Admin account enforcement controls for CAD timeouts, suspensions, temporary bans, permanent bans, and separate Arma server bans."
+        ,"Added a dedicated Developer Tools Admin 2FA workspace with expiring single-use authorization codes and an audited usage ledger."
+        ,"Added an Admin Chat-only resident experience while RP OS/CAD access is restricted."
+        ,"Added live linked-account search in Developer Tools across resident name, email, CIV number, in-game name, and Bohemia identity."
+        ,"Added a Beta-only Download Our App icon with dedicated PWA, Windows desktop, and Android APK release locations.",
+        "Added an audited Developer Tools emergency control that resets every active Arma account link and notifies affected residents to reconnect with a new code.",
+        "Added a guarded Developer Tools game-economy migration control that clears stale Railway FCRPMUSSALO balance snapshots while preserving links, CAD records, fines, taxes, and settlement history."
+      ],
+      "changed": [
+        "Consolidated the current platform operations work into the RP OS 0.2.2 release.",
+        "Converted the Anti-Cheat dashboard metrics from passive counters into interactive operational controls.",
+        "Moved Fine Settlement out of the phone application grid and into the restricted Developer Tools workspace.",
+        "Forced fine-removal authorization now requires all affected driver licenses to be suspended first."
+        ,"Closed job applications now keep their advertisement visible while disabling only that posting's application form.",
+        "Replaced the anti-cheat popup's oversized widget grid with a compact professional ledger layout."
+        ,"Removed driver-license auto approval so every license requires the scored DMV examination.",
+        "Removed System Settings from the phone application grid and separated automation from release controls.",
+        "Moved Admin out of the simulated phone and aligned its navigation, records layout, and responsive behavior with the Developer Tools staff workspace.",
+        "Removed Job Applications from Admin; recruitment review remains in the dedicated Indeed Admin workflow.",
+        "Retired Referral Tickets from Admin, resident profiles, and new-account registration while preserving historical database records.",
+        "Advanced the visible RP OS release designation and PWA installation cache to version 0.2.2.",
+        "Press Desk stories are now marked Included after a successful Gemini edition so reporters can confirm newsroom collection.",
+        "Standardized citation and criminal findings as Guilty or Not Guilty instead of the retired Liable or Not Liable language.",
+        "Driver-license administrative controls now live under Developer Tools > DMV Settings rather than the resident DMV application."
+        ,"Separated website/CAD restrictions from Arma enforcement so CAD actions never alter a linked game account."
+        ,"Limited Admin 2FA requirements to permanent CAD bans and both temporary and permanent Arma bans."
+        ,"Reworked linked-account popup records into a continuous intelligence dossier with expandable record ledgers instead of stacked widget cards."
+        ,"Consolidated installation controls into one Faircroft Beta download center and retired the unrelated global install banner.",
+        "Routed Windows and Android package buttons through Beta-protected Faircroft download endpoints so installer clicks begin directly without exposing storage links in the interface."
+      ],
+      "fixed": [
+        "Fixed the mobile Arma unlink dialog being constrained by the animated profile panel and overlapping Recent Link Claims.",
+        "Contained the unlink guidance, authorization field, acknowledgment, and confirmation action within a responsive single-column mobile dialog.",
+        "Restored the missing Developer Tools linked-account API response that caused Recent Arma Link records to display Request failed.",
+        "Expanded Arma event ingestion compatibility for alternate event wrappers, casing, identity fields, timestamps, and numeric payload values.",
+        "Made /link/arma a dedicated PWA deep link that opens Profile directly on Game Link, with optional link-code prefilling through the code query parameter.",
+        "Fixed the Court Lawyer Licenses tab failing to open because its examination packet renderer referenced the wrong parser.",
+        "Fixed Admin being constrained to a narrow phone frame with oversized stacked account cards.",
+        "Fixed retired referral rewards continuing to create staff tickets and player notifications during account registration.",
+        "Fixed submitted FNN Press Desk stories appearing uncollected even after they were supplied to Gemini.",
+        "Fixed final Guilty, Not Guilty, and Dismissal orders requesting or retaining a future court date instead of moving immediately to the Completed docket.",
+        "Fixed DMV status changes lacking a controlled restoration-fee route into the existing Settlement desk."
+        ,"Fixed administrative timeouts and suspensions sharing the developer game-ban path instead of using a website-only CAD restriction."
+        ,"Fixed Command Overview and Account Linking records presenting inconsistent account-detail interfaces."
+        ,"Fixed the DMV vehicle-compliance notice exceeding mobile viewports and trapping users before its action controls."
+        ,"Fixed DMV compliance actions being hidden behind mobile browser navigation and device safe areas."
+        ,"Fixed Press Desk story submission remaining frozen while waiting for a secondary archive refresh."
+        ,"Fixed successfully filed press briefs not appearing immediately in the reporter archive even though the newsroom had accepted them.",
+        "Fixed Press Desk submissions failing before database insertion because press reports were omitted from the approved record-number generator.",
+        "Fixed Fire MDT retaining desktop-width navigation, controls, incident rows, and telemetry sizing on mobile devices.",
+        "Updated the PWA asset cache so the repaired Press Desk and responsive Fire MDT load immediately after deployment.",
+        "Game-bank snapshot resets now place affected PWA accounts into Awaiting sync until the new Arma database reports their current balances."
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.7",
+      "title": "FNN Press Team Directory",
+      "added": [
+        "Added a Press Team Directory to Developer Tools under FNN Settings.",
+        "Added live Press-role holder details including account identity, CIV number, verification status, and Arma-link status.",
+        "Added direct access from each Press Team row to the existing developer account record.",
+        "Added developer controls to suspend, reinstate, or revoke Press Passes with an official reason.",
+        "Added mandatory account notices and inbox messages so affected Press members are informed at their next login."
+      ],
+      "changed": [
+        "FNN Press Pass usage now includes the underlying role-holder roster instead of displaying only an issued-pass count.",
+        "Suspended Press Passes retain their credential record but cannot open Press Desk until reinstated."
+      ],
+      "fixed": [
+        "Improved Arma bridge link-request compatibility with alternate payload wrappers, field casing, timestamp fields, and identity field names.",
+        "Normalized link-code spacing and dash characters during bridge ingestion and account claiming.",
+        "Fixed newly reissued Press Passes retaining an older revoked or suspended state."
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.7",
+      "title": "Newcomer Field Guide",
+      "added": [
+        "Added a six-stage first-day route covering account linking, starter transportation, stick collection, bag storage, the IL mining license, shovel purchasing, mining, smelting, and ore sales.",
+        "Added current in-game map images for the Used Car dealership, Kotka collection route, Bag and Phone Store, Town Hall, Hardware Store, Mining Site, and Smeltery.",
+        "Added direct stage selection, previous and next controls, progress tracking, and route restart controls."
+      ],
+      "changed": [
+        "Rebuilt Getting Started as a dedicated full-screen field guide instead of displaying it inside the simulated phone.",
+        "Desktop now gives route maps and instructions a full records-workspace layout while phones use a true single-column guide."
+      ],
+      "fixed": [
+        "Fixed route images being compressed into unusable vertical strips.",
+        "Fixed the desktop layout responding to the browser width instead of the narrow phone container.",
+        "Removed the retired Getting Started image set."
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.7",
+      "title": "DMV Vehicle Intelligence & Compliance",
+      "added": [
+        "Added automatic DMV intake for vehicles detected through a resident's linked FCRPMUSSALO Arma profile.",
+        "Added imported make, model, year, color, generated plate, VIN, registration status, insurance status, and source tracking.",
+        "Added a next-login compliance notice when a detected vehicle still requires registration confirmation or insurance.",
+        "Added linked vehicle records to the resident Profile overview and NCIC-accessible DMV history.",
+        "Added a full-screen fleet dashboard with detected, filed, road-legal, and action-required totals.",
+        "Added a ten-question Class D roleplay driver examination with an 8/10 passing score, automatic license issuance, and a 48-hour hold after three consecutive failures."
+      ],
+      "changed": [
+        "Rebuilt DMV as a full-screen Motor Vehicle Authority records desk with an official credential, compliance ledger, examination workspace, and vehicle registry.",
+        "Confirming imported vehicle identity now activates its registration while insurance remains a separate required action.",
+        "Manual vehicle intake remains available for vehicles not present in the linked game profile."
+      ],
+      "fixed": [
+        "Fixed vehicle registration and insurance controls being bound to the Court workspace instead of DMV.",
+        "Fixed linked game vehicles appearing as informational records without becoming actionable DMV files.",
+        "Fixed the previous DMV identity view using excessive generic cards and unused space."
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.7",
+      "title": "Press Desk & FNN Recruitment",
+      "added": [
+        "Added a dedicated Press role, Press Desk app, and structured newsroom report submission workflow.",
+        "Added detailed press reports as an eligible source for Faircroft News Now editions.",
+        "Added an FNN-branded job application and ten-question press roleplay examination.",
+        "Added automatic Press Pass issuance for applicants who pass the internal examination requirement.",
+        "Added developer-controlled Press Pass capacity settings and newsroom application intake controls."
+      ],
+      "changed": [
+        "Press Desk now opens as a full-screen newsroom dashboard instead of a phone-sized form.",
+        "FNN publishing controls are restricted to Developer Tools settings rather than the public newsroom."
+      ],
+      "fixed": [
+        "Improved newsroom generation feedback when Gemini quota or model availability prevents publishing.",
+        "Updated FNN navigation, story interactions, animations, and mobile article flow."
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.7",
+      "title": "Legal Careers & Court Licensing",
+      "added": [
+        "Added revised Faircroft Bar examinations and internal passing evaluation.",
+        "Added Faircroft Prosecutor's Office and Public Defender Office recruitment applications.",
+        "Added a judicial license docket for reviewing examinations and approving lawyer certificates.",
+        "Added judicial certificate signatures before a successful Bar candidate receives an active lawyer license.",
+        "Added continued-hearing date controls that publish the new court date to the resident's Court tab."
+      ],
+      "changed": [
+        "Lawyer examinations remain available through Indeed while completed examinations route to Court and authorized administration.",
+        "Court, rather than Indeed administration, is the final authority for lawyer licensing."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.7",
+      "title": "Recruitment & Application Controls",
+      "added": [
+        "Added developer settings for opening or closing public job application intake.",
+        "Added an official Faircroft Government applications-closed notice when intake is disabled.",
+        "Added separate Sheriff, combined Fire and EMS, legal, and FNN recruitment paths."
+      ],
+      "changed": [
+        "Sheriff is now the remaining public law-enforcement application department.",
+        "Fire and EMS recruitment is combined into one application route.",
+        "Indeed job advertisements use focused open-and-apply panels instead of one long application page."
+      ],
+      "fixed": [
+        "Restored the Indeed job icon and protected public job access from unrelated visibility settings."
+      ],
+      "removed": [
+        "Retired the exposed server-pause, forced bank deduction, locked settlement batch, and Approve for Codex workflow from fine and tax settlement controls.",
+        "Removed State Police and Metro Police from public recruitment."
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.7",
+      "title": "Responsive Workspaces & Campaign Operations",
+      "added": [
+        "Added an Active Campaigns area in Developer Tools for promotional banners and entrance splash experiences.",
+        "Added campaign enablement, scheduling, media, message, and expiration controls for community announcements, events, organizations, and rule changes."
+      ],
+      "changed": [
+        "Developer Tools, FNN, Court, Press Desk, DMV, and Getting Started use dedicated responsive workspaces rather than congested phone layouts.",
+        "Mobile safe-area handling and RP OS footer placement were updated for different device heights."
+      ],
+      "fixed": [
+        "Fixed published splash experiences appearing immediately to the publisher but not reliably on the next entrance.",
+        "Fixed nested scrolling and desktop-width content appearing zoomed or clipped on mobile devices.",
+        "Removed static MDT citation and booking metric tiles from the mobile terminal header."
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.7",
+      "title": "System Communications",
+      "added": [
+        "Added developer-published system banners with informational, success, warning, and critical presentation.",
+        "Added configurable cinematic splash screens supporting Faircroft-hosted or HTTPS images and videos.",
+        "Added Beta Program authorization for Windows desktop installer access."
+      ],
+      "changed": [
+        "Desktop downloads now require an authenticated Faircroft Beta Program account."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.6",
+      "title": "Resident Identity",
+      "added": [
+        "Added dedicated Overview, Characters, Game Link, and Account workspaces to the resident profile.",
+        "Added a persistent resident credential header with live verification and game-link status."
+      ],
+      "changed": [
+        "Rebuilt the Profile experience to eliminate the long single-page widget stack while preserving every existing account control."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-27",
+      "version": "0.1.5",
+      "title": "Faircroft Financial",
+      "added": [
+        "Added the Faircroft Credit Index, a 300–850 roleplay score derived from persistent MedicalHUD reputation.",
+        "Added separate live sync details for authoritative in-game bank balances and reputation."
+      ],
+      "changed": [
+        "Rebuilt the Bank app as a premium Faircroft consumer-banking experience.",
+        "Removed the retired Railway transaction ledger from the Bank app."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.1.4",
+      "title": "Fire & EMS Command System",
+      "added": [
+        "Introduced dedicated Incident Board, Apparatus, and Personnel workspaces for Fire and EMS.",
+        "Added live response metrics, active and cleared incident separation, apparatus availability, and crew assignments.",
+        "Added an adaptive emergency-services command interface for desktop, tablet, and phone."
+      ],
+      "changed": [
+        "Rebuilt Fire MDT and Fire Settings into one consistent professional command environment."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.1.3",
+      "title": "Faircroft News Now",
+      "added": [
+        "Introduced FNN, a full-screen daily roleplay newsroom generated from eligible police after-action reports.",
+        "Added lead stories, public-safety briefs, secondary coverage, daily archives, and developer-controlled publishing.",
+        "Added an original Faircroft broadcast identity and responsive newspaper-style presentation."
+      ],
+      "changed": [
+        "Daily reporting excludes evidence links, internal identifiers, and confidential staff material from newsroom generation."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.1.2",
+      "title": "Persistent Game Intelligence",
+      "added": [
+        "Added a read-only FCRPMUSSALO intelligence index for characters, vehicles, criminal records, items, police reports, root collections, turrets, and cop chats.",
+        "Added account-level persistent record matching with explicit direct and payload confidence labels.",
+        "Added a dedicated Game Intelligence command dashboard and detailed linked-account evidence views."
+      ],
+      "changed": [
+        "Reworked Dev Tools navigation and linked-account profiles around professional game-data investigation workflows.",
+        "Clarified that native persistence supplies current state while historical transactions remain limited to Railway-recorded events."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.1.1",
+      "title": "Faircroft Operations Release",
+      "added": [
+        "Released the integrated Court, MDT/CAD, Developer Operations, and Anti-Cheat platform workflow as PWA 0.1.1."
+      ],
+      "changed": [
+        "Updated the visible RP OS version and installation cache to the 0.1.1 release line."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.104",
+      "title": "Anti-Cheat System Telemetry",
+      "added": [
+        "Added reported player-system storage from anti-cheat platform, playerPlatform, platformName, system, and deviceType telemetry fields.",
+        "Added system badges to the Anti-Cheat directory and intelligence profile.",
+        "Added an Anti-Cheat Reported System section to linked-user backend profiles."
+      ],
+      "changed": [
+        "Verified Arma platform data is used as a fallback when the anti-cheat record does not report a system.",
+        "Unknown systems are labeled honestly instead of being inferred."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.103",
+      "title": "Anti-Cheat Directory Restoration",
+      "added": [],
+      "changed": [
+        "Restored the Anti-Cheat board to its established intelligence-directory layout.",
+        "Recent bridge presence can still mark an individual player as live inside their anti-cheat record."
+      ],
+      "fixed": [],
+      "removed": [
+        "Removed the separate Active Players roster, A2S query, connection warnings, and A2S environment settings."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.102",
+      "title": "Authoritative A2S Player Roster",
+      "added": [
+        "Added an independent Steam A2S live-player query for the Shadow Haven server.",
+        "Added visible roster-source health and connection errors to the Anti-Cheat board."
+      ],
+      "changed": [
+        "A2S player results take priority over optional anti-cheat heartbeat events.",
+        "Live names are matched back to anti-cheat intelligence and linked CAD accounts when available."
+      ],
+      "fixed": [
+        "The active-player count no longer depends exclusively on game-mod heartbeat events."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.101",
+      "title": "Live Player Presence Compatibility",
+      "added": [
+        "Added support for join, heartbeat, presence, disconnect, and leave events across both bridge Action and EventType fields."
+      ],
+      "changed": [
+        "Expanded the default live-presence window to 15 minutes for servers with less-frequent heartbeat reporting.",
+        "Disconnect and leave events now immediately remove players from the active roster."
+      ],
+      "fixed": [
+        "Fixed live server players being logged as activity without appearing in the Anti-Cheat Active Players count."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.100",
+      "title": "Live Anti-Cheat Server Roster",
+      "added": [
+        "Added a dedicated Active Players roster to the Developer Anti-Cheat board.",
+        "Added live server, join time, CAD account match, CIV number, and detection-status details."
+      ],
+      "changed": [
+        "Current in-game presence is now separated from the historical anti-cheat player directory and website login activity.",
+        "Live players with intelligence files can be opened directly from the active roster."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.99",
+      "title": "Completed Court Docket",
+      "added": [
+        "Added a clearly labeled Completed docket with a live record count.",
+        "Added filing progress and explicit final-versus-active decision feedback."
+      ],
+      "changed": [
+        "Final dispositions now automatically open the Completed docket after filing.",
+        "Under-review and continued matters explicitly remain on the Active docket."
+      ],
+      "fixed": [
+        "Court updates now verify the saved database row before reporting success.",
+        "Finalized citations and criminal matters are guaranteed to leave the active-case status set."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.98",
+      "title": "Judicial Conflict-of-Interest Locks",
+      "added": [
+        "Added prominent red conflict warnings when a court official is the defendant or filing officer on a case.",
+        "Added conflict indicators to active dockets, prior decisions, appeals, and expungement petitions."
+      ],
+      "changed": [
+        "Conflict records remain visible for disclosure while all judicial action controls are removed."
+      ],
+      "fixed": [
+        "The backend now prevents conflicted officials from deciding, sentencing, dismissing, or ruling on related petitions."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.97",
+      "title": "Developer Tools Control Update",
+      "added": [],
+      "changed": [],
+      "fixed": [],
+      "removed": [
+        "Temporarily removed the RCON server restart control and its API from Developer Tools."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.96",
+      "title": "Reliable RCON Restart Dispatch",
+      "added": [],
+      "changed": [
+        "The restart flow now verifies RCON authentication and command traffic before dispatching the restart.",
+        "A missing reply after restart dispatch is handled correctly because Reforger may restart before acknowledging the command."
+      ],
+      "fixed": [
+        "Expanded RCON permission and command-rejection detection with actionable server errors.",
+        "Corrected the developer restart result message so a successfully dispatched restart is not reported as failed."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.95",
+      "title": "Developer RCON Server Control",
+      "added": [
+        "Added a developer-only live server restart control to the Dev Tools overview.",
+        "Added a protected confirmation flow requiring an operational reason and the word RESTART."
+      ],
+      "changed": [
+        "Server restart commands now use the configured server-side Arma RCON connection without exposing credentials to the browser.",
+        "Successful and failed restart attempts are recorded in the staff audit log."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.94",
+      "title": "Permanent Court Records & Petitions",
+      "added": [
+        "Added permanent non-expunged criminal records to NCIC returns and civilian MDT profiles.",
+        "Added civilian appeal and expungement request forms in MyFaircroft.",
+        "Added a judicial Petitions docket for approving or denying post-judgment requests."
+      ],
+      "changed": [
+        "Court decisions remain attached to the original CAD/NCIC case record and notify the civilian and filing officer.",
+        "Approved appeals reopen the original case for judicial review while preserving the previous decision history.",
+        "Approved expungements remove the record from operational NCIC criminal history without deleting the court audit record."
+      ],
+      "fixed": [
+        "Reconnected judicial decisions to refreshed Court data and permanent operational record displays."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.93",
+      "title": "Compact MDT Command Rail",
+      "added": [
+        "Added direct section links from each operational rail preview."
+      ],
+      "changed": [
+        "Rebuilt Quick Access as a compact command index instead of oversized stacked buttons.",
+        "The side rail now shows short BOLO, report, return, and active-only officer-alert previews.",
+        "All existing rail features remain available through their full MDT sections."
+      ],
+      "fixed": [
+        "Reduced excessive side-panel length and unnecessary scrolling caused by cleared historical alerts."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.92",
+      "title": "Compact Criminal Charge Catalog",
+      "added": [],
+      "changed": [
+        "Criminal charge cards now use the same compact treatment as citation cards.",
+        "Desktop criminal-code results use a denser three-column grid with responsive two- and one-column breakpoints.",
+        "Long offense titles, classifications, and descriptions are constrained without removing code details."
+      ],
+      "fixed": [
+        "Criminal charge cards no longer consume excessive vertical space."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.91",
+      "title": "Multi-Citation Traffic Stops",
+      "added": [
+        "Added searchable multi-select citation codes to the electronic UTT writer.",
+        "Added combined fine, point, code, and violation totals before filing."
+      ],
+      "changed": [
+        "One traffic stop can now submit up to 12 civil violations using shared stop details.",
+        "Each selected violation creates its own linked Court filing for payment or contest.",
+        "Citation catalog cards are shorter and use compact clamped descriptions."
+      ],
+      "fixed": [
+        "Officers are no longer limited to one citation per traffic stop."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.90",
+      "title": "Staff Operations Ledger",
+      "added": [
+        "Added a structured identity ledger for recent Arma account links."
+      ],
+      "changed": [
+        "Reworked the Dev Tools Overview queue with aligned identity, Bohemia link, and readable date columns.",
+        "Replaced oversized empty cards with compact operational status rows."
+      ],
+      "fixed": [
+        "Removed raw browser-style boxes and unformatted timestamps from Recent Arma Links."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.89",
+      "title": "Full-Screen Court Workspace",
+      "added": [
+        "Added a dedicated full-screen judicial shell with docket refresh, session status, and Court exit controls."
+      ],
+      "changed": [
+        "Court now opens outside the phone frame like the MDT and uses the available desktop workspace.",
+        "Expanded the docket and case-file columns for clearer judicial review."
+      ],
+      "fixed": [
+        "Removed the congested phone-width Court layout."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.88",
+      "title": "Dev Tools Scroll Correction",
+      "added": [],
+      "changed": [
+        "Desktop Dev Tools now uses one dedicated content scroll surface while keeping its navigation and toolbar fixed."
+      ],
+      "fixed": [
+        "Removed the competing page and staff-container scrollbars from the desktop Dev Tools workspace."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.87",
+      "title": "Criminal Charge Finder",
+      "added": [
+        "Added instant criminal-code searching and offense-category navigation with live result counts."
+      ],
+      "changed": [
+        "Criminal charges now use the same compact finder structure as citation codes instead of one continuous list.",
+        "Criminal category selections retain the existing transport and Booking handoff."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.86",
+      "title": "Working Citation Categories",
+      "added": [],
+      "changed": [
+        "Citation categories now wrap into a clean table-of-contents index without a native horizontal scrollbar."
+      ],
+      "fixed": [
+        "Connected citation category buttons, code search, citation review updates, and Booking charge search to the active MDT binder."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.85",
+      "title": "Professional Citation Writer",
+      "added": [
+        "Added a structured four-stage electronic UTT filing workspace and persistent filing review."
+      ],
+      "changed": [
+        "Redesigned citation issuance with restrained typography, compact official-record fields, and a dedicated violation summary.",
+        "Separated code lookup, officer statement, and final court filing into a clearer professional workflow."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.84",
+      "title": "Multi-Charge Booking",
+      "added": [
+        "Added searchable multi-select criminal charges to Booking intake.",
+        "Added linked charge records and a separate court case for every criminal count in one booking."
+      ],
+      "changed": [
+        "Booking cards now display the complete filed charge stack and linked court case numbers."
+      ],
+      "fixed": [
+        "Booking intake is no longer limited to one criminal charge."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.83",
+      "title": "Citation Code Finder",
+      "added": [
+        "Added instant citation searching across codes, offense names, keywords, descriptions, fines, and point values.",
+        "Added a table-of-contents category bar with live code counts and a keyboard search shortcut."
+      ],
+      "changed": [
+        "Citation codes are now organized into searchable category views instead of one continuous list."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.82",
+      "title": "Elite CAD Command Interface",
+      "added": [
+        "Added a secured NCIC operations launchpad with direct access to citations, booking, BOLOs, and after-call reports.",
+        "Added animated system-health, secure-session, and live-terminal status treatments."
+      ],
+      "changed": [
+        "Rebuilt the MDT visual hierarchy into a denser command-center interface with premium motion, panels, controls, and record transitions.",
+        "Enhanced MDT drawers and modal windows with polished spring animations while retaining the existing workflows."
+      ],
+      "fixed": [
+        "Removed the oversized empty NCIC landing area that made the desktop CAD appear unfinished."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.81",
+      "title": "Role-Only MDT Access",
+      "added": [],
+      "changed": [
+        "Regular LEO MDT access now requires an explicitly assigned law-enforcement role, including for owners.",
+        "CID Command MDT access now requires an explicitly assigned CID or IU role, including for owners."
+      ],
+      "fixed": [
+        "Owner status no longer grants automatic MDT or CID Command access.",
+        "An open MDT closes and clears CID state immediately after the account loses its qualifying role."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.80",
+      "title": "Citation and Booking Separation",
+      "added": [
+        "Added mandatory suspect-transport confirmation before a criminal charge can be filed through Booking.",
+        "Added recorded transport-confirmation timestamps to booking packets."
+      ],
+      "changed": [
+        "Criminal charges selected from the ticket writer now continue into Booking instead of issuing a warrant.",
+        "The criminal handoff preserves the selected suspect, criminal code, arrest location, probable cause, and transport destination."
+      ],
+      "fixed": [
+        "Citation issuance can no longer accept criminal charge codes.",
+        "Traffic and civil tickets no longer trigger the criminal warrant workflow."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.79",
+      "title": "Indeed Icon Restoration",
+      "added": [],
+      "changed": [
+        "The public Indeed Jobs icon is now protected from global application-visibility controls.",
+        "Developer accounts now retain access to the Indeed Admin recruitment desk."
+      ],
+      "fixed": [
+        "Restored missing Indeed job and recruitment icons for eligible accounts."
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.78",
+      "title": "Anti-Cheat Intelligence",
+      "added": [
+        "Added a developer-only Anti-Cheat workspace with live player presence, detection totals, event evidence, known alt-account groups, and CAD identity matching.",
+        "Added automated Shadowhaven synchronization for the existing Thunder Buddies player and alt-account JSON databases."
+      ],
+      "changed": [
+        "Existing anti-cheat player sessions now report join and heartbeat presence through the established authenticated Arma event bridge."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-26",
+      "version": "0.0.77",
+      "title": "Beta Team Roster",
+      "added": [
+        "Added a Beta Testing Team roster to Dev Tools with tester identity, CIV number, account verification, Arma-link status, and latest enrollment time."
+      ],
+      "changed": [],
+      "fixed": [
+        "Developers can now identify every account currently holding the Beta Tester role."
+      ]
+    },
+    {
+      "date": "2026-07-25",
+      "version": "0.0.76",
+      "title": "Faircroft Beta Program",
+      "added": [
+        "Added developer-controlled Beta Program recruitment campaigns with a customizable login invitation.",
+        "Added automatic Beta Tester role enrollment and a dedicated Beta Tasks app.",
+        "Added developer-published testing assignments and structured tester bug reports.",
+        "Added Beta Program membership, active-task, and report metrics inside Dev Tools."
+      ],
+      "changed": [
+        "Dev Tools Settings now includes release-testing recruitment, task publishing, task closure, and tester feedback."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-25",
+      "version": "0.0.75",
+      "title": "Indeed Job Advertisements and Bar Exam",
+      "added": [
+        "Added the Wanna Be a Lawyer advertisement with a private 20-question Faircroft Bar Exam.",
+        "Added internal exam scoring and judicial certificate signing before Licensed Attorney access is granted."
+      ],
+      "changed": [
+        "Replaced the plain Indeed navigation tabs with expandable, visual job advertisements that open directly into each application."
+      ],
+      "fixed": []
+    },
+    {
+      "date": "2026-07-25",
+      "version": "0.0.74",
+      "title": "Business Registry Mobile Layout",
+      "added": [],
+      "changed": [],
+      "fixed": [
+        "Business Registry now switches all desktop grids, cards, form controls, and license folders to a single-column phone layout at the full workspace breakpoint.",
+        "Scaled mobile browser viewports can no longer force the Business Registry wider than the visible screen."
+      ]
+    },
+    {
+      "date": "2026-07-25",
+      "version": "0.0.73",
+      "title": "Mobile Workspaces and Department Consolidation",
+      "added": [],
+      "changed": [
+        "Indeed recruitment now offers only the Faircroft Sheriff's Office and one combined Fire & EMS application.",
+        "Approval of a combined Fire & EMS application grants access to both emergency-service roles."
+      ],
+      "fixed": [
+        "Staff Operations and Business Registry now collapse desktop grids and form controls correctly on phone-sized screens.",
+        "Workspace navigation, headers, and content no longer force the mobile page wider than the viewport."
+      ]
+    },
+    {
+      "date": "2026-07-25",
+      "version": "0.0.72",
+      "title": "Live RCON Enforcement",
+      "added": [
+        "Added live Arma Reforger RCON commands for permanent bans, timed bans, and unbans using each linked Bohemia identity.",
+        "Added explicit Unban Player controls and game-enforcement status to Staff Operations."
+      ],
+      "changed": [
+        "CAD sanctions now remain active when an RCON unban fails, preventing false unban confirmations."
+      ],
+      "fixed": [
+        "Revoking a ban or timeout now sends the official #ban remove command to the game server and records the result in the audit trail."
+      ]
+    },
+    {
+      "date": "2026-07-23",
+      "version": "0.0.71",
+      "title": "Faircroft Community Build Route",
+      "added": [
+        "Added a Roadmap app icon for every signed-in Faircroft user.",
+        "Added MyFaircroft as the personal resident-services app for court fines, citation contests, business-tax balances, verified payment requests, and payment records.",
+        "Added Faircroft RP mandatory-minimum and guideline-maximum sentences in gameplay minutes for every criminal offense class.",
+        "Added a dedicated judicial Court workspace with active docket, case files, findings, dispositions, sentence conditions, previous decisions, and the complete RP sentencing schedule.",
+        "Added a full-screen animated Build Route with connected milestones for the PWA core, TBS RP Linking expansion, live CAD/game sync, Android APK parity, mobile banking, properties, and the connected economy.",
+        "Added PostgreSQL-backed upvotes and downvotes with one active vote per account per milestone.",
+        "Added roadmap filters, live completion telemetry, Android target countdown, build briefs, community vote scores, and responsive phone layouts.",
+        "Added owner/admin route controls for creating milestones and changing status, progress, dates, order, visibility, accent, icon, summary, and build notes."
+      ],
+      "changed": [
+        "Separated personal obligations from judicial work: every signed-in resident now manages personal matters in MyFaircroft, while only judges and the owner receive the Court app.",
+        "Fine and business-tax payments now enter the existing locked Arma balance-verification workflow from the resident account instead of being marked paid before game-bank confirmation.",
+        "Judges can no longer be assigned to or preside over a case filed against their own account.",
+        "Roadmap opens outside the phone frame as a dedicated animated workspace and returns users to the phone when closed.",
+        "PWA cache versioning was bumped so installed devices receive the Roadmap icon, full-screen route, and dockless launcher.",
+        "Dev Tools visibility and API access are now restricted to owner and developer roles; standard admins retain their normal administrative tools without developer access.",
+        "Rebuilt the Roadmap as the Faircroft Build Route with the real Faircroft crest, State of Faircroft identity, cyan and pink brand treatment, civic gold accents, a connected five-system platform rail, and a cleaner milestone sequence.",
+        "Roadmap opening, closing, route travel, progress, filter, refresh, build-brief, vote, and scroll-reveal motion now use a coordinated animation system across desktop and mobile."
+      ],
+      "fixed": [
+        "Restricted account email addresses in CAD and NCIC to owner/admin sessions; law-enforcement, CID, dispatch, fire, and EMS searches no longer receive, display, or search private login email data.",
+        "Fixed a judge's own tickets and citations appearing inside the same workspace as the official court docket.",
+        "Fixed criminal sentencing displaying real-world-style terms by replacing them with bounded Faircroft RP minute standards.",
+        "Restored Dev Tools, developer-role access, sanctions, warnings, app visibility controls, audit tools, and guided Arma unlink codes from the 0.0.70 system.",
+        "Restored the complete Arma bridge snapshot, event, game-bank sync, link/unlink routes, database tables, and Railway chunked-request handling while retaining the new Roadmap."
+      ],
+      "removed": [
+        "Removed the persistent Messages, Contracts, DMV, and Court dock from the bottom of the PWA home screen; every app remains available from the main icon grid."
+      ]
+    },
+    {
+      "date": "2026-07-23",
+      "version": "0.0.50",
+      "title": "MDT Arrest Booking System",
+      "added": [
+        "Added a full Booking Desk inside the MDT for custodial arrest processing.",
+        "Added booking packets with generated booking numbers, arrestee records, criminal code selection, probable cause, property inventory, medical notes, holding cell, bond, court date, and officer notes.",
+        "Added active booking queue and recent release/transfer history for officers.",
+        "Added booking history to NCIC returns and the civilian MDT profile pop-up.",
+        "Added traffic-stop arrest handoff into the new Booking Desk."
+      ],
+      "changed": [
+        "Criminal bookings now auto-create a linked court case using the existing criminal code catalog and notify the defendant, officer, and assigned judge when available.",
+        "The MDT navigation, side quick access, and stats strip now include Booking."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-07-17",
+      "version": "0.0.49",
+      "title": "Mobile Menu and Watch Drawer Rebuild",
+      "added": [
+        "Added a dedicated mobile drawer layer for MDT Menu and Watch panels."
+      ],
+      "changed": [
+        "Mobile Menu and Watch no longer use the desktop MDT sidebars or the in-grid drawer path.",
+        "The mobile drawer layer now renders as its own fixed overlay with the scrim and panel in the same stacking context."
+      ],
+      "fixed": [
+        "Fixed mobile Menu and Watch buttons still opening to a blurred screen instead of a usable panel.",
+        "Fixed the NCIC/Menu drawer being trapped by MDT layout stacking and iOS fixed-position behavior."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-15",
+      "version": "0.0.48",
+      "title": "Mobile MDT Drawer Layer Fix",
+      "added": [],
+      "changed": [
+        "Moved the mobile MDT drawer backdrop into the same layout layer as the Menu and Watch drawers so the drawer panel renders above the blur.",
+        "Disabled the mobile MDT boot transform during drawer use to avoid iOS fixed-position stacking issues."
+      ],
+      "fixed": [
+        "Fixed tapping Menu/NCIC on mobile showing only a blurred MDT screen with no visible drawer.",
+        "Fixed the drawer backdrop being able to cover the Menu and Watch panels because it was rendered as a higher z-index sibling."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-15",
+      "version": "0.0.47",
+      "title": "Mobile Overlay and Drawer Repair",
+      "added": [],
+      "changed": [
+        "Mobile MDT drawers now open as inset phone panels above the blurred backdrop instead of edge-to-edge desktop sidebars.",
+        "Mobile modal and confirmation overlays now render as visible bottom sheets with lighter blur and stronger z-index ordering."
+      ],
+      "fixed": [
+        "Fixed some mobile pages showing only a blurred MDT screen when a drawer, modal, or confirm prompt was active.",
+        "Fixed Watch/Menu drawer panels being able to sit off-screen or behind the overlay on narrow iPhone views.",
+        "Fixed confirmation popups on phone screens being too easy to lose behind the dimmed background."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-14",
+      "version": "0.0.46",
+      "title": "Mobile MDT Layout Repair",
+      "added": [],
+      "changed": [
+        "Rebuilt the phone-width MDT responsive rules so the header, command buttons, stats, and NCIC workspace fit inside the iPhone/Android viewport.",
+        "Mobile MDT now uses one compact command bar instead of showing duplicate quick-rail controls over the page.",
+        "Telemetry stats now collapse into compact two-column mobile tiles instead of giant horizontal desktop columns.",
+        "Confirmed-action popups now behave like a phone bottom sheet so they stay visible and reachable on mobile."
+      ],
+      "fixed": [
+        "Fixed mobile MDT horizontal overflow that cut off Messages, NCIC search, and empty-state text.",
+        "Fixed the duplicate Dispatch/Messages/Watch quick rail covering the mobile MDT content.",
+        "Fixed oversized stat panels and header controls making the mobile MDT feel like a broken desktop page."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-13",
+      "version": "0.0.45",
+      "title": "Traffic Stop NCIC Workflow",
+      "added": [
+        "Added an embedded NCIC / DMV search interface inside the Traffic Stop Assistant.",
+        "Officers can now attach the searched driver directly to the active traffic stop prompt.",
+        "Added a stop outcome screen with direct actions for warning/release, citation writer, criminal charge writer, and arrest protocol.",
+        "Added an arrest protocol prompt with custody sequence steps, criminal writer access, and after-call report access."
+      ],
+      "changed": [
+        "Traffic Stop Assistant now requires an attached driver before moving from NCIC into enforcement actions.",
+        "Citation and criminal writer shortcuts now preselect the attached driver from the traffic stop workflow.",
+        "Traffic Stop Assistant mobile panels now use compact NCIC return cards and touch-friendly outcome buttons."
+      ],
+      "fixed": [
+        "Reduced traffic-stop prompt confusion by routing officers from records check to the correct ticket, criminal charge, or arrest workflow."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-13",
+      "version": "0.0.44",
+      "title": "Mobile MDT and Confirmed Actions",
+      "added": [
+        "Added a global confirmation popup for important system-changing requests with a small digital footprint signature.",
+        "Added duplicate-request protection so repeated taps on the same action do not send multiple submissions while the first request is pending."
+      ],
+      "changed": [
+        "Reworked MDT mobile behavior for Android and iPhone with dynamic viewport height, safe-area padding, horizontal action strips, touch scrolling, compact stats, and iOS-friendly form inputs.",
+        "MDT drawers, modals, top actions, stats, and bottom quick controls now adapt better to narrow phone screens."
+      ],
+      "fixed": [
+        "Fixed repeated button taps being able to send duplicate POST/PATCH/DELETE requests.",
+        "Improved MDT scrolling and layout stability on phone-sized viewports."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-13",
+      "version": "0.0.43",
+      "title": "Indeed Admin Application Folder Fix",
+      "added": [],
+      "changed": [
+        "Opened application folders in Indeed Admin and Admin Job Apps now use the main app panel scroll instead of a nested clipped list.",
+        "Application summary fields and reviewer profile fields now wrap into responsive columns on narrow phone screens."
+      ],
+      "fixed": [
+        "Fixed opened Indeed Admin applications being cut off at the bottom of the phone panel."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-13",
+      "version": "0.0.42",
+      "title": "Traffic Stop Protocol Assistant",
+      "added": [
+        "Added a MDT Settings page for officer workflow controls.",
+        "Added a skippable Traffic Stop Assistant that walks officers through RP stop protocol from observation through documentation.",
+        "Added an Initiate Traffic Stop button in MDT Settings and the MDT watch panel.",
+        "Added a device-level setting to keep the traffic stop assistant available or pause it on that officer device."
+      ],
+      "changed": [
+        "Traffic stop guidance now appears as a terminal-style overlay with progress, step navigation, next/back controls, finish, and skip actions.",
+        "The MDT watch panel now exposes traffic stop protocol access alongside Dispatch, Messages, Write Ticket, and NYS Codes."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-07-13",
+      "version": "0.0.41",
+      "title": "Officer MDT Visual Overhaul",
+      "added": [
+        "Added a new law/CID MDT terminal skin with a connected command layout instead of stacked widget panels.",
+        "Added a MDT status line showing callsign, active workspace, and terminal time.",
+        "Added numbered MDT navigation controls for faster officer orientation."
+      ],
+      "changed": [
+        "Reworked the officer/CID MDT shell, nav rail, telemetry strip, ticket writer, code cards, and watch panel to feel more like one modern CAD terminal.",
+        "Reduced repeated boxed-card styling across the MDT and replaced it with flatter connected panels, rail separators, and subtle command-console motion.",
+        "Added mobile-specific rules so the redesigned MDT still works with slide-out menu and watch drawers on phones."
+      ],
+      "fixed": [
+        "Reduced the blocky widget look in the MDT interface while preserving the existing NCIC, ticket, BOLO, report, panic, and CID workflows."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-13",
+      "version": "0.0.40",
+      "title": "Indeed Admin and NYS Ticket Book",
+      "added": [
+        "Added a new Indeed Admin app icon for owners, admins, and the new indeed_admin role to review department job applications.",
+        "Added the indeed_admin role to account role assignment and department application review notifications.",
+        "Added NYS VTL-style traffic, vehicle, license, insurance, equipment, and parking citation entries to the MDT citation catalog.",
+        "Added MDT ticket shortcuts for Write Ticket and NYS Codes from the watch panel and citation cards."
+      ],
+      "changed": [
+        "Department application review permissions now allow the Indeed Admin role without granting full Admin account-management access.",
+        "Admin Job Apps and Indeed Admin review queues now use clearer folder-style application packets with explicit open and close controls.",
+        "The ticket writer now groups citation and criminal code dropdown options by category for faster officer selection."
+      ],
+      "fixed": [
+        "Improved application packet opening behavior in the Admin Job Apps layout.",
+        "Reduced officer ticket friction by making citation writing and NYS code browsing accessible from more MDT screens."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-06",
+      "version": "0.0.39",
+      "title": "Court Citation Flow and Application Cleanup",
+      "added": [
+        "Court now clearly labels MDT-issued citations as court cases in the docket.",
+        "Users with issued citations can open Court to pay or contest even if their civilian verification is still pending.",
+        "Court now shows active and previous docket counts in a dedicated citation/case header."
+      ],
+      "changed": [
+        "Officer court dockets now use the full law-service role list, including Sheriff, Police, State Police, CID, and IU roles.",
+        "Admin Job Apps now render as compact expandable application folders instead of open review forms in a long wall.",
+        "The Jobs app now uses collapsible application packets and a compact My Application Files section."
+      ],
+      "fixed": [
+        "Fixed citations not appearing for officers whose role was a department role instead of the generic LEO role.",
+        "Fixed unverified defendants being unable to access Court when they already had a citation to resolve.",
+        "Reduced Admin and Jobs panel clutter from stacked application widgets."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-02",
+      "version": "0.0.38",
+      "title": "Application Review Queues",
+      "added": [
+        "Added an Admin Job Apps panel where owners/admins can see department applications without relying on inbox messages.",
+        "Admins can now mark department applications under review, approve them, deny them, or close them from the Admin panel.",
+        "Approved department applications now verify the account, add the requested department role, and set the agency when blank.",
+        "Admin accounts now receive Business Registry staff view access for reviewing business applications."
+      ],
+      "changed": [
+        "Business Registry review now uses compact application folders with status filters instead of one long expanded list.",
+        "Business Registry recent decisions now render as dedicated registry action rows."
+      ],
+      "fixed": [
+        "Fixed admins not having a visible queue for submitted job/department applications.",
+        "Reduced business application review wall clutter by hiding full plans, funding, and forms inside expandable folders."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-07-01",
+      "version": "0.0.37",
+      "title": "Referral Cash Tickets",
+      "added": [
+        "Added an Admin Referral Tickets panel where owners/admins can review pending referral payouts.",
+        "Referral payouts are now held as $50,000 cash tickets until an owner/admin manually deposits them.",
+        "Admins and owners now receive inbox notifications when a referral payout ticket is created.",
+        "Referral ticket deposits create transaction history and notify the referrer after payout."
+      ],
+      "changed": [
+        "Referral registration no longer auto-deposits cash into the referrer's wallet.",
+        "Profile referral stats now separate pending referral tickets from deposited referral cash."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-07-01",
+      "version": "0.0.36",
+      "title": "Referral Program",
+      "added": [
+        "Added a referral code to every user profile.",
+        "New users can enter a referral code during registration.",
+        "When a referral code is used, the code owner receives a $50,000 in-game cash credit.",
+        "Profile now shows referral stats, total referral cash earned, recent referral credits, and a Copy Code button."
+      ],
+      "changed": [
+        "Admin account search now also finds accounts by referral code.",
+        "Referral bonuses are recorded in the transaction ledger and message inbox."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-07-01",
+      "version": "0.0.35",
+      "title": "Admin Account Search",
+      "added": [
+        "Added a live account search bar to the Admin Users panel.",
+        "Admins and owners can search accounts by name, email, CIV number, Arma ID, car entry code, callsign, agency, active character, role, or verification status."
+      ],
+      "changed": [
+        "Admin account results now show a live match count and can be cleared with one button."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-06-30",
+      "version": "0.0.34",
+      "title": "Faircroft Treasury and Bank Opening",
+      "added": [
+        "Added a Faircroft Treasury phone app for verified users.",
+        "Players can submit server wipe compensation requests with screenshot proof uploads.",
+        "Players without proof can check the no-proof bypass to request the standard $75,000 stimulus check.",
+        "Owner/admin review tools can approve Treasury requests and deposit approved funds directly into the player bank.",
+        "Bank now includes owner/admin Treasury deposit controls and a compensation ledger showing who has been paid."
+      ],
+      "changed": [
+        "Bank is now unlocked for verified users instead of being marked coming soon.",
+        "Treasury deposits now create bank transaction records and player messages for tracking."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-06-27",
+      "version": "0.0.33",
+      "title": "Civilian Getting Started Guide",
+      "added": [
+        "Added a Getting Started phone app icon for civilians.",
+        "Getting Started includes starter route steps for buying a used car, Dirty Pond money grinding, bag upgrades, Town Hall IL license, and mining prep.",
+        "Added map screenshots for Used Cars, Dirty Pond, Bag Store, Town Hall, and Hardware Store."
+      ],
+      "changed": [
+        "PWA cache versioning was bumped so installed devices load the new guide and map assets."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-06-27",
+      "version": "0.0.32",
+      "title": "MDT Quick Rail Placement",
+      "added": [],
+      "changed": [
+        "MDT quick action buttons now stay mobile-only as a bottom action strip."
+      ],
+      "fixed": [
+        "Fixed the floating Dispatch/Messages/Watch rail covering the desktop MDT watch panel.",
+        "Updated PWA cache versioning so installed devices load the corrected rail placement."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-27",
+      "version": "0.0.31",
+      "title": "Dispatch Button Controls",
+      "added": [
+        "Dispatch selected-call updates now use direct status buttons instead of status dropdowns.",
+        "Added a Close Ticket button that closes the CAD call and moves it off the active dashboard into Past Calls."
+      ],
+      "changed": [
+        "Dispatch priority updates now use button controls for standard, elevated, and critical priority.",
+        "Closed or cleared calls no longer remain pinned as the selected active dashboard call unless opened from Past Calls."
+      ],
+      "fixed": [
+        "Fixed closed dispatch tickets staying visible in the main active call workspace after status changes.",
+        "Updated PWA cache versioning so installed devices load the new dispatch controls."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-27",
+      "version": "0.0.30",
+      "title": "MDT Dispatch Rail and Callsign Fix",
+      "added": [
+        "Added a floating MDT quick rail with Dispatch, Messages, and Watch actions for officers.",
+        "Department users now get a required callsign popup so dispatch can identify and assign them.",
+        "Dispatch access now recognizes Sheriff, Police, State Police, Metro Police Chief, and State Police Commander roles."
+      ],
+      "changed": [
+        "Opening Dispatch or Messages from the MDT now returns officers back to the MDT when closed.",
+        "PWA cache versioning was bumped so installed devices load the fixed MDT and dispatch bundle."
+      ],
+      "fixed": [
+        "Fixed a JavaScript parse error in the dispatch NCIC lookup binding that could leave the app stuck on the loading screen.",
+        "Fixed the MDT workspace referencing an undefined command variable when opening the MDT.",
+        "Updated the service worker cache to stop serving the older boot loader and stale asset URLs."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-25",
+      "version": "0.0.28",
+      "title": "Dispatch Past Calls Archive",
+      "added": [
+        "Moved completed dispatch calls out of the main dispatch queue and into a dedicated Past Calls modal.",
+        "Added a Past Calls button that opens full-call summaries with department, times, notes, and unit counts.",
+        "Allowed opening any past call directly into CAD for review and follow-up."
+      ],
+      "changed": [
+        "Main dispatch queue now stays focused on active calls while keeping historical calls available via button-open detail panel."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-06-25",
+      "version": "0.0.27",
+      "title": "Dispatch Control Center",
+      "added": [
+        "Added a Dispatch app for dispatcher and owner roles.",
+        "Dispatch now opens as a full control-center CAD dashboard with call queue, call intake, selected call controls, unit assignment, and scene notes.",
+        "Dispatchers can create CAD calls, attach and detach units, update call status and priority, and post notes for active scenes."
+      ],
+      "changed": [
+        "911/Panic calls now carry call type, priority, and updated timestamps for dispatcher tracking.",
+        "PWA cache versioning was bumped so installed devices load the Dispatch app."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-06-25",
+      "version": "0.0.26",
+      "title": "Tiny OS Version Footer",
+      "added": [
+        "Added a small RP OS version footer to the phone-style PWA shell."
+      ],
+      "changed": [
+        "PWA cache versioning was bumped so installed devices load the footer update."
+      ],
+      "fixed": [],
+      "removed": []
+    },
+    {
+      "date": "2026-06-25",
+      "version": "0.0.25",
+      "title": "MDT BOLO Load Guard",
+      "added": [],
+      "changed": [
+        "MDT data loading now treats the BOLO feed as optional during startup so the rest of the MDT can still render if Railway is not serving the new BOLO endpoint yet.",
+        "PWA cache versioning was bumped again to force installed devices to request the newest MDT JavaScript."
+      ],
+      "fixed": [
+        "A missing or stale BOLO API route can no longer block the MDT screen from loading its updated navigation."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-25",
+      "version": "0.0.24",
+      "title": "MDT BOLO Board",
+      "added": [
+        "Added a separate BOLO tab inside the LEO/CID MDT for all active officer lookouts.",
+        "Officers can broadcast BOLOs with target details, vehicle notes, plate, last seen area, caution level, and reason.",
+        "The MDT watch panel now previews active BOLOs for faster officer awareness."
+      ],
+      "changed": [
+        "MDT stat strips now include active BOLO counts.",
+        "PWA cache versioning was bumped again so installed devices pull the System Update Lockdown screen and BOLO board after deployment."
+      ],
+      "fixed": [
+        "BOLOs now persist in the database and can be cleared or cancelled instead of living only as temporary screen content."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-25",
+      "version": "0.0.23",
+      "title": "System Update Lockdown",
+      "added": [
+        "Owner System Settings now includes a System Update Lockdown mode with a custom lockdown message.",
+        "When lockdown is enabled, users see a Software Update-style phone screen.",
+        "Driver License and LEO MDT remain available during lockdown, with owner System controls preserved so lockdown can be disabled."
+      ],
+      "changed": [
+        "DMV opens directly to the Driver License page during update lockdown.",
+        "The app catalog is restricted during lockdown so unavailable apps cannot be opened from the phone screen."
+      ],
+      "fixed": [
+        "Vehicle registration and DMV vehicle updates are blocked while update lockdown is active.",
+        "PWA cache versioning now forces installed devices to load the update lockdown screen."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-24",
+      "version": "0.0.22",
+      "title": "Recruitment-Only Jobs",
+      "added": [
+        "Jobs is now unlocked for signed-in users so civilians can submit department applications before verification."
+      ],
+      "changed": [
+        "The Jobs app is now a recruitment/application portal only.",
+        "Admin overview now shows active department applications instead of passive job assignments."
+      ],
+      "fixed": [
+        "Passive job apply and passive income collect endpoints now return disabled responses.",
+        "PWA cache versioning now forces installed devices to load the recruitment-only Jobs screen."
+      ],
+      "removed": [
+        "Removed the Passive Income Jobs board from the Jobs app.",
+        "Removed passive income collection and daily requirement UI from Bank.",
+        "Removed passive Jobs and Markets tabs from the Admin panel."
+      ]
+    },
+    {
+      "date": "2026-06-24",
+      "version": "0.0.21",
+      "title": "Law Enforcement Application Packets",
+      "added": [
+        "Law enforcement department applications now use the full required questionnaire covering in-game name, Discord, age, department selection, experience, scenarios, and policy acknowledgements.",
+        "Added Metro Police Chief, State Police Commander, and CID Director command roles for department application routing.",
+        "Submitted law enforcement packets now include a reviewable answer preview in the Jobs app."
+      ],
+      "changed": [
+        "Metro Police, State Police, Sheriff Office, and CID postings now save full structured application packets instead of a single short statement.",
+        "Department application messages now include the completed answers for command review."
+      ],
+      "fixed": [
+        "Updated PWA cache versioning so installed devices load the new law enforcement application form."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.20",
+      "title": "Profile Car Entry Codes",
+      "added": [
+        "Civilian registration now requires an in-game car entry code.",
+        "Existing users without a car entry code now get a blocking profile update popup after login until the code is saved.",
+        "Profile now includes a car entry code section where users can update their code.",
+        "MDT/NCIC searches now show the civilian car entry code on account returns and profile popups."
+      ],
+      "changed": [
+        "Officers can search NCIC/DMV by car entry code in addition to name, email, CIV number, and plate."
+      ],
+      "fixed": [
+        "Updated PWA cache versioning so installed devices load the car entry code requirement."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.19",
+      "title": "Department Jobs Portal and Fire MDT Mobile Cleanup",
+      "added": [
+        "Jobs now opens as a department recruiting portal with tabs for State Police, Metro Police, Sheriff Office, CID, Fire Dept, EMS, and Dispatcher.",
+        "Players can submit saved department applications with a written statement from the Jobs app.",
+        "Department applications now receive application numbers and notify owner/admin accounts."
+      ],
+      "changed": [
+        "The Jobs app is now unlocked for verified users instead of remaining a coming-soon app.",
+        "Passive income jobs now sit below the department recruiting board as the Civilian Work Board.",
+        "Fire MDT apparatus assignments now render as compact command cards instead of a tall desktop-style roster on phones.",
+        "Fire MDT header, status strip, and command controls have tighter mobile sizing."
+      ],
+      "fixed": [
+        "Fire MDT now uses the current user's Fire Chief command role as a fallback when the overview cache reports read-only.",
+        "Updated PWA cache versioning so installed devices load the Jobs portal and Fire MDT mobile cleanup."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.18",
+      "title": "Fire Chief Command Access Fix",
+      "added": [
+        "Fire command role handling now recognizes Fire Chief role aliases from older or display-form account records."
+      ],
+      "changed": [
+        "Fire personnel lists now use the same normalized role checks as Fire command permissions."
+      ],
+      "fixed": [
+        "Fixed Fire Chief accounts seeing read-only rig assignment controls instead of chief command controls.",
+        "Updated PWA cache versioning so installed devices load the Fire Chief access fix."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.17",
+      "title": "IA Folder File Logs",
+      "added": [
+        "Internal Affairs folders now support investigator file entries tied to the selected IA record.",
+        "IA folders now include quick tools for evidence, interviews, command review, and findings.",
+        "Each IA file now has a chat-style file log showing author, entry type, body, and timestamp."
+      ],
+      "changed": [
+        "Ongoing IA tools now live inside the selected IA folder instead of feeling like static page-level controls.",
+        "IA folder cards now show file entry counts in the folder rail and detail metrics."
+      ],
+      "fixed": [
+        "Fixed IA investigations lacking a place for investigators to keep adding updates after the intake file was created.",
+        "Updated PWA cache versioning so installed devices load the IA folder file log."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.16",
+      "title": "Fire Settings Mobile Assignment Polish",
+      "added": [
+        "Fire Settings now has a dedicated phone-native apparatus assignment layout.",
+        "Apparatus rows animate in as touch-friendly assignment cards inside the Fire Settings app."
+      ],
+      "changed": [
+        "Fire Settings no longer uses the wide desktop roster layout inside the phone app panel.",
+        "Rig assignment fields, status selectors, notes, and save buttons now stack cleanly on mobile.",
+        "Fire Settings buttons and apparatus cards now have stronger hover and touch feedback."
+      ],
+      "fixed": [
+        "Fixed Fire Settings cutting off role, status, notes, and action columns on phone screens.",
+        "Updated PWA cache versioning so installed devices load the Fire Settings mobile layout."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.15",
+      "title": "IA Folder Board and Interaction Polish",
+      "added": [
+        "Internal Affairs now uses selectable IA folders instead of showing every IA file as one long board.",
+        "Active IA and previous IA files are separated in the folder rail.",
+        "New IA records automatically open the newly created IA folder."
+      ],
+      "changed": [
+        "Only the selected IA file opens with full summary, metrics, and update controls.",
+        "MDT buttons now have stronger hover, focus, and press feedback.",
+        "MDT popups now animate in with a smoother fade and lift treatment."
+      ],
+      "fixed": [
+        "Fixed Internal Affairs dumping all summaries and update forms into the same visible board.",
+        "Updated PWA cache versioning so installed devices load the IA folder board and interaction polish."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.14",
+      "title": "Fire MDT Roster Redesign and Account Deletion",
+      "added": [
+        "Owner account panel now includes an owner-only delete account action for non-owner accounts.",
+        "Fire command rig assignments now use a dispatch roster layout with one column header row and operational apparatus rows."
+      ],
+      "changed": [
+        "Fire MDT rig assignments no longer render as a grid of box-like mini forms.",
+        "Fire MDT command stats now display as a slimmer telemetry bar instead of chunky stat boxes.",
+        "Fire rig controls now use compact roster fields to reduce clutter on desktop while stacking cleanly on mobile."
+      ],
+      "fixed": [
+        "Reduced the cramped visual layout shown when multiple battalion and apparatus assignments are visible at once.",
+        "Updated PWA cache versioning so installed phones load the redesigned Fire MDT roster."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.13",
+      "title": "Fire Command Settings",
+      "added": [
+        "Fire command roles now include Fire Chief, Deputy Chief, and Fire Marshal.",
+        "Fire Settings app icon now appears for fire command users and owner accounts.",
+        "Fire Settings includes chief-level rig assignment controls using the same live data as Fire MDT.",
+        "Rig assignment options now include Battalion 1 through Battalion 5.",
+        "Rig positions now include Fire Chief, Deputy Chief, Fire Marshal, and Battalion Chief."
+      ],
+      "changed": [
+        "Fire rig assignment control now unlocks for Fire Chief, Deputy Chief, Fire Marshal, and owner accounts.",
+        "Owner/admin account management can assign the new fire command roles.",
+        "Fire alert routing now includes Deputy Chief and Fire Marshal recipients."
+      ],
+      "fixed": [
+        "Fixed Fire MDT rig assignments showing read-only for command users outside the original fire_chief role.",
+        "Updated PWA cache versioning so installed phones load the new Fire Settings icon and expanded rig list."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.12",
+      "title": "CAD After-Call Reports",
+      "added": [
+        "MDT now includes a Reports tab for officers to file after-call incident reports.",
+        "Reports can link to a CAD/911 call, an involved civilian profile, call type, disposition, location, narrative, actions taken, and evidence or clip links.",
+        "Officers can mark calls as cleared, founded, unfounded, report taken, citation issued, arrest made, referred to CID, false alarm, or unable to locate.",
+        "Recent reports now appear in the MDT side watch panel for quick command review."
+      ],
+      "changed": [
+        "Linked CAD calls are automatically cleared when an after-call report is filed as cleared, unfounded, false alarm, or unable to locate.",
+        "CAD report narratives preserve long-form text and line breaks for detailed officer documentation.",
+        "CID Command quick actions now include direct access to CAD Reports."
+      ],
+      "fixed": [
+        "Officers now have a dedicated place to document incident outcomes instead of relying only on tickets, panic alerts, or court cases.",
+        "Updated PWA cache versioning so installed MDT views load the new Reports tab."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.11",
+      "title": "CID Command MDT",
+      "added": [
+        "CID users now open into a dedicated CID Command MDT instead of a patrol-style MDT with only investigation tabs.",
+        "New CID Command dashboard with priority case watch, active warrant operations, intelligence feed, internal affairs queue, and quick action launchers.",
+        "CID-wide side intelligence panels for command tracker, priority cases, and warrant watch.",
+        "Warrant detail popup can now be opened from the CID Command dashboard, side watch, or Warrant Ops board."
+      ],
+      "changed": [
+        "CID MDT shell now uses CID-specific navigation labels, command statistics, title treatment, and investigative visual styling.",
+        "Warrant Ops and Internal Affairs intake screens now use the same CID command-board layout as investigations.",
+        "CID case notes now store full text instead of being capped at the previous note length."
+      ],
+      "fixed": [
+        "CID MDT no longer feels limited to a single Investigations tab; the whole module is now an investigative command system.",
+        "Non-CID users are safely returned to NCIC if an old session points at a CID-only tab.",
+        "Updated PWA cache versioning so installed MDT views load the new CID Command MDT."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.10",
+      "title": "CID Investigation Desk Redesign",
+      "added": [
+        "Investigative MDT CID Investigations tab now has a redesigned command-desk case intake board.",
+        "CID investigation creation now includes a target civilian dropdown populated from all user profiles.",
+        "Target civilian selection auto-fills the target name while still allowing unlisted target aliases."
+      ],
+      "changed": [
+        "CID investigation summaries now store full text instead of being capped at the previous short limit.",
+        "CID investigation intake layout now uses a larger long-form summary area and cleaner responsive mobile layout."
+      ],
+      "fixed": [
+        "Removed the need for officers to type raw target CIV database IDs when opening CID investigations.",
+        "Updated PWA cache versioning so installed MDT views load the redesigned CID tab."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.9",
+      "title": "Character Profiles and Name Locking",
+      "added": [
+        "Profile app now includes a character roster where players can create multiple RP characters.",
+        "Players can activate a saved character and the active character name becomes the profile name used across the PWA.",
+        "Profile app now includes a controlled active-name change form with a 3 changes per 3 days limit.",
+        "Admin Account pop-up now shows character count and name-change status."
+      ],
+      "changed": [
+        "Existing accounts automatically receive a default character based on their current profile name.",
+        "Name-change limits are enforced by the backend instead of only being hidden in the UI."
+      ],
+      "fixed": [
+        "Admins and owners can unlock a user's name changes from the Account pop-up after the limit locks them.",
+        "Updated PWA cache versioning so installed phone views load the new Profile character tools."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.8",
+      "title": "DMV License Approval Countdown",
+      "added": [
+        "DMV License page now shows a visible approval queue card after a driver license application is submitted.",
+        "Pending license applications now display a countdown until automatic approval.",
+        "Countdown uses the owner-configured DMV autopilot approval time from System Settings."
+      ],
+      "changed": [
+        "DMV license applications refresh automatically when their approval countdown reaches zero.",
+        "DMV API now returns license autopilot settings and estimated approval times for pending applications."
+      ],
+      "fixed": [
+        "Made driver license approval visible to civilians even without a separate DMV department dashboard.",
+        "Updated PWA cache versioning so the DMV countdown page replaces older cached DMV screens."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-23",
+      "version": "0.0.7",
+      "title": "Profile Warrants and Fire Chief Rigs",
+      "added": [
+        "NCIC/DMV searches now open a civilian profile popup with attached warrant records.",
+        "Civilian profile popup now has a Warrants tab with active and previous warrant history.",
+        "Fire Chief role for command-level Fire MDT access.",
+        "Fire Chief rig builder for assigning personnel to Engine 1, Ladder 1, Truck 1, Rescue 1, and Battalion 1."
+      ],
+      "changed": [
+        "CID warrant board now uses button containers and detail popups instead of showing full warrant files on the main wall.",
+        "Served, recalled, and expired warrants move out of the active warrant board and into previous warrant history."
+      ],
+      "fixed": [
+        "Fixed warrants not appearing on the searched civilian profile record.",
+        "Fixed fire alerts not recognizing a dedicated Fire Chief command role.",
+        "Updated PWA cache versioning so profile warrant and Fire Chief rig changes replace older cached MDT screens."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-22",
+      "version": "0.0.6",
+      "title": "Issue Criminal Charge Warrants",
+      "added": [
+        "Issue Criminal Charge screen now has the civilian name/CIV dropdown directly inside the Issue form.",
+        "Issue Criminal Charge screen now includes a Bypass Court section.",
+        "Bypass Court creates an active warrant linked directly to the selected account without creating a court docket case."
+      ],
+      "changed": [
+        "Criminal charge submissions from the Issue screen now sign and issue an active warrant immediately.",
+        "Criminal catalog Use Charge now opens the Issue screen with that criminal charge already selected."
+      ],
+      "fixed": [
+        "Fixed the criminal charge issue flow still relying on a raw CIV ID instead of the profile dropdown.",
+        "Fixed charge warrants being available in the wrong MDT area instead of the Issue Criminal Charge section.",
+        "Updated PWA cache versioning so the corrected Issue Criminal Charge screen replaces older cached MDT screens."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-22",
+      "version": "0.0.5",
+      "title": "Criminal Charge Warrants",
+      "added": [
+        "Criminal Charges tab now includes a charge-warrant writer with civilian profile dropdown, criminal charge selector, probable cause, priority, and optional linked CID case.",
+        "Officers can sign and issue an active warrant directly from a criminal charge."
+      ],
+      "changed": [
+        "Signed charge warrants now create both a court criminal charge and a linked active warrant for the selected civilian."
+      ],
+      "fixed": [
+        "Criminal charges can now be tied to warrant creation instead of only appearing as catalog entries.",
+        "Updated PWA cache versioning so the Criminal Charges warrant writer replaces older cached MDT screens."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-22",
+      "version": "0.0.4",
+      "title": "CID Warrant Linking",
+      "added": [
+        "CID warrant creation now includes a civilian profile dropdown for selecting the warrant subject by name and CIV number."
+      ],
+      "changed": [
+        "Warrants now store the selected civilian profile ID with the subject name so warrant records remain linked to the correct player profile."
+      ],
+      "fixed": [
+        "Fixed warrants not attaching cleanly to civilian profiles when officers only typed a subject name.",
+        "Updated PWA cache versioning so the warrant-linking form replaces older cached MDT screens."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-22",
+      "version": "0.0.3",
+      "title": "DMV License Autopilot",
+      "added": [
+        "Driver license auto-approval system for submitted DMV license applications.",
+        "Owner-controlled DMV autopilot settings under the System app with pending and eligible license queue counts.",
+        "MDT civilian profile popup with profile and driver license tabs.",
+        "Law enforcement driver license suspension action from the MDT license tab."
+      ],
+      "changed": [
+        "Driver license applications default to auto-approval after 6 minutes when DMV autopilot is enabled.",
+        "Suspended or revoked driver licenses are protected from automatic re-approval."
+      ],
+      "fixed": [
+        "Added a license approval path so DMV applications no longer remain submitted forever when no admin review screen exists.",
+        "Updated PWA cache versioning so the CID investigation folder interface replaces older MDT layouts on mobile."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-21",
+      "version": "0.0.2",
+      "title": "System Autopilot Controls",
+      "added": [
+        "Owner-only System Settings app icon.",
+        "Auto pilot verification mode for automatically verifying civilian accounts after a configurable waiting period.",
+        "System queue stats showing pending accounts and accounts eligible for auto-verification.",
+        "Fire Department MDT for fireman and EMS roles with active 911 incident tracking.",
+        "Fireman role option in account role assignment."
+      ],
+      "changed": [
+        "Default auto-verification wait time starts at 120 minutes and can be adjusted by the owner.",
+        "911 emergency alerting now supports Police, Fire, and EMS department selection."
+      ],
+      "fixed": [
+        "Updated PWA cache versioning so new app modules like Fire MDT load after deployment instead of using stale mobile bundles."
+      ],
+      "removed": []
+    },
+    {
+      "date": "2026-06-21",
+      "version": "0.0.1",
+      "title": "Initial Roleplay PWA System",
+      "added": [
+        "Mobile PWA phone dashboard with app-style icons, locked/unlocked app states, dock shortcuts, and smoother mobile OS visual styling.",
+        "Civilian registration with required Arma ID, generated six-digit CIV number, verification flow, and owner/admin account management.",
+        "Read-only Changelog app loaded from the GitHub-managed repository file.",
+        "DMV app with driver license applications, vehicle registration, plate/VIN records, insurance status, and DMV profile display.",
+        "Automatic DMV VIN generation when civilians register vehicles.",
+        "Messages app unlocked for verified users.",
+        "Admin dashboard with compact account list, account popup, role assignment, verification controls, Arma ID visibility, job settings, market caps, and owner/admin password reset.",
+        "MDT/CAD app for owner and assigned LEO/CID roles with NCIC/DMV search, invalid-return notice popup, citation writer, criminal charge writer, panic button, and active alert watch list.",
+        "Owner-only panic alert clearing from the MDT panic screen.",
+        "Separate MDT citation and criminal charge catalogs, including New York Penal Law criminal charge entries.",
+        "Court system with active/previous case tabs, defendant case view, officer case tracking, judge docket, final result display, and auto-generated court dates.",
+        "CID investigative MDT tools with investigation tracking, case notes, warrant operations, and internal affairs records.",
+        "Civilian Contracts app with anonymous open contract board, accept flow, owner read-only monitoring, and required in-game proof clip URL submission.",
+        "Business Registry app with civilian business applications, registrar review workflow, license issuance, staff inspections, violations, suspensions, revocations, weekly tax settings, reputation scores, and dedicated City Hall/economy roles."
+      ],
+      "changed": [
+        "Contracts app now uses a dark web-style phone interface with first-open instructions.",
+        "Contract posting now targets RP character names only and no longer accepts email lookup.",
+        "Contracts now include target type, last-known area, briefing, and completion requirement details.",
+        "Only pure civilian accounts can post or accept contracts; owner remains monitor-only.",
+        "Home screen no longer shows pending income or tracked server minutes.",
+        "Jobs, Bank, Cash App, and Properties remain locked/coming soon while Messages is available.",
+        "Admin access no longer automatically grants MDT, CID, LEO, or judge access.",
+        "Admin account role assignment now includes business_owner, business_registrar, city_hall, and economy_manager roles for business registry access.",
+        "Business applications now show a dynamic approval progress tracker from submitted to review, interview, and final decision.",
+        "Profile now shows account details only while external linking is paused for verification.",
+        "Court tabs only appear when the user has the matching role or owner override.",
+        "MDT opens as a full law enforcement dashboard instead of staying confined to the phone panel.",
+        "Mobile MDT now uses animated Menu and Watch slide-out drawers so officers can navigate without the tabs crushing the screen.",
+        "Phone icons, dock, and home layout were restyled to feel more like an iPhone/Android app launcher."
+      ],
+      "fixed": [
+        "Fixed PostgreSQL LIKE migration crash by parameterizing the traffic citation pattern.",
+        "Fixed low-contrast MDT charge dropdown styling.",
+        "Fixed NCIC/DMV search empty results by showing an official invalid-return notice with a reference number.",
+        "Fixed admin user page overload by moving account details and actions into a popup.",
+        "Fixed role leakage where admin accounts were being treated like owner accounts for MDT/CID/LEO/judge access.",
+        "Fixed panic alert workflow so owners can clear active panic hits.",
+        "Fixed mobile MDT layout collisions where navigation, watch panels, and form controls stacked into an unreadable phone view.",
+        "Added DMV credential enforcement: suspensions issue a fixed $2,500 MyFaircroft restoration fee, revoked credentials require a separate 30-question recovery examination, and restoration is blocked until the required path is complete."
+      ],
+      "removed": [
+        "Removed the unlocked-home income summary card from the main screen.",
+        "Removed owner/admin edit or delete controls from the Changelog app; changelog content is developer-managed through the repository."
+      ]
+    }
+  ]
+}
