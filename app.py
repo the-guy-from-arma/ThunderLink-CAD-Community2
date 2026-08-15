@@ -35,6 +35,7 @@ from insurance_rules import insurance_claim_filing_error
 from fcx_bank_adapter import handle_fcx_bank_settlement
 from cad2_remote_fcx import (
     build_market_payload as build_cad2_remote_fcx_payload,
+    connection_status as cad2_remote_fcx_connection_status,
     create_order as create_cad2_remote_fcx_order,
     remote_market_enabled as cad2_remote_market_enabled,
     resolve_account as resolve_cad2_remote_fcx_account,
@@ -2544,7 +2545,7 @@ ADMIN_TOOLS_SECTIONS = (
     ("campaigns", "Active Campaigns"),
     ("settlement", "Settlement"),
     ("banking-settings", "Banking Settings"),
-    ("market-settings", "Stock Market"),
+    ("market-settings", "FCX Connection"),
     ("business-settings", "Business Settings"),
     ("leverage-settings", "Leverage Settings"),
     ("fec-investigations", "FEC Investigations"),
@@ -10746,7 +10747,6 @@ def admin_tools_effective_sections(db: Database, user: DbRow | None) -> set[str]
     # CAD 2 may use the shared exchange as a resident community, but it must
     # never host global FCX/FEC administration or a second market engine.
     remote_fcx_sections = {
-        "market-settings",
         "business-settings",
         "leverage-settings",
         "fec-investigations",
@@ -10771,7 +10771,7 @@ def admin_tools_section_required(db: Database, user: DbRow | None, section_id: s
     if err:
         return err
     if section_id not in admin_tools_effective_sections(db, user):
-        if section_id in {"market-settings", "business-settings", "leverage-settings", "fec-investigations"}:
+        if section_id in {"business-settings", "leverage-settings", "fec-investigations"}:
             return "This global FCX/FEC workspace is available only in FCX-Control"
         if user and has_any(user, FEC_INVESTIGATOR_ROLE) and not has_any(user, "owner", "dev"):
             return "FEC Investigator access is available only in FCX-Control"
@@ -12105,14 +12105,22 @@ class RoleplayHandler(BaseHTTPRequestHandler):
                 application_name="thunderlink-cad2-database-probe",
             )
             database_ok = bool(database_status.connected)
+            fcx_status = cad2_remote_fcx_connection_status()
+            fcx_ok = bool(fcx_status.get("connected") and fcx_status.get("authenticated"))
             self.send_json(
-                200 if database_ok else 503,
+                200 if database_ok and fcx_ok else 503,
                 {
                     "service": "cad2",
                     "database_role": "cad2",
                     "community_id": str(os.environ.get("COMMUNITY_ID") or ""),
-                    "cad2": database_status.public_payload(),
-                    "ok": database_ok,
+                    "cad2_database": database_status.public_payload(),
+                    "fcx_api": fcx_status,
+                    "boundaries": {
+                        "cad1_database_access": False,
+                        "direct_fcx_database_access": False,
+                        "fcx_transport": "authenticated_api",
+                    },
+                    "ok": database_ok and fcx_ok,
                 },
             )
             return
@@ -12175,6 +12183,16 @@ class RoleplayHandler(BaseHTTPRequestHandler):
                     section_error = admin_tools_section_required(db, user, routed_section)
                     if section_error:
                         self.error(403 if user else 401, section_error)
+                        return
+                    if CAD2_REMOTE_FCX_ENABLED and routed_section in {
+                        "business-settings",
+                        "leverage-settings",
+                        "fec-investigations",
+                    }:
+                        self.error(403, "This FCX control is available only in the standalone FEC/FCX service")
+                        return
+                    if CAD2_REMOTE_FCX_ENABLED and routed_section == "market-settings" and method != "GET":
+                        self.error(409, "CAD 2 FCX Connection is read-only; use the standalone FEC/FCX service for market changes")
                         return
                 if path.startswith("/api/fine-settlement"):
                     section_error = admin_tools_section_required(db, user, "settlement")
@@ -26089,7 +26107,24 @@ class RoleplayHandler(BaseHTTPRequestHandler):
                     ORDER BY d.delisted_at DESC,d.id DESC LIMIT 200""")],
             }
 
-        if section == "market-settings":
+        if section == "market-settings" and CAD2_REMOTE_FCX_ENABLED:
+            remote_status = cad2_remote_fcx_connection_status()
+            payload["market_settings"] = {
+                "remote_fcx": True,
+                "connection": remote_status,
+                "service_name": "FCX Exchange",
+                "control_plane": "Standalone FEC/FCX service",
+                "ownership": "CAD 2 is a resident client; it does not own the exchange engine or FCX database.",
+                "capabilities": [
+                    "Authenticated FCX API connection status",
+                    "Player-facing Ravenhood market and portfolio data",
+                    "Player orders routed through the FCX API",
+                    "No direct FCX PostgreSQL connection",
+                    "No global market, leverage, or FEC controls in CAD 2",
+                ],
+            }
+
+        if section == "market-settings" and not CAD2_REMOTE_FCX_ENABLED:
             payload["market_settings"] = {
                 "autonomous_engine": fcx_engine_admin_snapshot(db, settings),
                 "market_open": settings["market_open"],

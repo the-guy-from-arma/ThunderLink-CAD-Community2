@@ -10,6 +10,7 @@ import math
 import os
 import secrets
 from typing import Any
+from urllib.parse import urlsplit
 
 from community_config import CommunityConfig
 from fcx_client import FcxClient
@@ -23,6 +24,54 @@ def remote_market_enabled() -> bool:
 
 def _client() -> FcxClient:
     return FcxClient(CommunityConfig.load())
+
+
+def connection_status() -> dict[str, Any]:
+    """Return a credential-safe status for CAD 2's FCX API boundary."""
+    configured_url = str(os.environ.get("FCX_API_URL") or "").strip()
+    parsed_url = urlsplit(configured_url)
+    control_origin = (
+        f"{parsed_url.scheme}://{parsed_url.netloc}"
+        if parsed_url.scheme and parsed_url.netloc
+        else ""
+    )
+    try:
+        config = CommunityConfig.load()
+        bootstrap = FcxClient(config, timeout_seconds=6).bootstrap()
+        community = (
+            bootstrap.get("community")
+            if isinstance(bootstrap.get("community"), dict)
+            else {}
+        )
+        remote_id = str(
+            bootstrap.get("community_id") or community.get("community_id") or ""
+        ).strip().lower()
+        matched = remote_id == config.community_id
+        return {
+            "configured": True,
+            "connected": matched,
+            "authenticated": matched,
+            "community_id": config.community_id,
+            "source": "fcx_api",
+            "mode": "read_only_status",
+            "service_name": "FCX Exchange",
+            "control_origin": control_origin,
+            "error_type": "" if matched else "community_mismatch",
+        }
+    except Exception as exc:
+        return {
+            "configured": bool(configured_url),
+            "connected": False,
+            "authenticated": False,
+            "community_id": str(
+                os.environ.get("COMMUNITY_ID") or "faircroft"
+            ).strip().lower(),
+            "source": "fcx_api",
+            "mode": "read_only_status",
+            "service_name": "FCX Exchange",
+            "control_origin": control_origin,
+            "error_type": type(exc).__name__,
+        }
 
 
 def _bool(value: Any, default: bool = False) -> bool:

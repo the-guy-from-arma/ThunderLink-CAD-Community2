@@ -13884,7 +13884,7 @@ const ADMIN_TOOL_NAV = [
   ["anticheat", "Anti-Cheat", "05"], ["insurance-claims", "Insurance Claims", "06"],
   ["enforcement", "Cases", "07"], ["warnings", "Internal Notes", "08"],
   ["linking", "Account Linking", "09"], ["campaigns", "Active Campaigns", "10"],
-  ["settlement", "Settlement", "11"], ["banking-settings", "Banking Settings", "12"], ["market-settings", "Stock Market", "13"],
+  ["settlement", "Settlement", "11"], ["banking-settings", "Banking Settings", "12"], ["market-settings", "FCX Connection", "13"],
   ["business-settings", "Business Settings", "14"], ["leverage-settings", "Leverage Settings", "15"], ["fec-investigations", "FEC Investigations", "16"],
   ["lottery-settings", "Lottery Settings", "17"], ["sportsbook-settings", "Sportsbook", "18"], ["casino-tools", "Casino Tools", "19"],
   ["gang-settings", "Gang Settings", "20"], ["dmv-settings", "DMV Settings", "21"], ["mdt-settings", "MDT Settings", "22"],
@@ -13906,7 +13906,7 @@ function adminToolAccess() {
 
 function canOpenAdminTool(sectionId) {
   const access = adminToolAccess();
-  return access.isDeveloper || access.effective.has(sectionId);
+  return access.effective.has(sectionId);
 }
 
 function renderDevWorkspace() {
@@ -13914,9 +13914,7 @@ function renderDevWorkspace() {
   if (!canOpenAdminTool(state.devTab)) {
     state.devTab = ADMIN_TOOL_NAV.find(([id]) => access.effective.has(id))?.[0] || "dashboard";
   }
-  const visibleNav = access.isFecInvestigator
-    ? [["fec-investigations", "FEC Investigations", "01"]]
-    : ADMIN_TOOL_NAV;
+  const visibleNav = ADMIN_TOOL_NAV.filter(([id]) => access.effective.has(id));
   const activeTab = {
     dashboard: ["Operations Overview", "Current account-linking and enforcement status"],
     accounts: ["Account Management", "Search, verify, secure, and maintain every resident account"],
@@ -13938,7 +13936,7 @@ function renderDevWorkspace() {
     "fnn-settings": ["FNN Settings", "Control newsroom publishing and Press Pass capacity"],
     "policy-settings": ["Policy Settings", "Monitor required EULA, Terms, acceptable-use, and privacy acceptance"],
     "gang-settings": ["Gang Settings", "Govern organizations, leaders, rosters, and recruitment PINs"],
-    "market-settings": ["Stock Market Settings", "Operate Ravenhood pricing, settlement receipts, fees, and RP events"],
+    "market-settings": ["FCX Exchange Connection", "Authenticated read-only connection to the standalone FCX service"],
     "business-settings": ["Business Settings", "Assign existing FCX securities and oversee resident-controlled IPO companies"],
     "leverage-settings": ["Leverage Settings", "Control isolated long and short exposure, leverage ceilings, and liquidation policy"],
     "fec-investigations": ["FEC Investigations", "Review resident trading, high-value withdrawals, asset custody, and market-integrity filings"],
@@ -14298,6 +14296,24 @@ function renderFcxEngineConsole(engine = {}) {
 }
 
 function renderDevMarketSettings(market, users) {
+  if (market.remote_fcx) {
+    const connection = market.connection || {};
+    const connected = Boolean(connection.connected && connection.authenticated);
+    const capabilities = Array.isArray(market.capabilities) ? market.capabilities : [];
+    return `<div class="stack dev-market-view cad2-fcx-boundary">
+      <section class="dev-card cad2-fcx-connection ${connected ? "connected" : "disconnected"}">
+        <header><div><span>CAD 2 / REMOTE MARKET BOUNDARY</span><h2>${escapeHtml(market.service_name || "FCX Exchange")}</h2><p>CAD 2 receives Ravenhood data and submits resident orders through the authenticated FCX API. It never connects directly to the FCX database.</p></div><strong>${connected ? "CONNECTED" : "OFFLINE"}</strong></header>
+        <div class="cad2-fcx-status-grid">
+          <article><small>API STATUS</small><b>${connected ? "Authenticated" : connection.configured ? "Unavailable" : "Not configured"}</b><span>${escapeHtml(connection.control_origin || "No endpoint configured")}</span></article>
+          <article><small>COMMUNITY</small><b>${escapeHtml(connection.community_id || "Unavailable")}</b><span>Isolated CAD 2 identity</span></article>
+          <article><small>TRANSPORT</small><b>FCX API only</b><span>No direct PostgreSQL access</span></article>
+          <article><small>CONTROL PLANE</small><b>${escapeHtml(market.control_plane || "Standalone FEC/FCX service")}</b><span>Global controls remain outside CAD 2</span></article>
+        </div>
+        ${connection.error_type ? `<p class="cad2-fcx-error">Connection check: ${escapeHtml(humanLabel(connection.error_type))}</p>` : ""}
+      </section>
+      <section class="dev-card cad2-fcx-capabilities"><div><span>BOUNDARY ENFORCEMENT</span><h2>What CAD 2 can access</h2><p>${escapeHtml(market.ownership || "CAD 2 is a resident FCX client.")}</p></div><ul>${capabilities.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>
+    </div>`;
+  }
   const listings = market.securities || [], codes = market.codes || [], programs = market.programs || [], promotions = market.promotions || [];
   const autonomousEngine = market.autonomous_engine || {};
   const activeListings = listings.filter(item => Number(item.active) === 1 && String(item.lifecycle_status || "active") !== "bankrupt");
@@ -19165,7 +19181,7 @@ async function heartbeat() {
 }
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker?.register("/service-worker.js?v=0.4.1-ravenhood-engine-v1").catch(() => {}));
+  window.addEventListener("load", () => navigator.serviceWorker?.register("/service-worker.js?v=0.4.1-cad2-fcx-boundary-v2").catch(() => {}));
 }
 
 legalFooterLink?.addEventListener("click", () => {
