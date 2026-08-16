@@ -137,7 +137,7 @@ def build_market_payload(
     history_range: str = "LIVE",
 ) -> dict[str, Any]:
     client = _client()
-    market_response = client.market()
+    market_response = client.market(history_ticker, history_range)
     if not isinstance(market_response, dict):
         raise RuntimeError("FCX did not return live market data")
 
@@ -166,7 +166,8 @@ def build_market_payload(
     permissions = market_response.get("permissions") if isinstance(market_response.get("permissions"), dict) else {}
     market = market_response.get("market") if isinstance(market_response.get("market"), dict) else {}
     remote_account = portfolio_response.get("account") if isinstance(portfolio_response.get("account"), dict) else {}
-    balance = round(_number(game_bank_balance), 2)
+    wallet_balance = round(_number(remote_account.get("cash_balance")), 2)
+    game_balance = round(_number(game_bank_balance), 2)
 
     securities: list[dict[str, Any]] = []
     for source in market_response.get("securities") or []:
@@ -218,7 +219,8 @@ def build_market_payload(
     trading_enabled = _bool(permissions.get("trading"), True) and not _bool(market.get("maintenance_mode"))
     buy_enabled = trading_enabled and _bool(permissions.get("buy"), True) and _bool(market.get("buy_enabled"), True)
     sell_enabled = trading_enabled and _bool(permissions.get("sell"), True) and _bool(market.get("sell_enabled"), True)
-    account_active = linked_account and str(remote_account.get("market_status") or remote_account.get("status") or "active").lower() == "active"
+    is_restricted = _bool(remote_account.get("is_restricted"), False)
+    account_active = linked_account and not is_restricted
     market_open = _bool(market.get("market_open"), True)
     selected_ticker = str(history_ticker or "").upper().strip()
     requested_range = str(history_range or "LIVE").upper().strip() or "LIVE"
@@ -229,14 +231,16 @@ def build_market_payload(
         "id": account_id,
         "account_id": account_id,
         "user_id": user["id"],
-        "status": "active" if account_active else ("restricted" if linked_account else "unlinked"),
-        # Display-only availability comes from CAD 2's authoritative Arma bank
-        # snapshot. FCX never writes a second CAD balance.
-        "cash_balance": balance,
-        "buying_power": balance,
+        "status": "restricted" if is_restricted else ("active" if account_active else ("inactive" if linked_account else "unlinked")),
+        "cash_balance": wallet_balance,
+        "buying_power": wallet_balance,
+        "game_bank_balance": game_balance,
         "game_bank_synced_at": game_bank_synced_at,
-        "balance_source": "cad2_game_bank_snapshot",
+        "balance_source": "fcx_wallet",
         "linked_account": linked_account,
+        "is_restricted": is_restricted,
+        "restriction_scope": str(remote_account.get("restriction_scope") or ""),
+        "restriction_reason": str(remote_account.get("restriction_reason") or ""),
     }
     return {
         "ok": True,
@@ -269,10 +273,12 @@ def build_market_payload(
         "market_analytics": market_response.get("market_analytics") or {},
         "history_ticker": selected_ticker,
         "history_range": requested_range,
-        "history_range_start": "",
+        "history_range_start": str(market_response.get("history_range_start") or market_response.get("history_window_start") or ""),
+        "history_range_end": str(market_response.get("history_range_end") or ""),
         "pending_withdrawal_amount": 0,
         "available_withdrawal_amount": 0,
         "portfolio_value": round(portfolio_value, 2),
+        "account_equity": round(wallet_balance + portfolio_value, 2),
         "market_open": market_open,
         "fcxv_24h_enabled": _bool(market.get("fcxv_24h_enabled"), False),
         "margin_enabled": _bool(permissions.get("margin"), False),
@@ -307,3 +313,42 @@ def create_order(
         },
         idempotency_key,
     )
+
+
+def create_wallet_transfer(
+    *,
+    user: dict[str, Any],
+    identity_id: str,
+    transaction_type: str,
+    amount: float,
+) -> dict[str, Any]:
+    transfer_type = str(transaction_type or "").lower().strip()
+    if transfer_type not in {"deposit", "withdrawal"}:
+        raise ValueError("Choose a valid deposit or withdrawal")
+    if not math.isfinite(amount) or amount <= 0:
+        raise ValueError("Enter a positive transfer amount")
+    account = resolve_account(user, identity_id)
+    idempotency_key = "cad2-wallet-" + str(user["id"]) + "-" + secrets.token_urlsafe(18)
+    operation = "debit" if transfer_type == "deposit" else "credit"
+    created = _client().create_settlement(
+        {
+            "idempotency_key": idempotency_key,
+            "account_id": str(account["account_id"]),
+            "community_user_id": str(user["id"]),
+            "operation": operation,
+            "amount": round(amount, 2),
+            "currency": "FC",
+            "order_reference": f"Ravenhood {transfer_type}",
+            "metadata": {
+                "kind": "wallet_transfer",
+                "transaction_type": transfer_type,
+                "display_name": str(user.get("name") or user.get("username") or "Resident")[:200],
+            },
+        },
+        idempotency_key,
+    )
+    settlement = created.get("settlement") if isinstance(created.get("settlement"), dict) else created
+    settlement_id = str(settlement.get("settlement_id") or "")
+    if not settlement_id:
+        raise RuntimeError("FCX did not return a settlement identifier")
+    return _client().execute_settlement(settlement_id)

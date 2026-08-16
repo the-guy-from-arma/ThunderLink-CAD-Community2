@@ -37,6 +37,7 @@ from cad2_remote_fcx import (
     build_market_payload as build_cad2_remote_fcx_payload,
     connection_status as cad2_remote_fcx_connection_status,
     create_order as create_cad2_remote_fcx_order,
+    create_wallet_transfer as create_cad2_remote_fcx_wallet_transfer,
     remote_market_enabled as cad2_remote_market_enabled,
     resolve_account as resolve_cad2_remote_fcx_account,
 )
@@ -18923,7 +18924,41 @@ class RoleplayHandler(BaseHTTPRequestHandler):
         if err:
             self.error(403 if user else 401, err); return
         if CAD2_REMOTE_FCX_ENABLED:
-            self.error(409, "Shared FCX orders settle through the CAD 2 Bank Bridge; local Ravenhood cash transfers are disabled."); return
+            assert user is not None
+            payload = self.read_json()
+            tx_type = str(payload.get("transaction_type") or "").lower().strip()
+            try:
+                raw_amount = float(payload.get("amount") or 0)
+            except (TypeError, ValueError):
+                raw_amount = 0
+            if not math.isfinite(raw_amount) or raw_amount <= 0 or tx_type not in ("deposit", "withdrawal"):
+                self.error(400, "Choose a valid deposit or withdrawal amount."); return
+            if raw_amount > RAVENHOOD_BANK_COMMAND_MAX_AMOUNT:
+                self.error(400, f"Ravenhood deposits and withdrawals are limited to ${RAVENHOOD_BANK_COMMAND_MAX_AMOUNT:,.0f} per request."); return
+            if tx_type == "withdrawal" and not raw_amount.is_integer():
+                self.error(400, "Ravenhood withdrawals must be entered in whole dollar amounts with no cents."); return
+            try:
+                context = cad2_remote_fcx_context(db, user)
+                result = create_cad2_remote_fcx_wallet_transfer(
+                    user=dict(user),
+                    identity_id=context["identity_id"],
+                    transaction_type=tx_type,
+                    amount=round(raw_amount, 2),
+                )
+            except ValueError as exc:
+                self.error(400, str(exc)); return
+            except (FcxClientError, RuntimeError) as exc:
+                self.error(502, f"FCX-Control could not queue the transfer: {exc}"); return
+            settlement = result.get("settlement") if isinstance(result.get("settlement"), dict) else result
+            self.send_json(202, {
+                "ok": True,
+                "remote_fcx": True,
+                "status": str(settlement.get("state") or settlement.get("status") or "CREATED").lower(),
+                "settlement_id": str(settlement.get("settlement_id") or ""),
+                "transaction_type": tx_type,
+                "amount": round(raw_amount, 2),
+            })
+            return
         bridge_queue = bank_bridge_user_queue_state(db, int(user["id"]), lock=True)
         if bool(bridge_queue["locked"]):
             self.send_json(429, {

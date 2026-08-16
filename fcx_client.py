@@ -56,8 +56,9 @@ class FcxClient:
     def bootstrap(self) -> dict[str, Any]:
         return self.request("GET", "/api/v1/community/bootstrap")
 
-    def market(self) -> dict[str, Any]:
-        return self.request("GET", "/api/v1/community/market")
+    def market(self, ticker: str = "", history_range: str = "live") -> dict[str, Any]:
+        query = urlencode({"ticker": str(ticker or ""), "history_range": str(history_range or "live")})
+        return self.request("GET", f"/api/v1/community/market?{query}")
 
     def resolve_account(
         self,
@@ -98,3 +99,17 @@ class FcxClient:
 
     def refresh_order(self, trade_request_id: str) -> dict[str, Any]:
         return self.request("POST", f"/api/v1/community/orders/{trade_request_id}/refresh", {})
+
+    def create_settlement(self, payload: dict[str, Any], idempotency_key: str) -> dict[str, Any]:
+        return self.request(
+            "POST",
+            "/api/v1/community/settlements",
+            payload,
+            idempotency_key=idempotency_key,
+        )
+
+    def execute_settlement(self, settlement_id: str) -> dict[str, Any]:
+        return self.request("POST", f"/api/v1/community/settlements/{settlement_id}/execute", {})
+
+    def refresh_settlement(self, settlement_id: str) -> dict[str, Any]:
+        return self.request("POST", f"/api/v1/community/settlements/{settlement_id}/refresh", {})

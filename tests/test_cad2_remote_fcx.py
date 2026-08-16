@@ -15,7 +15,7 @@ import cad2_remote_fcx
 class _Client:
     portfolio_called = False
 
-    def market(self):
+    def market(self, *_args, **_kwargs):
         return {
             "permissions": {"trading": True, "buy": True, "sell": True},
             "market": {"market_open": True},
