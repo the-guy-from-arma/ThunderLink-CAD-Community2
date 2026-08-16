@@ -13,7 +13,7 @@ from typing import Any
 from urllib.parse import urlsplit
 
 from community_config import CommunityConfig
-from fcx_client import FcxClient
+from fcx_client import FcxClient, FcxClientError
 
 
 def remote_market_enabled() -> bool:
@@ -24,6 +24,22 @@ def remote_market_enabled() -> bool:
 
 def _client() -> FcxClient:
     return FcxClient(CommunityConfig.load())
+
+
+def _flat_price_history(value: Any) -> list[dict[str, Any]]:
+    """Translate FCX ticker-grouped history into CAD's flat chart stream."""
+    flattened: list[dict[str, Any]] = []
+    if isinstance(value, dict):
+        for ticker, rows in value.items():
+            if not isinstance(rows, list):
+                continue
+            for raw in rows:
+                if isinstance(raw, dict):
+                    flattened.append({"ticker": str(ticker).upper(), **raw})
+    elif isinstance(value, list):
+        flattened = [dict(raw) for raw in value if isinstance(raw, dict)]
+    flattened.sort(key=lambda row: str(row.get("recorded_at") or ""))
+    return flattened
 
 
 def connection_status() -> dict[str, Any]:
@@ -113,10 +129,31 @@ def build_market_payload(
     history_range: str = "LIVE",
 ) -> dict[str, Any]:
     client = _client()
-    resolved = resolve_account(user, identity_id)
-    account_id = str(resolved["account_id"])
     market_response = client.market()
-    portfolio_response = client.portfolio(user["id"], account_id)
+    if not isinstance(market_response, dict):
+        raise RuntimeError("FCX did not return live market data")
+
+    linked_account = bool(str(identity_id or "").strip())
+    resolved: dict[str, Any] = {"account_id": "", "status": "unlinked"}
+    portfolio_response: dict[str, Any] = {
+        "account": {"status": "unlinked"},
+        "holdings": [],
+        "orders": [],
+        "margin_positions": [],
+        "margin_orders": [],
+    }
+    if linked_account:
+        try:
+            resolved = resolve_account(user, identity_id)
+            portfolio_response = client.portfolio(user["id"], str(resolved["account_id"]))
+        except FcxClientError as exc:
+            # The shared exchange is public to authenticated CAD residents. A
+            # missing/inactive Ravenhood link restricts only account and order
+            # operations; it must not make the live board unavailable.
+            if "verified active Ravenhood link" not in str(exc):
+                raise
+            linked_account = False
+    account_id = str(resolved.get("account_id") or "")
 
     permissions = market_response.get("permissions") if isinstance(market_response.get("permissions"), dict) else {}
     market = market_response.get("market") if isinstance(market_response.get("market"), dict) else {}
@@ -173,7 +210,7 @@ def build_market_payload(
     trading_enabled = _bool(permissions.get("trading"), True) and not _bool(market.get("maintenance_mode"))
     buy_enabled = trading_enabled and _bool(permissions.get("buy"), True) and _bool(market.get("buy_enabled"), True)
     sell_enabled = trading_enabled and _bool(permissions.get("sell"), True) and _bool(market.get("sell_enabled"), True)
-    account_active = str(remote_account.get("market_status") or remote_account.get("status") or "active").lower() == "active"
+    account_active = linked_account and str(remote_account.get("market_status") or remote_account.get("status") or "active").lower() == "active"
     market_open = _bool(market.get("market_open"), True)
     selected_ticker = str(history_ticker or "").upper().strip()
     requested_range = str(history_range or "LIVE").upper().strip() or "LIVE"
@@ -184,13 +221,14 @@ def build_market_payload(
         "id": account_id,
         "account_id": account_id,
         "user_id": user["id"],
-        "status": "active" if account_active else "restricted",
+        "status": "active" if account_active else ("restricted" if linked_account else "unlinked"),
         # Display-only availability comes from CAD 2's authoritative Arma bank
         # snapshot. FCX never writes a second CAD balance.
         "cash_balance": balance,
         "buying_power": balance,
         "game_bank_synced_at": game_bank_synced_at,
         "balance_source": "cad2_game_bank_snapshot",
+        "linked_account": linked_account,
     }
     return {
         "ok": True,
@@ -219,7 +257,7 @@ def build_market_payload(
         "exchange_market_cap": round(sum(_number(item.get("market_cap")) for item in securities), 2),
         "anonymous_trade_tape": market_response.get("anonymous_trade_tape") or [],
         "company_wire": market_response.get("company_wire") or [],
-        "price_history": market_response.get("price_history") or [],
+        "price_history": _flat_price_history(market_response.get("price_history")),
         "market_analytics": market_response.get("market_analytics") or {},
         "history_ticker": selected_ticker,
         "history_range": requested_range,
