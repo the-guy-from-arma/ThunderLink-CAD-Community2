@@ -114,6 +114,52 @@ def _number(value: Any, default: float = 0.0) -> float:
     return parsed if math.isfinite(parsed) else default
 
 
+def _normalize_trading_restriction_scope(value: Any) -> str:
+    normalized = str(value or "").strip().lower().replace("-", "_").replace(" ", "_")
+    if normalized in {"full", "all", "account", "account_wide"}:
+        return "full"
+    if normalized in {"equity", "share", "shares", "share_trading", "stock", "stocks"}:
+        return "equity"
+    if normalized in {"leverage", "leveraged", "margin", "leverage_trading"}:
+        return "leverage"
+    return "full"
+
+
+def _active_trading_restrictions(remote_account: dict[str, Any]) -> list[dict[str, Any]]:
+    restrictions: list[dict[str, Any]] = []
+    raw_restrictions = remote_account.get("trading_restrictions")
+    if isinstance(raw_restrictions, list):
+        for raw in raw_restrictions:
+            if not isinstance(raw, dict):
+                continue
+            status = str(raw.get("status") or "active").strip().lower()
+            if status != "active":
+                continue
+            restriction = dict(raw)
+            restriction["scope"] = _normalize_trading_restriction_scope(raw.get("scope"))
+            restrictions.append(restriction)
+    if not restrictions and _bool(remote_account.get("is_restricted"), False):
+        restrictions.append({
+            "id": remote_account.get("restriction_id"),
+            "scope": _normalize_trading_restriction_scope(remote_account.get("restriction_scope")),
+            "reason": str(remote_account.get("restriction_reason") or "Ravenhood trading is restricted by the FEC."),
+            "status": "active",
+        })
+    return restrictions
+
+
+def _restriction_for_lane(restrictions: list[dict[str, Any]], lane: str) -> dict[str, Any] | None:
+    requested_lane = _normalize_trading_restriction_scope(lane)
+    return next(
+        (
+            restriction
+            for restriction in restrictions
+            if restriction.get("scope") in {"full", requested_lane}
+        ),
+        None,
+    )
+
+
 def resolve_account(user: dict[str, Any], identity_id: str) -> dict[str, Any]:
     response = _client().resolve_account(
         community_user_id=user["id"],
@@ -219,8 +265,12 @@ def build_market_payload(
     trading_enabled = _bool(permissions.get("trading"), True) and not _bool(market.get("maintenance_mode"))
     buy_enabled = trading_enabled and _bool(permissions.get("buy"), True) and _bool(market.get("buy_enabled"), True)
     sell_enabled = trading_enabled and _bool(permissions.get("sell"), True) and _bool(market.get("sell_enabled"), True)
-    is_restricted = _bool(remote_account.get("is_restricted"), False)
-    account_active = linked_account and not is_restricted
+    restrictions = _active_trading_restrictions(remote_account)
+    equity_restriction = _restriction_for_lane(restrictions, "equity")
+    leverage_restriction = _restriction_for_lane(restrictions, "leverage")
+    full_restriction = _restriction_for_lane(restrictions, "full")
+    remote_status = str(remote_account.get("market_status") or remote_account.get("status") or resolved.get("status") or "active").strip().lower()
+    account_active = linked_account and remote_status not in {"inactive", "closed", "disabled", "suspended", "unlinked"}
     market_open = _bool(market.get("market_open"), True)
     selected_ticker = str(history_ticker or "").upper().strip()
     requested_range = str(history_range or "LIVE").upper().strip() or "LIVE"
@@ -231,16 +281,19 @@ def build_market_payload(
         "id": account_id,
         "account_id": account_id,
         "user_id": user["id"],
-        "status": "restricted" if is_restricted else ("active" if account_active else ("inactive" if linked_account else "unlinked")),
+        "status": "restricted" if full_restriction else ("active" if account_active else ("inactive" if linked_account else "unlinked")),
         "cash_balance": wallet_balance,
         "buying_power": wallet_balance,
         "game_bank_balance": game_balance,
         "game_bank_synced_at": game_bank_synced_at,
         "balance_source": "fcx_wallet",
         "linked_account": linked_account,
-        "is_restricted": is_restricted,
-        "restriction_scope": str(remote_account.get("restriction_scope") or ""),
-        "restriction_reason": str(remote_account.get("restriction_reason") or ""),
+        "is_restricted": bool(restrictions),
+        "equity_restricted": equity_restriction is not None,
+        "leverage_restricted": leverage_restriction is not None,
+        "trading_restrictions": restrictions,
+        "restriction_scope": str((equity_restriction or leverage_restriction or {}).get("scope") or ""),
+        "restriction_reason": str((equity_restriction or leverage_restriction or {}).get("reason") or ""),
     }
     return {
         "ok": True,
@@ -248,11 +301,14 @@ def build_market_payload(
         "community_id": CommunityConfig.load().community_id,
         "account": account,
         "trading_access": {
-            "can_trade_equity": account_active and trading_enabled,
-            "can_buy": account_active and buy_enabled,
-            "can_sell": account_active and sell_enabled,
+            "can_trade_equity": account_active and equity_restriction is None and trading_enabled,
+            "can_buy": account_active and equity_restriction is None and buy_enabled,
+            "can_sell": account_active and equity_restriction is None and sell_enabled,
             "can_trade_margin": False,
             "can_transfer_shares": False,
+            "restriction": equity_restriction or leverage_restriction,
+            "restriction_scope": str((equity_restriction or leverage_restriction or {}).get("scope") or ""),
+            "restriction_reason": str((equity_restriction or leverage_restriction or {}).get("reason") or ""),
             "source": "fcx_control",
         },
         "securities": securities,
