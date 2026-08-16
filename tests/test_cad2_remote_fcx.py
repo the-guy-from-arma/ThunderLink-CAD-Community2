@@ -20,7 +20,14 @@ class _Client:
             "permissions": {"trading": True, "buy": True, "sell": True},
             "market": {"market_open": True},
             "securities": [{"ticker": "FCX", "price": 12, "previous_price": 10}],
-            "price_history": {"FCX": [{"recorded_at": "2026-08-15T12:00:00Z", "price": 12}]},
+            "price_history": {"FCX": [{
+                "recorded_at": "2026-08-15T12:00:00Z",
+                "price": 12,
+                "volume": 7,
+                "buy_volume": 5,
+                "sell_volume": 2,
+                "trade_count": 3,
+            }]},
         }
 
     def portfolio(self, *_args):
@@ -47,7 +54,9 @@ class Cad2RemoteFcxTests(unittest.TestCase):
 
         self.assertTrue(payload["market_open"])
         self.assertEqual(payload["securities"][0]["ticker"], "FCX")
-        self.assertEqual(payload["price_history"][0]["ticker"], "FCX")
+        self.assertEqual(payload["price_history"]["FCX"][0]["volume"], 7)
+        self.assertEqual(payload["price_history"]["FCX"][0]["buy_volume"], 5)
+        self.assertEqual(payload["price_history"]["FCX"][0]["sell_volume"], 2)
         self.assertEqual(payload["account"]["status"], "unlinked")
         self.assertFalse(payload["trading_access"]["can_trade_equity"])
         self.assertFalse(client.portfolio_called)
