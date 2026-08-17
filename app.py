@@ -38,6 +38,7 @@ from cad2_remote_fcx import (
     connection_status as cad2_remote_fcx_connection_status,
     create_order as create_cad2_remote_fcx_order,
     create_wallet_transfer as create_cad2_remote_fcx_wallet_transfer,
+    redeem_promotion as redeem_cad2_remote_fcx_promotion,
     remote_market_enabled as cad2_remote_market_enabled,
     resolve_account as resolve_cad2_remote_fcx_account,
 )
@@ -12708,12 +12709,6 @@ class RoleplayHandler(BaseHTTPRequestHandler):
                     self.api_dev_market_liquidation_hunt(db, user)
                 elif path == "/api/dev-tools/market/ai-briefing" and method == "POST":
                     self.api_dev_market_ai_briefing(db, user)
-                elif path == "/api/dev-tools/market/promotions" and method == "POST":
-                    self.api_dev_market_promotion(db, user)
-                elif path.startswith("/api/dev-tools/market/promotions/") and method == "PATCH":
-                    self.api_dev_market_promotion_status(db, user, self.path_int(path, 4))
-                elif path.startswith("/api/dev-tools/market/promotions/") and method == "DELETE":
-                    self.api_dev_market_promotion_delete(db, user, self.path_int(path, 4))
                 elif path == "/api/dev-tools/lottery/settings" and method == "PATCH":
                     self.api_dev_lottery_settings(db, user)
                 elif path == "/api/dev-tools/lottery/player-pool" and method == "PATCH":
@@ -19307,9 +19302,14 @@ class RoleplayHandler(BaseHTTPRequestHandler):
         err = verified_required(user)
         if err:
             self.error(403 if user else 401, err); return
-        if CAD2_REMOTE_FCX_ENABLED:
-            self.error(501, "Ravenhood promotional redemptions are managed by FCX-Control and are not enabled for CAD 2 yet."); return
         assert user is not None
+        if CAD2_REMOTE_FCX_ENABLED:
+            try:
+                context = cad2_remote_fcx_context(db, user)
+                result = redeem_cad2_remote_fcx_promotion(user=dict(user), identity_id=context["identity_id"], code=str(self.read_json().get("code") or ""))
+            except (FcxClientError, ValueError) as exc:
+                self.error(502, str(exc)); return
+            self.send_json(200, {"ok": True, "remote_fcx": True, **result}); return
         entered_code = str(self.read_json().get("code") or "").upper()
         raw_code = "".join(entered_code.split())
         if len(raw_code) < 6:
@@ -27999,6 +27999,8 @@ class RoleplayHandler(BaseHTTPRequestHandler):
         self.send_json(201, {"ok": True, "code": raw_code, "transaction_type": tx_type, "amount": amount, "unassigned": True, "expires_at": expires.isoformat()})
 
     def api_dev_market_promotion(self, db: Database, user: DbRow | None) -> None:
+        self.error(410, "Promotional campaigns are managed exclusively in FCX-Control.")
+        return
         err = developer_required(user)
         if err:
             self.error(403 if user else 401, err); return
@@ -28051,6 +28053,8 @@ class RoleplayHandler(BaseHTTPRequestHandler):
         self.send_json(201, {"ok": True, "code": raw_code, "campaign_name": campaign_name, "expires_at": expires.isoformat()})
 
     def api_dev_market_promotion_status(self, db: Database, user: DbRow | None, promo_id: int | None) -> None:
+        self.error(410, "Promotional campaigns are managed exclusively in FCX-Control.")
+        return
         err = developer_required(user)
         if err:
             self.error(403 if user else 401, err); return
@@ -28062,6 +28066,8 @@ class RoleplayHandler(BaseHTTPRequestHandler):
         self.send_json(200, {"ok": True, "active": bool(active)})
 
     def api_dev_market_promotion_delete(self, db: Database, user: DbRow | None, promo_id: int | None) -> None:
+        self.error(410, "Promotional campaigns are managed exclusively in FCX-Control.")
+        return
         err = developer_required(user)
         if err:
             self.error(403 if user else 401, err); return
