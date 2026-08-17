@@ -1266,7 +1266,7 @@ function renderDmvActionNoticeModal() {
   const status = String(notice.license_status || "Suspended");
   return `<div class="modal-backdrop dmv-action-notice-backdrop"><section class="mdt-modal dmv-action-notice-modal ${status.toLowerCase()}" role="dialog" aria-modal="true" aria-label="Driver license status notice">
     <header><div class="dmv-action-seal">W</div><div><p class="eyebrow">WRLD NETWORK MOTOR VEHICLE AUTHORITY · OFFICIAL NOTICE</p><h2>Driver License ${escapeHtml(status)}</h2></div></header>
-    <div class="dmv-action-notice-body"><p>Your Faircroft driving credential is now <strong>${escapeHtml(status.toLowerCase())}</strong>. This status is effective immediately and is visible to officers through NCIC.</p><dl><div><dt>Credential class</dt><dd>${escapeHtml(notice.license_class || "Class D")}</dd></div><div><dt>Effective</dt><dd>${notice.action_notice_at ? new Date(notice.action_notice_at).toLocaleString() : "Immediately"}</dd></div></dl>${notice.action_notice_reason ? `<section><small>OFFICIAL REASON</small><strong>${escapeHtml(notice.action_notice_reason)}</strong></section>` : ""}</div>
+    <div class="dmv-action-notice-body"><p>Your WRLD Network driving credential is now <strong>${escapeHtml(status.toLowerCase())}</strong>. This status is effective immediately and is visible to officers through NCIC.</p><dl><div><dt>Credential class</dt><dd>${escapeHtml(notice.license_class || "Class D")}</dd></div><div><dt>Effective</dt><dd>${notice.action_notice_at ? new Date(notice.action_notice_at).toLocaleString() : "Immediately"}</dd></div></dl>${notice.action_notice_reason ? `<section><small>OFFICIAL REASON</small><strong>${escapeHtml(notice.action_notice_reason)}</strong></section>` : ""}</div>
     <button class="primary" type="button" data-acknowledge-dmv-action>I acknowledge this DMV notice</button>
   </section></div>`;
 }
@@ -1276,7 +1276,7 @@ function renderPressPassNoticeModal() {
   if (!notice) return "";
   const status = String(notice.status || "active").toLowerCase();
   const reinstated = status === "active";
-  return `<div class="modal-backdrop press-pass-notice-backdrop"><section class="mdt-modal press-pass-notice-modal ${status}" role="dialog" aria-modal="true" aria-label="Press Pass status notice"><header><p class="eyebrow">FAIRCROFT NEWS NOW · CREDENTIAL NOTICE</p><h2>Press Pass ${reinstated ? "Reinstated" : status === "revoked" ? "Revoked" : "Suspended"}</h2></header><div><span>FNN</span><p>${reinstated ? "Your Press Pass is active again and Press Desk access has been restored." : status === "revoked" ? "Your Press Pass has been revoked. The Press role and Press Desk access were removed from your account." : "Your Press Pass has been suspended. Press Desk access is disabled until a developer reinstates the credential."}</p>${notice.reason ? `<section><small>OFFICIAL REASON</small><strong>${escapeHtml(notice.reason)}</strong></section>` : ""}</div><button class="primary" type="button" data-acknowledge-press-pass>I understand</button></section></div>`;
+  return `<div class="modal-backdrop press-pass-notice-backdrop"><section class="mdt-modal press-pass-notice-modal ${status}" role="dialog" aria-modal="true" aria-label="Press Pass status notice"><header><p class="eyebrow">WRLD NETWORK NEWS · CREDENTIAL NOTICE</p><h2>Press Pass ${reinstated ? "Reinstated" : status === "revoked" ? "Revoked" : "Suspended"}</h2></header><div><span>WNN</span><p>${reinstated ? "Your Press Pass is active again and Press Desk access has been restored." : status === "revoked" ? "Your Press Pass has been revoked. The Press role and Press Desk access were removed from your account." : "Your Press Pass has been suspended. Press Desk access is disabled until a developer reinstates the credential."}</p>${notice.reason ? `<section><small>OFFICIAL REASON</small><strong>${escapeHtml(notice.reason)}</strong></section>` : ""}</div><button class="primary" type="button" data-acknowledge-press-pass>I understand</button></section></div>`;
 }
 
 function renderDmvComplianceModal() {
@@ -1727,9 +1727,9 @@ function renderFnnWorkspace() {
           <p class="fnn-kicker">FAIRCROFT LEAD STORY</p>
           <h1>${escapeHtml(edition.headline)}</h1>
           <p class="fnn-deck">${escapeHtml(edition.deck || "")}</p>
-          <div class="fnn-byline"><span>FNN NEWSROOM</span><time>Published ${escapeHtml(dateLabel)}</time></div>
+          <div class="fnn-byline"><span>WNN NEWSROOM</span><time>Published ${escapeHtml(dateLabel)}</time></div>
           <div class="fnn-lead-copy">${fnnStoryText(edition.lead_story)}</div>
-          <p class="fnn-source-note">Newsroom review compiled from ${Number(edition.source_report_count || 0)} CAD, court, citation, suspension, warrant, wanted-person, and FNN Press Desk source record${Number(edition.source_report_count || 0) === 1 ? "" : "s"} across the complete Faircroft archive.</p>
+          <p class="fnn-source-note">Newsroom review compiled from ${Number(edition.source_report_count || 0)} CAD, court, citation, suspension, warrant, wanted-person, and WNN Press Desk source record${Number(edition.source_report_count || 0) === 1 ? "" : "s"} across the complete WRLD Network archive.</p>
         </section>
         <aside class="fnn-brief" id="fnn-safety">
           <div class="fnn-brief-title"><span>PUBLIC SAFETY DESK</span><strong>Daily Brief</strong></div>
@@ -1748,8 +1748,8 @@ function renderFnnWorkspace() {
       </div>
     ` : `
       <section class="fnn-empty-newsroom">
-        <div class="fnn-empty-mark"><b>F</b><b>N</b><b>N</b></div>
-        <p class="fnn-kicker">FAIRCROFT NEWS NOW</p>
+        <div class="fnn-empty-mark"><b>W</b><b>N</b><b>N</b></div>
+        <p class="fnn-kicker">WRLD NETWORK NEWS</p>
         <h1>The newsroom is preparing today’s edition.</h1>
         <p>${data.generation_configured ? "The newsroom will build an extensive edition from the complete archive of CAD reports, citations, and criminal matters." : "A developer must configure the Gemini newsroom connection before editions can publish."}</p>
       </section>
@@ -1810,7 +1810,7 @@ function renderPressDesk() {
         <h4>${escapeHtml(report.headline)}</h4>
         <p>${escapeHtml(String(report.facts || "").slice(0, 180))}${String(report.facts || "").length > 180 ? "…" : ""}</p>
         <footer><time>${new Date(report.created_at).toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" })}</time><em>${escapeHtml(humanLabel(report.status))}</em></footer>
-      </button>`).join("") || `<div class="press-empty-library"><span>FNN</span><h4>No submitted stories</h4><p>Create the first detailed press brief for the newsroom archive.</p><button class="primary" type="button" data-press-compose>New story brief</button></div>`}</div>
+      </button>`).join("") || `<div class="press-empty-library"><span>WNN</span><h4>No submitted stories</h4><p>Create the first detailed press brief for the newsroom archive.</p><button class="primary" type="button" data-press-compose>New story brief</button></div>`}</div>
     </section>
     ${state.pressComposeOpen ? `<div class="modal-backdrop press-modal-backdrop" data-close-press-modal><section class="press-editor-modal" role="dialog" aria-modal="true" aria-label="New story brief">
       <header><div><p>FNN / SOURCE INTAKE</p><h3>New story brief</h3></div><button type="button" data-close-press-modal aria-label="Close">×</button></header>
@@ -1831,7 +1831,7 @@ function renderPressDesk() {
             <label>Verification notes<textarea name="verification_notes" maxlength="4000" placeholder="Who confirmed each fact and what remains unverified."></textarea></label>
             <label class="wide press-top-story-control ${topStoryAvailable ? "available" : "reserved"}"><input name="top_story" type="checkbox" ${topStoryAvailable ? "" : "disabled"}/><span><b>Make this the Top Story</b><small>${topStoryAvailable ? "Gemini will use this brief as the required headline and lead story for the next edition. Only one selection is allowed per news cycle." : `Reserved by ${escapeHtml(topStorySlot?.report_number || "another newsroom brief")}. The checkmark unlocks automatically after the next successful edition.`}</small></span></label>
           </div>
-          <button class="primary" type="submit">File with FNN newsroom</button>
+          <button class="primary" type="submit">File with WNN newsroom</button>
         </form>
       </div>
     </section></div>` : ""}
@@ -1857,8 +1857,8 @@ function renderPressWorkspace() {
   return `<section class="press-workspace">
     <header class="press-workspace-topbar">
       <div class="press-workspace-identity">
-        <span class="press-workspace-mark"><b>F</b><b>N</b><b>N</b></span>
-        <div><p>FAIRCROFT NEWS NOW / PRESS OPERATIONS</p><h1>Press Desk</h1><span>Source development, field reporting, and newsroom submissions</span></div>
+        <span class="press-workspace-mark"><b>W</b><b>N</b><b>N</b></span>
+        <div><p>WRLD NETWORK NEWS / PRESS OPERATIONS</p><h1>Press Desk</h1><span>Source development, field reporting, and newsroom submissions</span></div>
       </div>
       <div class="press-workspace-actions">
         <span><i></i>Newsroom connected</span>
@@ -1952,7 +1952,7 @@ function bindPressDesk() {
 const LEADERBOARD_CONFIG = {
   wealth: { group: "wealth", label: "Top Earners", kicker: "LIVE WEALTH", unit: "Current synced balance", accent: "gold", field: "balance", format: "money" },
   bank_growth: { group: "wealth", label: "Biggest Bank Increase", kicker: "MONTHLY GROWTH", unit: "Largest recorded balance gain", accent: "gold", field: "growth", format: "money" },
-  credit: { group: "wealth", label: "Credit Elite", kicker: "CREDIT SCORES", unit: "Faircroft credit score", accent: "green", field: "score", suffix: " score" },
+  credit: { group: "wealth", label: "Credit Elite", kicker: "CREDIT SCORES", unit: "WRLD Network credit score", accent: "green", field: "score", suffix: " score" },
   credit_improvement: { group: "wealth", label: "Most Improved Credit", kicker: "CREDIT MOMENTUM", unit: "Largest recorded score increase", accent: "green", field: "score_gain", suffix: " points" },
   reputation: { group: "wealth", label: "Highest Reputation", kicker: "COMMUNITY TRUST", unit: "MedicalHud reputation", accent: "green", field: "reputation_score", suffix: " reputation" },
   playtime: { group: "activity", label: "Server Veterans", kicker: "TIME IN FAIRCROFT", unit: "Lifetime in-server activity", accent: "cyan", field: "playtime_seconds", format: "duration" },
@@ -1974,7 +1974,7 @@ const LEADERBOARD_CONFIG = {
   reports_submitted: { group: "safety", label: "Most Reports Submitted", kicker: "CAD REPORTING", unit: "After-action reports filed", accent: "cyan", field: "report_count", suffix: " reports" },
   public_safety_mvp: { group: "safety", label: "Public Safety MVP", kicker: "SERVICE INDEX", unit: "Weighted CAD, booking, report, and BOLO activity", accent: "green", field: "safety_score", suffix: " points" },
   vehicles: { group: "community", label: "Most Vehicles Owned", kicker: "DMV GARAGE", unit: "Registered and imported vehicle records", accent: "gold", field: "vehicle_count", suffix: " vehicles" },
-  press_reports: { group: "community", label: "Top Reporter", kicker: "FNN PRESS DESK", unit: "Press reports submitted", accent: "red", field: "report_count", suffix: " stories" },
+  press_reports: { group: "community", label: "Top Reporter", kicker: "WNN PRESS DESK", unit: "Press reports submitted", accent: "red", field: "report_count", suffix: " stories" },
   community_veteran: { group: "community", label: "Community Veteran", kicker: "FOUNDING RESIDENTS", unit: "Oldest verified WRLD Network accounts", accent: "gold", field: "member_days", suffix: " days" },
   clean_driver: { group: "community", label: "Clean Driver", kicker: "DMV COMPLIANCE", unit: "Citation-free drivers with compliant vehicles", accent: "green", field: "compliant_vehicles", suffix: " compliant vehicles" },
 };
@@ -2526,7 +2526,7 @@ function leaderboardDetail(board, item) {
 function leaderboardIdentity(item) {
   const resident = item.resident_name && item.resident_name !== item.name ? ` · ${escapeHtml(item.resident_name)}` : "";
   const civ = item.civ_number ? ` · CIV ${escapeHtml(item.civ_number)}` : "";
-  return `${resident}${civ}` || (item.linked ? " · Verified Faircroft identity" : " · Game telemetry identity");
+  return `${resident}${civ}` || (item.linked ? " · Verified WRLD Network identity" : " · Game telemetry identity");
 }
 
 function renderLeaderboards() {
@@ -3711,7 +3711,7 @@ function renderIceWorkspace() {
       ${activeTab === "fluck" ? (() => { const camera = data.fluck_camera || {}; const events = camera.events || []; const cameras = camera.cameras || []; const selected = events.find((event) => event.event_id === state.iceSelectedCameraEvent) || events[0]; return `<section class="ice-camera-console"><header class="ice-camera-command"><div><small>FAIRCROFT FEDERAL CAMERA NETWORK / FLUCK</small><h2>Faircroft FLUCK Command</h2><p>Read-only observations from Shadow Haven. Camera sources, identity matches, and CAD account links are resolved from the current FLUCK export and Railway link ledger.</p></div><div class="ice-camera-health"><i class="${camera.operational ? "live" : "idle"}"></i><strong>${camera.operational ? "LIVE INDEX" : "AWAITING INDEX"}</strong><span>${camera.last_sync?.last_success_at ? `Synced ${new Date(camera.last_sync.last_success_at).toLocaleString()}` : "No successful sync yet"}</span></div></header><div class="ice-camera-metrics"><div><span>Observations</span><strong>${Number(camera.stats?.total || 0)}</strong></div><div><span>Camera sources</span><strong>${Number(camera.stats?.camera_count || cameras.length || 0)}</strong></div><div><span>Linked profiles</span><strong>${Number(camera.stats?.linked || 0)}</strong></div><div><span>Priority review</span><strong>${Number(camera.stats?.high_priority || 0)}</strong></div><div><span>Last 24 hours</span><strong>${Number(camera.stats?.last_24_hours || 0)}</strong></div></div><div class="ice-camera-toolbar"><label>Find an observation<input type="search" data-ice-camera-filter placeholder="Plate, identity, subject, location, camera" /></label><button type="button" class="secondary" data-ice-camera-refresh>Refresh index</button></div><div class="ice-camera-grid"><div class="ice-camera-ledger"><div class="ice-camera-ledger-head"><span>RECENT OBSERVATIONS</span><small>${events.length} indexed</small></div>${events.map((event) => `<button type="button" class="ice-camera-row ${selected?.event_id === event.event_id ? "selected" : ""}" data-ice-camera-select="${escapeHtml(event.event_id)}"><span class="ice-camera-severity ${escapeHtml(String(event.severity || "info").toLowerCase())}"></span><span><strong>${escapeHtml(event.vehicle_plate || event.subject_name || "Unidentified observation")}</strong><small>${escapeHtml(event.location || event.camera_id || "Camera location unavailable")} · ${event.captured_at ? new Date(event.captured_at).toLocaleString() : "time unavailable"}</small>${event.linked_account ? `<em>Matched: ${escapeHtml(event.linked_account_name || "Faircroft account")}${event.linked_civ_number ? ` · CIV ${escapeHtml(event.linked_civ_number)}` : ""}</em>` : `<em>Awaiting CAD identity match</em>`}</span><b class="${event.linked_account ? "linked" : "unlinked"}">${event.linked_account ? "LINKED" : "UNLINKED"}</b></button>`).join("") || `<div class="empty">No FLUCK camera observations have been indexed.</div>`}</div><aside class="ice-camera-inspector">${selected ? `<div class="ice-camera-inspector-head"><small>OBSERVATION DETAIL</small><span class="ice-camera-severity ${escapeHtml(String(selected.severity || "info").toLowerCase())}"></span></div><h3>${escapeHtml(selected.vehicle_plate || selected.subject_name || "Unidentified observation")}</h3><p>${escapeHtml(selected.summary || "No narrative supplied by the camera source.")}</p><dl><div><dt>Captured</dt><dd>${selected.captured_at ? new Date(selected.captured_at).toLocaleString() : "Unknown"}</dd></div><div><dt>Camera</dt><dd>${escapeHtml(selected.camera_id || "Unknown")}</dd></div><div><dt>Identity</dt><dd>${escapeHtml(selected.identity_id || "Not supplied")}</dd></div><div><dt>Link state</dt><dd class="${selected.linked_account ? "linked" : "unlinked"}">${selected.linked_account ? `Matched by ${escapeHtml(humanLabel(selected.linked_match || "identity_id"))}` : "No linked account"}</dd></div><div><dt>Location</dt><dd>${escapeHtml(selected.location || "Not supplied")}</dd></div><div><dt>Event</dt><dd>${escapeHtml(selected.event_type || "Observation")}</dd></div></dl>${selected.linked_user_id ? `<button type="button" class="ice-camera-profile-link" data-ice-camera-account="${selected.linked_user_id}"><span>Open matched CAD profile</span><strong>${escapeHtml(selected.linked_account_name || "Faircroft account")}${selected.linked_civ_number ? ` · CIV ${escapeHtml(selected.linked_civ_number)}` : ""}</strong></button>` : `<div class="ice-camera-profile-missing"><strong>No CAD match yet</strong><span>This observation has not resolved to a linked Faircroft account.</span></div>`}${selected.evidence_url ? `<a class="secondary" href="${escapeHtml(selected.evidence_url)}" target="_blank" rel="noopener">Open evidence</a>` : `<span class="ice-camera-no-evidence">No evidence attachment</span>`}</aside>` : `<aside class="ice-camera-inspector empty"><strong>Select an observation</strong><span>Choose a row to inspect the normalized FLUCK record.</span></aside>`}</div><div class="ice-camera-source-strip"><div><small>CAMERA SOURCE DIRECTORY</small><strong>${Number(camera.stats?.camera_count || cameras.length || 0)} indexed</strong>${Number(camera.stats?.camera_count || cameras.length || 0) <= 1 ? `<span>Only one camera source is present in the current Shadow Haven export.</span>` : `<span>Multiple camera sources are reporting into the FLUCK index.</span>`}</div><div class="ice-camera-source-list">${cameras.slice(0, 6).map((cam) => `<span><b>${escapeHtml(cam.camera_id || "Unknown camera")}</b><small>${Number(cam.events || 0)} events · ${Number(cam.linked || 0)} linked</small></span>`).join("") || `<span><b>No camera feed</b><small>Awaiting next sync</small></span>`}</div></div><footer class="ice-camera-footnote">Source file <code>${escapeHtml(camera.source_file || "profile/profile/FLUCKCamera/camera_events.json")}</code> · read-only federal intelligence surface</footer></section>`; })() : ""}
       ${activeTab === "applications" ? `<section class="ice-applications-desk"><header><div><small>ICE COMMAND / RECRUITMENT</small><h2>Applicant qualification queue</h2><p>Only perfect qualification files reach command review for interview, training, and appointment.</p></div><strong>${applications.filter((item) => !["approved", "denied", "closed", "revoked"].includes(item.status)).length} active</strong></header><div class="ice-application-ledger">${applications.map((item) => `<article><div class="ice-application-identity"><span>${escapeHtml(item.application_number)}</span><h3>${escapeHtml(item.character_name || item.applicant_name)}</h3><p>${escapeHtml(item.applicant_name)} · CIV ${escapeHtml(item.applicant_civ_number || "pending")}</p></div><div class="ice-qualification-score"><small>QUALIFICATION</small><strong>${Number(item.qualification?.score || 0)}<em>/20</em></strong><span>${escapeHtml(humanLabel(item.status))}</span></div><details><summary>Review submitted answers</summary><div>${(item.qualification?.answers || []).map((answer) => `<p><strong>${escapeHtml(answer.question)}</strong><span>${escapeHtml(answer.answer)}</span></p>`).join("")}</div></details><div class="ice-application-actions">${!["approved", "denied", "closed", "revoked"].includes(item.status) ? `<button type="button" class="secondary" data-ice-application-action="review" data-ice-application-id="${item.id}">Open review</button><button type="button" class="secondary" data-ice-application-action="interview" data-ice-application-id="${item.id}">Interview & training</button><button type="button" class="primary" data-ice-application-action="approve" data-ice-application-id="${item.id}">Appoint ICE Agent</button><button type="button" class="danger" data-ice-application-action="deny" data-ice-application-id="${item.id}">Deny</button>` : item.status === "approved" ? `<span>Appointment active · ${escapeHtml(item.reviewer_name || "ICE Command")}</span><button type="button" class="danger" data-ice-application-action="revoke" data-ice-application-id="${item.id}">Revoke ICE Agent</button>` : `<span>Reviewed by ${escapeHtml(item.reviewer_name || "ICE Command")}</span>`}</div></article>`).join("") || `<div class="empty">No qualified ICE Agent applications are awaiting command review.</div>`}</div></section>` : `
       <section class="ice-command-strip"><div><span>Valid citizens</span><strong>${Number(data.stats?.valid_citizens || 0)}</strong></div><button type="button" class="ice-undocumented-trigger" data-ice-undocumented-open><span>Undocumented</span><strong>${Number(data.stats?.undocumented || 0)}</strong><small>Open enforcement roster</small></button><div><span>Open federal cases</span><strong>${Number(data.stats?.open_cases || 0)}</strong></div></section>
-      <section class="ice-search-panel"><header><div><small>NCIC / CITIZENSHIP REGISTRY</small><h2>Status verification</h2></div></header><form id="iceSearchForm"><input name="q" minlength="2" required placeholder="Search name, CIV, or Faircroft passport" /><button class="primary">Run federal check</button></form>
+      <section class="ice-search-panel"><header><div><small>NCIC / CITIZENSHIP REGISTRY</small><h2>Status verification</h2></div></header><form id="iceSearchForm"><input name="q" minlength="2" required placeholder="Search name, CIV, or WRLD Network passport" /><button class="primary">Run federal check</button></form>
         <div class="ice-search-results">${results.map((person) => `<button type="button" data-ice-subject="${person.id}"><span><strong>${escapeHtml(person.name)}</strong><small>CIV ${escapeHtml(person.civ_number || "pending")} · ${escapeHtml(person.passport_number || "No passport")}</small></span><b class="${String(person.citizenship_status).toLowerCase() === "valid citizen" ? "valid" : "warning"}">${escapeHtml(person.citizenship_status)}</b></button>`).join("") || `<div class="empty">Run a federal identity check to review citizenship status.</div>`}</div>
       </section>
       <section class="ice-case-layout">
@@ -4790,7 +4790,7 @@ function renderDepartmentApplicationForm(posting) {
     return `
       <form class="department-application-form bar-exam-form ${isPressExam ? "press-pass-form" : ""} ${isIceExam ? "ice-agent-exam-form" : ""}" data-department-key="${escapeHtml(posting.key)}">
         <div class="application-form-head">
-          <div><p class="eyebrow">${isPressExam ? "Faircroft News Now" : isIceExam ? "Faircroft Immigration & Customs Enforcement" : "Faircroft Bar Association"}</p><h3>${isPressExam ? "Press Pass Examination" : isIceExam ? "ICE Agent Qualification" : "Bar Exam"}</h3><p class="muted small">Answer all ${examQuestions.length} questions. ${isPressExam ? "Eight correct answers are required for Press Pass eligibility." : isIceExam ? "A perfect 20/20 result is required before your file enters the ICE Command interview and training process." : "Your score is delivered privately to the review team."}</p></div>
+          <div><p class="eyebrow">${isPressExam ? "WRLD Network News" : isIceExam ? "WRLD Network Immigration & Customs Enforcement" : "WRLD Network Bar Association"}</p><h3>${isPressExam ? "Press Pass Examination" : isIceExam ? "ICE Agent Qualification" : "Bar Exam"}</h3><p class="muted small">Answer all ${examQuestions.length} questions. ${isPressExam ? "Eight correct answers are required for Press Pass eligibility." : isIceExam ? "A perfect 20/20 result is required before your file enters the ICE Command interview and training process." : "Your score is delivered privately to the review team."}</p></div>
           <span class="pill ${isPressExam ? "red" : "amber"}">${examQuestions.length} Questions</span>
         </div>
         <div class="bar-applicant-grid">
@@ -4870,7 +4870,7 @@ function renderJobs() {
       <div class="recruit-opening-layout">
         <main>
           <section class="recruit-position-intro"><p>ROLE OPPORTUNITY</p><h2>${escapeHtml(selected.badge)}</h2><span>${escapeHtml(selected.requirements)}</span></section>
-          <div class="recruit-facts"><div><small>POSITION</small><strong>${escapeHtml(selected.badge)}</strong></div><div><small>ROLE TRACK</small><strong>${escapeHtml(selected.role_label || humanLabel(selected.role_key))}</strong></div><div><small>REVIEW AUTHORITY</small><strong>${isLegal ? "Faircroft Court" : isPress ? "FNN certification" : "Department command"}</strong></div></div>
+          <div class="recruit-facts"><div><small>POSITION</small><strong>${escapeHtml(selected.badge)}</strong></div><div><small>ROLE TRACK</small><strong>${escapeHtml(selected.role_label || humanLabel(selected.role_key))}</strong></div><div><small>REVIEW AUTHORITY</small><strong>${isLegal ? "WRLD Network Court" : isPress ? "WNN certification" : "Department command"}</strong></div></div>
           <section class="recruit-process"><header><p>SELECTION PROCESS</p><h2>What happens next</h2></header><div><article><span>01</span><strong>Submit</strong><p>Complete the required character-specific application or examination.</p></article><article><span>02</span><strong>Review</strong><p>${isPress ? "Your scored Press Pass examination is evaluated." : isLegal ? "The Judiciary reviews the legal credential packet." : "Command staff reviews experience, availability, and RP readiness."}</p></article><article><span>03</span><strong>Decision</strong><p>Your status and reviewer notes appear in your application file.</p></article></div></section>
           ${selectedApplication ? `<section class="recruit-current-file"><div><small>${escapeHtml(selectedApplication.application_number)}</small><strong>Application on file</strong><span>Submitted ${new Date(selectedApplication.created_at).toLocaleString()}</span></div><em class="${businessStatusClass(selectedApplication.status)}">${humanLabel(selectedApplication.status)}</em></section>` : ""}
         </main>
@@ -4954,7 +4954,7 @@ function renderJobAdvertisement(posting, applications, index, acceptingApplicati
         <div class="department-meta">
           <div><span>Position</span><strong>${escapeHtml(posting.badge)}</strong></div>
           <div><span>Role track</span><strong>${escapeHtml(posting.role_label || humanLabel(posting.role_key))}</strong></div>
-          <div><span>Review</span><strong>${isLegal ? "Faircroft Court" : isPress ? "Automated FNN certification" : "Command staff"}</strong></div>
+          <div><span>Review</span><strong>${isLegal ? "WRLD Network Court" : isPress ? "Automated WNN certification" : "Command staff"}</strong></div>
         </div>
         <div class="department-requirements"><span>What you need</span><p>${escapeHtml(posting.requirements)}</p></div>
         ${latestApplication ? `<div class="department-application-status"><div><p class="eyebrow">${escapeHtml(latestApplication.application_number)}</p><h3>Your application</h3><p class="muted small">Submitted ${new Date(latestApplication.created_at).toLocaleString()}${latestApplication.reviewer_name ? ` / Reviewer ${escapeHtml(latestApplication.reviewer_name)}` : ""}</p></div><span class="pill ${businessStatusClass(latestApplication.status)}">${humanLabel(latestApplication.status)}</span></div>` : ""}
@@ -5280,7 +5280,7 @@ function renderBank() {
       </section>
       <section class="faircroft-credit-card">
         <div class="faircroft-credit-heading">
-          <div><small>FAIRCROFT CREDIT INDEX</small><h3>Your credit standing</h3></div>
+          <div><small>WRLD NETWORK CREDIT INDEX</small><h3>Your credit standing</h3></div>
           <span class="faircroft-credit-status ${credit.synced ? "is-live" : ""}">${credit.synced ? "Updated" : "Pending"}</span>
         </div>
         <div class="faircroft-credit-body">
@@ -5299,7 +5299,7 @@ function renderBank() {
       <section class="faircroft-bank-details">
         <h3>Account details</h3>
         <div>
-          <span><small>Account type</small><strong>Faircroft Game Checking</strong></span>
+          <span><small>Account type</small><strong>WRLD Game Checking</strong></span>
           <span><small>Balance status</small><strong>${data.balance_synced ? "Current" : "Updating"}</strong></span>
           <span><small>Credit monitoring</small><strong>${credit.synced ? "Active" : "Activating"}</strong></span>
           <span><small>Last refreshed</small><strong>${data.balance_synced_at ? escapeHtml(new Date(data.balance_synced_at).toLocaleString()) : "Awaiting update"}</strong></span>
@@ -5381,7 +5381,7 @@ function renderLotteryNumbersWorkspace() {
     ${panel==="tickets"?`<section class="lottery-purchased-board"><header><div><span>YOUR PURCHASED TICKETS</span><h2>Every line. Every result.</h2><p>Weekly and Quick Draw tickets remain here after the drawing, with the official numbers and outcome attached.</p></div><dl><div><dt>ACTIVE</dt><dd>${Number(purchased.active||0)}</dd></div><div><dt>WINNERS</dt><dd>${Number(purchased.winners||0)}</dd></div><div><dt>COMPLETED</dt><dd>${Number(purchased.not_winners||0)}</dd></div></dl></header><div class="lottery-ticket-section"><div class="lottery-ticket-section-title"><span>LIVE FIELD</span><h3>Active tickets</h3><strong>${activeTickets.length}</strong></div>${activeTickets.length?`<div class="lottery-purchased-list">${activeTickets.map(renderLotteryPurchasedTicket).join("")}</div>`:`<div class="lottery-purchased-empty"><i>FC</i><strong>No active tickets</strong><span>Purchase a Weekly Pick 5 or Quick Draw line and it will appear here immediately.</span></div>`}</div><div class="lottery-ticket-section completed"><div class="lottery-ticket-section-title"><span>OFFICIAL ARCHIVE</span><h3>Winners & completed tickets</h3><strong>${completedTickets.length}</strong></div>${completedTickets.length?`<div class="lottery-purchased-list">${completedTickets.map(renderLotteryPurchasedTicket).join("")}</div>`:`<div class="lottery-purchased-empty"><i>00</i><strong>No completed drawings yet</strong><span>After a drawing, each ticket will be permanently marked Winner or Not a Winner here.</span></div>`}</div>${weeklyWinning.length||quickWinning.length?`<aside class="lottery-latest-results"><span>LATEST OFFICIAL RESULTS</span>${weeklyWinning.length?`<div><small>WEEKLY PICK 5</small>${renderLotteryTicketNumbers(weeklyWinning)}</div>`:""}${data.latest_result&&!data.latest_result.winner_user_id&&Number(data.latest_result.rollover_amount||0)>0?`<div class="lottery-rollover-result"><small>NO EXACT MATCH</small><strong>${money(data.latest_result.rollover_amount)} ROLLED OVER</strong></div>`:""}${quickWinning.length?`<div><small>QUICK DRAW</small>${renderLotteryTicketNumbers(quickWinning)}</div>`:""}</aside>`:""}</section>`:""}
     ${panel==="about"?`<section class="lottery-how"><span>OFFICIAL PLAY GUIDE</span><h2>Play from your linked Arma bank.</h2><p>Your latest game-bank snapshot is the available play balance. Weekly draw numbers are generated independently before eligible ticket lines are loaded and matched. If no line matches all five numbers, the unpaid jackpot remains in the pool for the next weekly drawing.</p><dl><div><dt>Weekly ticket</dt><dd>${money(prices.weekly_ticket||0)}</dd></div><div><dt>Quick Pick</dt><dd>5 secure random numbers</dd></div><div><dt>No exact weekly match</dt><dd>Jackpot rolls over</dd></div><div><dt>Quick Draw</dt><dd>${money(quick.price||0)}</dd></div><div><dt>Scratch card</dt><dd>${money(scratch.price||0)}</dd></div><div><dt>Available game balance</dt><dd>${wallet.available == null ? "Awaiting sync" : money(wallet.available)}</dd></div></dl></section>`:""}`;
   return `<main class="fc-lotto lottery-numbers-workspace"><canvas class="fc-lotto-canvas" data-lottery-canvas></canvas><header class="fc-lotto-nav"><div class="fc-lotto-wordmark"><i><b>W</b></i><span><small>WRLD NETWORK</small><strong>LOTTERY LIVE</strong><em>OFFICIAL NUMBER DRAW NETWORK</em></span></div><div class="fc-lotto-onair"><i></i><span>${data.enabled?"ENTRIES OPEN":"ENTRIES PAUSED"}</span><small>${Number(poolState.online_players||0)} verified players online</small></div><nav><button data-refresh-lottery>Sync</button><button data-close-lottery>Exit Lottery</button></nav></header>
-    <section class="lottery-number-hero"><div><span>THE FAIRCROFT WEEKLY</span><h1>YOUR NUMBERS.<br><em>YOUR MOMENT.</em></h1><p>Pick the line. Watch the live pool move. Own every chance you enter.</p></div><div class="lottery-live-jackpot"><small>LIVE ESTIMATED PRIZE</small><strong data-lottery-jackpot data-value="${pool}" data-rate-second="${poolState.enabled?Number(poolState.change_per_second||0):0}">${money(pool)}</strong><span>${Number(poolState.online_players||0)} ONLINE <b>${poolState.enabled?`${Number(poolState.change_per_minute||0)>=0?"+":"-"}${money(Math.abs(Number(poolState.change_per_minute||0)))}/MIN`:"GROWTH PAUSED"}</b></span></div><div class="lottery-wallet-display"><small>AVAILABLE GAME BALANCE</small><strong>${wallet.available == null ? "—" : money(wallet.available)}</strong><span>${wallet.synced_at ? `Bank snapshot ${new Date(wallet.synced_at).toLocaleString()}` : "Awaiting Arma bank sync"}</span></div><div class="lottery-draw-clock"><small>NEXT WEEKLY DRAW</small><strong>${String(days).padStart(2,"0")}D ${String(hours).padStart(2,"0")}H ${String(minutes).padStart(2,"0")}M</strong></div></section>
+    <section class="lottery-number-hero"><div><span>THE WRLD NETWORK WEEKLY</span><h1>YOUR NUMBERS.<br><em>YOUR MOMENT.</em></h1><p>Pick the line. Watch the live pool move. Own every chance you enter.</p></div><div class="lottery-live-jackpot"><small>LIVE ESTIMATED PRIZE</small><strong data-lottery-jackpot data-value="${pool}" data-rate-second="${poolState.enabled?Number(poolState.change_per_second||0):0}">${money(pool)}</strong><span>${Number(poolState.online_players||0)} ONLINE <b>${poolState.enabled?`${Number(poolState.change_per_minute||0)>=0?"+":"-"}${money(Math.abs(Number(poolState.change_per_minute||0)))}/MIN`:"GROWTH PAUSED"}</b></span></div><div class="lottery-wallet-display"><small>AVAILABLE GAME BALANCE</small><strong>${wallet.available == null ? "—" : money(wallet.available)}</strong><span>${wallet.synced_at ? `Bank snapshot ${new Date(wallet.synced_at).toLocaleString()}` : "Awaiting Arma bank sync"}</span></div><div class="lottery-draw-clock"><small>NEXT WEEKLY DRAW</small><strong>${String(days).padStart(2,"0")}D ${String(hours).padStart(2,"0")}H ${String(minutes).padStart(2,"0")}M</strong></div></section>
     <nav class="lottery-game-rail"><button class="${panel==="weekly"?"active":""}" data-lottery-panel="weekly">Weekly Pick 5<small>${money(prices.weekly_ticket||0)} per line</small></button><button class="${panel==="quick"?"active":""}" data-lottery-panel="quick">Quick Draw<small>${money(quick.price||0)} per line</small></button><button class="${panel==="scratch"?"active":""}" data-lottery-panel="scratch">Instant Scratch<small>${cardsRemaining} available</small></button><button class="${panel==="tickets"?"active":""}" data-lottery-panel="tickets">Purchased<small>${purchasedItems.length} saved ticket${purchasedItems.length===1?"":"s"}</small></button><button class="${panel==="about"?"active":""}" data-lottery-panel="about">Wallet & Rules<small>How play works</small></button></nav><div class="lottery-game-deck">${game}</div><footer class="fc-lotto-footer"><span>WRLD LOTTERY COMMISSION</span><i></i><span>NUMBER SELECTIONS ARE ATTACHED TO YOUR VERIFIED CIV RECORD</span></footer></main>`;
 }
 
@@ -7323,7 +7323,7 @@ function renderBankActivityLedger(activity, identitySuffix) {
       <div class="bank-v4-transaction-detail">
         <span><small>Transaction reference</small><strong>${escapeHtml(reference || "Reference pending")}</strong></span>
         <span><small>Entry type</small><strong>${direction === "credit" ? "Deposit / credit" : "Withdrawal / purchase"}</strong></span>
-        <span><small>Processing network</small><strong>Faircroft Bank Bridge</strong></span>
+        <span><small>Processing network</small><strong>WRLD Network Bank Bridge</strong></span>
         <span><small>${completed && !Number.isNaN(completed.getTime()) ? "Settled" : "Current status"}</small><strong>${completed && !Number.isNaN(completed.getTime()) ? escapeHtml(completed.toLocaleString()) : escapeHtml(bankActivityStatusLabel(status))}</strong></span>
         ${transaction.failure_reason ? `<p><strong>Failure notice</strong>${escapeHtml(transaction.failure_reason)}</p>` : ""}
       </div>
@@ -7357,14 +7357,14 @@ function renderBankOnlineV2(data, credit, userName, identitySuffix, creditScore,
     </header>
     <div class="bank-v4-shell">
       <aside class="bank-v4-rail">
-        <p>MY FAIRCROFT</p>
-        <button class="active" type="button" data-bank-section="bankChecking"><span>Checking</span><strong>Faircroft Game Checking</strong><small>&bull;&bull;&bull;&bull; ${identitySuffix}</small><b>${availableBalance}</b></button>
-        <button type="button" data-bank-section="bankCredit"><span>Credit intelligence</span><strong>${credit.synced ? creditRating : "Awaiting sync"}</strong><small>${credit.synced ? `${creditScore} Faircroft Credit Index` : "Reputation network pending"}</small></button>
+        <p>MY WRLD NETWORK</p>
+        <button class="active" type="button" data-bank-section="bankChecking"><span>Checking</span><strong>WRLD Game Checking</strong><small>&bull;&bull;&bull;&bull; ${identitySuffix}</small><b>${availableBalance}</b></button>
+        <button type="button" data-bank-section="bankCredit"><span>Credit intelligence</span><strong>${credit.synced ? creditRating : "Awaiting sync"}</strong><small>${credit.synced ? `${creditScore} WRLD Credit Index` : "Reputation network pending"}</small></button>
         <div class="bank-v4-rail-links"><button type="button" data-bank-section="bankActivity">Account activity <span>&rsaquo;</span></button><button type="button" data-refresh-bank>Refresh accounts <span>&rsaquo;</span></button></div>
         <footer><i></i><div><strong>${data.identity_id ? "Identity verified" : "Link required"}</strong><small>Account ending ${identitySuffix}</small></div></footer>
       </aside>
       <section class="bank-v4-content">
-        <header class="bank-v4-greeting"><div><p>PERSONAL BANKING</p><h1>Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"}, ${escapeHtml(userName)}.</h1><span>Here is your current Faircroft financial position.</span></div><aside><i></i><span><small>GAME-BANK CONNECTION</small><strong>${syncLabel}</strong><em>${refreshedAt}</em></span></aside></header>
+        <header class="bank-v4-greeting"><div><p>PERSONAL BANKING</p><h1>Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"}, ${escapeHtml(userName)}.</h1><span>Here is your current WRLD Network financial position.</span></div><aside><i></i><span><small>GAME-BANK CONNECTION</small><strong>${syncLabel}</strong><em>${refreshedAt}</em></span></aside></header>
         <section class="bank-v4-account" id="bankChecking">
           <div class="bank-v4-balance-panel">
             <header><div><p>WRLD GAME CHECKING</p><h2>Primary checking</h2></div><span>${data.balance_synced ? "Available" : "Pending"}</span></header>
@@ -7374,13 +7374,13 @@ function renderBankOnlineV2(data, credit, userName, identitySuffix, creditScore,
           </div>
           <aside class="bank-v4-card-panel">
             <div><p>FAIRCROFT DEBIT</p><span>Connected to primary checking</span></div>
-            <article class="bank-v3-card bank-v4-card"><header><span>FC</span><small>FAIRCROFT FINANCIAL<br>PRIVATE CLIENT</small><i></i></header><div class="bank-v3-chip"><i></i><i></i><i></i></div><strong>&bull;&bull;&bull;&bull; &nbsp; &bull;&bull;&bull;&bull; &nbsp; ${identitySuffix.slice(0,4)} &nbsp; ${identitySuffix.slice(-4)}</strong><footer><span><small>RESIDENT</small><b>${escapeHtml(userName)}</b></span><span><small>STATUS</small><b>${data.balance_synced ? "ACTIVE" : "PENDING"}</b></span></footer></article>
+            <article class="bank-v3-card bank-v4-card"><header><span>FC</span><small>WRLD NETWORK FINANCIAL<br>PRIVATE CLIENT</small><i></i></header><div class="bank-v3-chip"><i></i><i></i><i></i></div><strong>&bull;&bull;&bull;&bull; &nbsp; &bull;&bull;&bull;&bull; &nbsp; ${identitySuffix.slice(0,4)} &nbsp; ${identitySuffix.slice(-4)}</strong><footer><span><small>RESIDENT</small><b>${escapeHtml(userName)}</b></span><span><small>STATUS</small><b>${data.balance_synced ? "ACTIVE" : "PENDING"}</b></span></footer></article>
             <footer><span><i></i>Digital card active</span><button type="button" data-bank-section="bankActivity">Card details &rsaquo;</button></footer>
           </aside>
         </section>
         <section class="bank-v4-lower">
           ${renderBankActivityLedger(data.activity || {}, identitySuffix)}
-          <aside class="bank-v4-credit-summary" id="bankCredit"><header><p>FAIRCROFT CREDIT INDEX</p><span>${credit.synced ? "Current" : "Pending"}</span></header><div><strong>${creditScore}</strong><span><b>${creditRating}</b><small>${credit.synced && pointsToNext ? `${pointsToNext} points to your next credit tier` : credit.synced ? "Highest tracked tier reached" : "Waiting for reputation sync"}</small></span></div><div class="bank-v4-credit-track"><i style="width:${creditProgress}%"></i></div><footer><span>300</span><span>850</span></footer><button type="button" data-bank-section="bankCredit">Review credit profile &rsaquo;</button></aside>
+          <aside class="bank-v4-credit-summary" id="bankCredit"><header><p>WRLD NETWORK CREDIT INDEX</p><span>${credit.synced ? "Current" : "Pending"}</span></header><div><strong>${creditScore}</strong><span><b>${creditRating}</b><small>${credit.synced && pointsToNext ? `${pointsToNext} points to your next credit tier` : credit.synced ? "Highest tracked tier reached" : "Waiting for reputation sync"}</small></span></div><div class="bank-v4-credit-track"><i style="width:${creditProgress}%"></i></div><footer><span>300</span><span>850</span></footer><button type="button" data-bank-section="bankCredit">Review credit profile &rsaquo;</button></aside>
         </section>
         <section class="bank-v4-credit-detail"><div><p>FINANCIAL WELLNESS</p><h2>Make your standing easier to understand.</h2><span>${credit.synced ? "Your credit profile is calculated from synchronized financial reputation and verified Faircroft records." : "Your credit profile will activate after the next verified reputation snapshot."}</span></div><dl><div><dt>Liquidity</dt><dd>${data.balance_synced ? "Available" : "Unverified"}</dd></div><div><dt>Account security</dt><dd>${data.identity_id ? "Identity confirmed" : "Action required"}</dd></div><div><dt>Credit trajectory</dt><dd>${creditRating}</dd></div></dl></section>
       </section>
@@ -7400,20 +7400,20 @@ function renderBankOnlineV2(data, credit, userName, identitySuffix, creditScore,
         </div>
         <aside class="bank-v3-card-stage">
           <div class="bank-v3-orbit"><i></i><i></i><i></i></div>
-          <article class="bank-v3-card"><header><span>FC</span><small>FAIRCROFT FINANCIAL<br>PRIVATE CLIENT</small><i></i></header><div class="bank-v3-chip"><i></i><i></i><i></i></div><strong>•••• &nbsp; •••• &nbsp; ${identitySuffix.slice(0,4)} &nbsp; ${identitySuffix.slice(-4)}</strong><footer><span><small>RESIDENT</small><b>${escapeHtml(userName)}</b></span><span><small>STATUS</small><b>${data.balance_synced ? "ACTIVE" : "PENDING"}</b></span></footer></article>
-          <p><i></i> Digitally secured by your verified Faircroft identity</p>
+          <article class="bank-v3-card"><header><span>FC</span><small>WRLD NETWORK FINANCIAL<br>PRIVATE CLIENT</small><i></i></header><div class="bank-v3-chip"><i></i><i></i><i></i></div><strong>•••• &nbsp; •••• &nbsp; ${identitySuffix.slice(0,4)} &nbsp; ${identitySuffix.slice(-4)}</strong><footer><span><small>RESIDENT</small><b>${escapeHtml(userName)}</b></span><span><small>STATUS</small><b>${data.balance_synced ? "ACTIVE" : "PENDING"}</b></span></footer></article>
+          <p><i></i> Digitally secured by your verified WRLD Network identity</p>
         </aside>
       </section>
       <section class="bank-v3-intelligence">
-        <header><div><span>FINANCIAL POSITION</span><h2>Your money, translated.</h2></div><p>Clear signals from the systems that shape your Faircroft financial profile.</p></header>
+        <header><div><span>FINANCIAL POSITION</span><h2>Your money, translated.</h2></div><p>Clear signals from the systems that shape your WRLD Network financial profile.</p></header>
         <div class="bank-v3-signal-line">
           <article><span>01</span><div><small>LIQUIDITY</small><strong>${data.balance_synced ? "Fully available" : "Not yet verified"}</strong><p>${data.balance_synced ? `${availableBalance} is currently recognized by the game-bank connection.` : "Complete an authoritative game-bank synchronization to establish liquidity."}</p></div><i class="${data.balance_synced ? "positive" : ""}"></i></article>
-          <article><span>02</span><div><small>CREDIT TRAJECTORY</small><strong>${creditRating}</strong><p>${credit.synced ? `${pointsToNext ? `${pointsToNext} points separate you from the next Faircroft credit threshold.` : "You have reached the highest tracked credit threshold."}` : "Reputation intelligence is awaiting synchronization."}</p></div><i class="${credit.synced ? "positive" : ""}"></i></article>
+          <article><span>02</span><div><small>CREDIT TRAJECTORY</small><strong>${creditRating}</strong><p>${credit.synced ? `${pointsToNext ? `${pointsToNext} points separate you from the next WRLD Network credit threshold.` : "You have reached the highest tracked credit threshold."}` : "Reputation intelligence is awaiting synchronization."}</p></div><i class="${credit.synced ? "positive" : ""}"></i></article>
           <article><span>03</span><div><small>ACCOUNT INTEGRITY</small><strong>${data.identity_id ? "Identity confirmed" : "Action required"}</strong><p>${data.identity_id ? `Account reference ${identitySuffix} is attached to your verified resident record.` : "Link your in-game identity to protect and synchronize this relationship."}</p></div><i class="${data.identity_id ? "positive" : ""}"></i></article>
         </div>
       </section>
-      <section class="bank-v3-ledger" id="bankActivity"><header><div><span>RELATIONSHIP ACTIVITY</span><h2>Account record</h2></div><button type="button" data-refresh-bank>Refresh ledger</button></header><div class="bank-v3-ledger-head"><span>DATE</span><span>EVENT</span><span>NETWORK</span><span>VALUE</span></div><article><time>${data.balance_synced_at ? escapeHtml(new Date(data.balance_synced_at).toLocaleDateString()) : "Pending"}</time><div><i></i><span><strong>Authoritative balance synchronized</strong><small>Verified account snapshot · •••• ${identitySuffix}</small></span></div><span>Shadow Haven</span><b>${availableBalance}</b></article><footer>Only authoritative game-bank events and verified Faircroft records appear here.</footer></section>
-      <section class="bank-v3-credit" id="bankCredit"><div class="bank-v3-credit-copy"><span>FAIRCROFT CREDIT INTELLIGENCE</span><h2>Know where you stand.<br><strong>Know what comes next.</strong></h2><p>${credit.synced ? "Your standing is calculated from synchronized financial reputation and established Faircroft records." : "Your credit intelligence will activate when the reputation network reports its next verified snapshot."}</p><div><span>300</span><i><b style="width:${creditProgress}%"></b></i><span>850</span></div></div><aside><small>CURRENT INDEX</small><strong>${creditScore}</strong><span>${creditRating}</span><em>${credit.synced && pointsToNext ? `${pointsToNext} points to next threshold` : credit.synced ? "Top tracked threshold" : "Sync pending"}</em></aside></section>
+      <section class="bank-v3-ledger" id="bankActivity"><header><div><span>RELATIONSHIP ACTIVITY</span><h2>Account record</h2></div><button type="button" data-refresh-bank>Refresh ledger</button></header><div class="bank-v3-ledger-head"><span>DATE</span><span>EVENT</span><span>NETWORK</span><span>VALUE</span></div><article><time>${data.balance_synced_at ? escapeHtml(new Date(data.balance_synced_at).toLocaleDateString()) : "Pending"}</time><div><i></i><span><strong>Authoritative balance synchronized</strong><small>Verified account snapshot · •••• ${identitySuffix}</small></span></div><span>Shadow Haven</span><b>${availableBalance}</b></article><footer>Only authoritative game-bank events and verified WRLD Network records appear here.</footer></section>
+      <section class="bank-v3-credit" id="bankCredit"><div class="bank-v3-credit-copy"><span>WRLD NETWORK CREDIT INTELLIGENCE</span><h2>Know where you stand.<br><strong>Know what comes next.</strong></h2><p>${credit.synced ? "Your standing is calculated from synchronized financial reputation and established WRLD Network records." : "Your credit intelligence will activate when the reputation network reports its next verified snapshot."}</p><div><span>300</span><i><b style="width:${creditProgress}%"></b></i><span>850</span></div></div><aside><small>CURRENT INDEX</small><strong>${creditScore}</strong><span>${creditRating}</span><em>${credit.synced && pointsToNext ? `${pointsToNext} points to next threshold` : credit.synced ? "Top tracked threshold" : "Sync pending"}</em></aside></section>
       <footer class="bank-v3-assurance"><div class="bank-v3-seal"><span>WN</span><i></i></div><div><small>OFFICIAL COVERAGE AUTHORITY</small><strong>WRLD Network Insurance Corporation</strong><p>Eligible resident deposit relationships are protected under applicable WRLD Network financial rules. Coverage applies only to balances recognized by the authoritative game banking system.</p></div><span><i></i> Protected relationship</span></footer>
     </section>
   </main>`;
@@ -7421,11 +7421,11 @@ function renderBankOnlineV2(data, credit, userName, identitySuffix, creditScore,
     <header class="bank-workspace-topbar"><div class="bank-workspace-brand"><span class="bank-workspace-mark">WN</span><div><strong>WRLD Financial</strong><small>Personal banking</small></div></div><nav class="bank-global-nav"><button class="active" data-bank-section="bankChecking">Accounts</button><button data-bank-section="bankActivity">Activity</button><button data-bank-section="bankCredit">Credit</button></nav><div class="bank-workspace-actions"><span class="bank-secure-session"><i></i> Protected session</span><button class="secondary" type="button" data-refresh-bank>Refresh</button><button class="primary" type="button" data-close-bank>Sign out</button></div></header>
     <section class="bank-dashboard"><header class="bank-welcome"><div><p class="eyebrow">Personal banking</p><h1>Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"}, ${escapeHtml(userName)}.</h1><p>Manage your Faircroft checking and credit profile.</p></div><div class="bank-sync-state ${data.balance_synced ? "is-live" : ""}"><i></i><span><small>Game-bank connection</small><strong>${syncLabel}</strong></span></div></header>
       <section class="bank-online-shell">
-        <aside class="bank-account-rail"><p>MY ACCOUNTS</p><button class="active" type="button" data-bank-section="bankChecking"><span>CHECKING</span><strong>Faircroft Game Checking</strong><small>•••• ${identitySuffix}</small><em>${data.balance_synced ? money(data.balance) : "Sync pending"}</em></button><button type="button" data-bank-section="bankCredit"><span>CREDIT & INSIGHTS</span><strong>Faircroft Credit Index</strong><small>${credit.synced ? `${creditScore} · ${creditRating}` : "Reputation sync pending"}</small></button><div class="bank-rail-help"><strong>Account support</strong><p>Your Faircroft identity secures this profile.</p><span><i></i>${data.identity_id ? "Identity verified" : "Link required"}</span></div></aside>
+        <aside class="bank-account-rail"><p>MY ACCOUNTS</p><button class="active" type="button" data-bank-section="bankChecking"><span>CHECKING</span><strong>WRLD Game Checking</strong><small>•••• ${identitySuffix}</small><em>${data.balance_synced ? money(data.balance) : "Sync pending"}</em></button><button type="button" data-bank-section="bankCredit"><span>CREDIT & INSIGHTS</span><strong>WRLD Credit Index</strong><small>${credit.synced ? `${creditScore} · ${creditRating}` : "Reputation sync pending"}</small></button><div class="bank-rail-help"><strong>Account support</strong><p>Your WRLD Network identity secures this profile.</p><span><i></i>${data.identity_id ? "Identity verified" : "Link required"}</span></div></aside>
         <div class="bank-online-main">
           <section class="bank-checking-view" id="bankChecking"><header><div><p>WRLD GAME CHECKING</p><h2>Available balance</h2></div><span>${data.balance_synced ? "ACCOUNT CURRENT" : "UPDATE PENDING"}</span></header><div class="bank-primary-balance"><strong>${data.balance_synced ? money(data.balance) : "Awaiting sync"}</strong><small>Available now</small></div><nav class="bank-quick-actions"><button type="button" data-refresh-bank><span>↻</span><strong>Refresh balance</strong><small>Request latest sync</small></button><button type="button" data-bank-section="bankActivity"><span>≡</span><strong>Account activity</strong><small>Review banking records</small></button><button type="button" data-bank-section="bankCredit"><span>↗</span><strong>Credit insights</strong><small>Review your score</small></button></nav><div class="bank-account-meta"><span><small>Account number</small><strong>•••• ${identitySuffix}</strong></span><span><small>Account status</small><strong>${data.balance_synced ? "Open and current" : "Synchronization pending"}</strong></span><span><small>Last updated</small><strong>${refreshedAt}</strong></span></div></section>
-          <section class="bank-activity-view" id="bankActivity"><header><div><p>ACCOUNT ACTIVITY</p><h2>Recent banking activity</h2></div><button class="text-button" type="button" data-refresh-bank>Refresh activity</button></header><div class="bank-activity-head"><span>DATE</span><span>DESCRIPTION</span><span>TYPE</span><span>AMOUNT</span></div><article><time>${data.balance_synced_at ? escapeHtml(new Date(data.balance_synced_at).toLocaleDateString()) : "Pending"}</time><div><strong>Authoritative game-bank synchronization</strong><small>Shadow Haven financial network · •••• ${identitySuffix}</small></div><span>Balance update</span><b>${data.balance_synced ? money(data.balance) : "Pending"}</b></article><footer>Only verified Faircroft banking records appear in this activity ledger.</footer></section>
-          <section class="bank-credit-view" id="bankCredit"><header><div><p>FAIRCROFT CREDIT INDEX</p><h2>Your credit profile</h2></div><strong>${credit.synced ? "CURRENT" : "PENDING"}</strong></header><div class="bank-credit-scoreline"><div><small>CURRENT SCORE</small><strong>${creditScore}</strong><span>out of 850</span></div><div><small>CREDIT STANDING</small><strong>${creditRating}</strong><p>${credit.synced ? "Calculated from established in-game financial reputation and synchronized Faircroft records." : "Your profile will appear after the next reputation synchronization."}</p></div></div><div class="bank-credit-track"><span>300</span><i><b style="width:${creditProgress}%"></b></i><span>850</span></div></section>
+          <section class="bank-activity-view" id="bankActivity"><header><div><p>ACCOUNT ACTIVITY</p><h2>Recent banking activity</h2></div><button class="text-button" type="button" data-refresh-bank>Refresh activity</button></header><div class="bank-activity-head"><span>DATE</span><span>DESCRIPTION</span><span>TYPE</span><span>AMOUNT</span></div><article><time>${data.balance_synced_at ? escapeHtml(new Date(data.balance_synced_at).toLocaleDateString()) : "Pending"}</time><div><strong>Authoritative game-bank synchronization</strong><small>Shadow Haven financial network · •••• ${identitySuffix}</small></div><span>Balance update</span><b>${data.balance_synced ? money(data.balance) : "Pending"}</b></article><footer>Only verified WRLD Network banking records appear in this activity ledger.</footer></section>
+          <section class="bank-credit-view" id="bankCredit"><header><div><p>WRLD NETWORK CREDIT INDEX</p><h2>Your credit profile</h2></div><strong>${credit.synced ? "CURRENT" : "PENDING"}</strong></header><div class="bank-credit-scoreline"><div><small>CURRENT SCORE</small><strong>${creditScore}</strong><span>out of 850</span></div><div><small>CREDIT STANDING</small><strong>${creditRating}</strong><p>${credit.synced ? "Calculated from established in-game financial reputation and synchronized WRLD Network records." : "Your profile will appear after the next reputation synchronization."}</p></div></div><div class="bank-credit-track"><span>300</span><i><b style="width:${creditProgress}%"></b></i><span>850</span></div></section>
           <footer class="bank-legal-footer"><div class="bank-fcic-seal">WNIC</div><div><strong>WRLD Network Insurance Corporation</strong><p>Eligible resident deposit accounts are protected under applicable WRLD Network financial rules. Coverage applies only to balances recognized by the authoritative in-game banking system.</p><small>WRLD Financial services and displayed values represent in-game roleplay records.</small></div></footer>
         </div>
       </section>
@@ -7467,7 +7467,7 @@ function renderBankWorkspace() {
           <div>
             <p class="eyebrow">Personal financial overview</p>
             <h1>Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"}, ${escapeHtml(userName)}.</h1>
-            <p>Your in-game finances and Faircroft credit profile in one secure workspace.</p>
+            <p>Your in-game finances and WRLD Network credit profile in one secure workspace.</p>
           </div>
           <div class="bank-sync-state ${data.balance_synced ? "is-live" : ""}">
             <i></i><span><small>Game-bank connection</small><strong>${syncLabel}</strong></span>
@@ -7477,7 +7477,7 @@ function renderBankWorkspace() {
         <section class="bank-dashboard-grid">
           <article class="bank-balance-panel">
             <div class="bank-panel-heading">
-              <span><small>Primary account</small><strong>Faircroft Game Checking</strong></span>
+              <span><small>Primary account</small><strong>WRLD Game Checking</strong></span>
               <em>${data.balance_synced ? "AVAILABLE" : "UPDATING"}</em>
             </div>
             <div class="bank-balance-amount">
@@ -7493,7 +7493,7 @@ function renderBankWorkspace() {
 
           <article class="bank-credit-panel">
             <div class="bank-panel-heading">
-              <span><small>Faircroft Credit Index</small><strong>In-game credit profile</strong></span>
+              <span><small>WRLD Credit Index</small><strong>In-game credit profile</strong></span>
               <em class="${credit.synced ? "is-live" : ""}">${credit.synced ? "CURRENT" : "PENDING"}</em>
             </div>
             <div class="bank-credit-overview">
@@ -7504,7 +7504,7 @@ function renderBankWorkspace() {
                 <small>Credit standing</small>
                 <strong>${creditRating}</strong>
                 <p>${credit.synced
-                  ? "Calculated from your established in-game financial reputation and synchronized Faircroft records."
+                  ? "Calculated from your established in-game financial reputation and synchronized WRLD Network records."
                   : "Your credit profile will appear after the next reputation synchronization."}</p>
                 <div class="bank-credit-range"><span>300</span><i><b style="width:${creditProgress}%"></b></i><span>850</span></div>
               </div>
@@ -7517,7 +7517,7 @@ function renderBankWorkspace() {
             <header><div><p class="eyebrow">Account health</p><h2>Everything at a glance</h2></div><span>${data.balance_synced && credit.synced ? "All systems current" : "Update in progress"}</span></header>
             <div>
               <span><i class="${data.balance_synced ? "ok" : ""}"></i><small>Checking account</small><strong>${data.balance_synced ? "Connected to game bank" : "Awaiting authoritative balance"}</strong></span>
-              <span><i class="${credit.synced ? "ok" : ""}"></i><small>Credit monitoring</small><strong>${credit.synced ? "Faircroft Credit Index active" : "Reputation sync pending"}</strong></span>
+              <span><i class="${credit.synced ? "ok" : ""}"></i><small>Credit monitoring</small><strong>${credit.synced ? "WRLD Credit Index active" : "Reputation sync pending"}</strong></span>
               <span><i class="${data.identity_id ? "ok" : ""}"></i><small>Identity connection</small><strong>${data.identity_id ? `Verified •••• ${identitySuffix}` : "Arma identity not linked"}</strong></span>
             </div>
           </article>
@@ -7527,7 +7527,7 @@ function renderBankWorkspace() {
             <div>
               <p class="eyebrow">Official coverage notice</p>
               <h2>WRLD Network Insurance Corporation</h2>
-              <p>Eligible resident deposit accounts are protected under applicable Faircroft financial rules. FCIC coverage applies only to balances recognized by the authoritative in-game banking system.</p>
+              <p>Eligible resident deposit accounts are protected under applicable WRLD Network financial rules. WNIC coverage applies only to balances recognized by the authoritative in-game banking system.</p>
               <small>WRLD Financial is a roleplay financial service. The displayed balance and credit index represent in-game records and have no real-world monetary value.</small>
             </div>
           </aside>
@@ -13899,7 +13899,7 @@ const ADMIN_TOOL_NAV = [
   ["gang-settings", "Gang Settings", "20"], ["dmv-settings", "DMV Settings", "21"], ["mdt-settings", "MDT Settings", "22"],
   ["court-settings", "Court Settings", "23"], ["ice-settings", "ICE Settings", "24"], ["admin-2fa", "Admin 2FA", "25"],
   ["autopilot", "Auto Pilot", "26"], ["system-update", "System Update", "27"], ["audit", "Activity Log", "28"],
-  ["policy-settings", "Policy Settings", "29"], ["fnn-settings", "FNN Settings", "30"], ["settings", "Settings", "31"],
+  ["policy-settings", "Policy Settings", "29"], ["fnn-settings", "WNN Settings", "30"], ["settings", "Settings", "31"],
   ["account-deletion", "Account Deletion", "32"],
 ];
 
@@ -13942,7 +13942,7 @@ function renderDevWorkspace() {
     "admin-2fa": ["Admin 2FA", "Issue single-use authorization for permanent CAD and Arma enforcement"],
     autopilot: ["Auto Pilot", "Control automated civilian account verification"],
     "system-update": ["System Update", "Publish and control Faircroft limited-service mode"],
-    "fnn-settings": ["FNN Settings", "Control newsroom publishing and Press Pass capacity"],
+    "fnn-settings": ["WNN Settings", "Control newsroom publishing and Press Pass capacity"],
     "policy-settings": ["Policy Settings", "Monitor required EULA, Terms, acceptable-use, and privacy acceptance"],
     "gang-settings": ["Gang Settings", "Govern organizations, leaders, rosters, and recruitment PINs"],
     "market-settings": ["FCX Exchange Connection", "Authenticated read-only connection to the standalone FCX service"],
@@ -15428,7 +15428,7 @@ function renderDevTools() {
     const pressMembers = fnn.press_members || [];
     const remaining = Math.max(0, Number(fnn.press_pass_limit || 0) - Number(fnn.active_press_passes || 0));
     return `<div class="stack dev-fnn-settings-view">
-      <div class="dev-view-intro"><div><span>FAIRCROFT NEWS NOW CONTROL</span><h2>FNN Settings</h2><p>Manage newsroom publishing and automated Press Pass certification.</p></div><strong>${Number(fnn.issued_press_passes ?? fnn.active_press_passes ?? 0)} / ${Number(fnn.press_pass_limit || 0)} ISSUED</strong></div>
+      <div class="dev-view-intro"><div><span>WRLD NETWORK NEWS CONTROL</span><h2>WNN Settings</h2><p>Manage newsroom publishing and automated Press Pass certification.</p></div><strong>${Number(fnn.issued_press_passes ?? fnn.active_press_passes ?? 0)} / ${Number(fnn.press_pass_limit || 0)} ISSUED</strong></div>
       <section class="dev-card dev-fnn-pass-control">
         <div><p class="eyebrow">Automated credentialing</p><h2>Press Pass Capacity</h2><p>Applicants who score at least 8 of 10 are automatically issued a Press Pass while capacity remains. Passing applicants are waitlisted when the limit is full.</p></div>
         <div class="dev-metrics">
@@ -15439,18 +15439,18 @@ function renderDevTools() {
         <form id="devFnnSettingsForm" class="dev-fnn-settings-form">
           <label>Maximum Press Passes<input name="press_pass_limit" type="number" min="0" max="500" step="1" value="${Number(fnn.press_pass_limit || 0)}" required /><small>Set 0 to pause automatic Press Pass issuance.</small></label>
           <fieldset class="fnn-autopilot-fieldset"><legend>News Cycle Autopilot</legend><label class="fnn-autopilot-toggle"><span><strong>Automatic editions</strong><small>Generate and publish at both scheduled newsroom cycles.</small></span><input name="autopilot_enabled" type="checkbox" ${fnn.autopilot_enabled ? "checked" : ""} /></label><div><label>Morning edition<input name="morning_time" type="time" value="${escapeHtml(fnn.morning_time || "05:00")}" required /></label><label>Evening edition<input name="evening_time" type="time" value="${escapeHtml(fnn.evening_time || "17:00")}" required /></label><label>Newsroom timezone<input name="timezone" value="${escapeHtml(fnn.timezone || "America/New_York")}" required /></label></div><p>Default cycle: 5:00 AM and 5:00 PM. Last completed run: <strong>${escapeHtml(fnn.last_cycle || "No automatic cycle yet")}</strong></p></fieldset>
-          <button class="primary" type="submit">Save FNN settings</button>
+          <button class="primary" type="submit">Save WNN settings</button>
         </form>
       </section>
       <section class="dev-card fnn-press-directory">
-        <header><div><p class="eyebrow">Newsroom credentials</p><h2>Press Team Directory</h2><p>Accounts currently holding the Press role and authorized to use the FNN Press Desk.</p></div><strong>${pressMembers.length} ACTIVE</strong></header>
+        <header><div><p class="eyebrow">Newsroom credentials</p><h2>Press Team Directory</h2><p>Accounts currently holding the Press role and authorized to use the WNN Press Desk.</p></div><strong>${pressMembers.length} ACTIVE</strong></header>
         <div class="fnn-press-table">
           <div class="fnn-press-table-head"><span>Press member</span><span>Civilian record</span><span>Account status</span><span>Game link</span><span></span></div>
           ${pressMembers.map((member) => { const suspended = member.press_pass_status === "suspended"; return `<div class="fnn-press-member"><span><strong>${escapeHtml(member.name)}</strong><small>${escapeHtml(member.email)}</small></span><span><strong>CIV ${escapeHtml(member.civ_number || "pending")}</strong><small>${suspended ? escapeHtml(member.press_pass_reason || "Press Pass suspended") : "Press credential holder"}</small></span><span class="${suspended ? "warning" : member.verified ? "valid" : "warning"}">${suspended ? "Suspended" : member.verified ? "Verified" : "Pending verification"}</span><span class="${member.arma_linked ? "valid" : "warning"}">${member.arma_linked ? "Arma linked" : "Not linked"}</span><span class="fnn-press-actions"><button class="secondary" type="button" data-dev-account="${member.id}">Record</button>${suspended ? `<button class="secondary" type="button" data-press-pass-action="reinstate" data-member-id="${member.id}" data-member-name="${escapeHtml(member.name)}">Reinstate</button>` : `<button class="secondary" type="button" data-press-pass-action="suspend" data-member-id="${member.id}" data-member-name="${escapeHtml(member.name)}">Suspend</button>`}<button class="danger" type="button" data-press-pass-action="revoke" data-member-id="${member.id}" data-member-name="${escapeHtml(member.name)}">Revoke</button></span></div>`; }).join("") || `<div class="fnn-press-empty"><strong>No Press roles assigned</strong><span>Press Pass holders will appear here as soon as the role is issued.</span></div>`}
         </div>
       </section>
       <section class="dev-card dev-fnn-control">
-        <div><p class="eyebrow">Newsroom publishing</p><h2>Faircroft News Now Edition</h2><p class="muted">Generate or replace today's public edition from eligible CAD, court, citation, criminal, and Press Desk records.</p></div>
+        <div><p class="eyebrow">Newsroom publishing</p><h2>WRLD Network News Edition</h2><p class="muted">Generate or replace today's public edition from eligible CAD, court, citation, criminal, and Press Desk records.</p></div>
         <button class="danger" type="button" data-dev-generate-fnn>Regenerate today's edition</button>
       </section>
       ${renderFnnContentControl(fnn)}
@@ -17112,7 +17112,7 @@ function bindDevWorkspace() {
   });
   $("#devLotterySettingsForm")?.addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget;const body=Object.fromEntries(new FormData(form));body.enabled=form.enabled.checked;body.scratch_enabled=form.scratch_enabled.checked;body.quick_draw_enabled=form.quick_draw_enabled.checked;try{await api("/api/dev-tools/lottery/settings",{method:"PATCH",body});toast("Lottery governance saved");await refreshDevTools();}catch(error){toast(error.message);}});
   $("#devLotteryPlayerPoolForm")?.addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget;const body=Object.fromEntries(new FormData(form));body.enabled=form.enabled.checked;try{const result=await api("/api/dev-tools/lottery/player-pool",{method:"PATCH",body});const pool=result.player_pool||{};toast(`Player pool rate saved · ${Number(pool.online_players||0)} online · ${Number(pool.change_per_minute||0)>=0?"+":"−"}${money(Math.abs(Number(pool.change_per_minute||0)))}/min`);await refreshDevTools();}catch(error){toast(error.message);}});
-  $("#devLotteryFundsForm")?.addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget;const body=Object.fromEntries(new FormData(form));if(!confirm(`Add ${money(Number(body.amount||0))} to the active Faircroft Lottery prize fund?`))return;try{await api("/api/dev-tools/lottery/funds",{method:"POST",body});toast(`${money(Number(body.amount||0))} added to the lottery fund`);await refreshDevTools();}catch(error){toast(error.message);}});
+  $("#devLotteryFundsForm")?.addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget;const body=Object.fromEntries(new FormData(form));if(!confirm(`Add ${money(Number(body.amount||0))} to the active WRLD Network Lottery prize fund?`))return;try{await api("/api/dev-tools/lottery/funds",{method:"POST",body});toast(`${money(Number(body.amount||0))} added to the lottery fund`);await refreshDevTools();}catch(error){toast(error.message);}});
   $("#devLotteryPrizeForm")?.addEventListener("submit",async event=>{event.preventDefault();const body=Object.fromEntries(new FormData(event.currentTarget));try{await api("/api/dev-tools/lottery/prizes",{method:"POST",body});toast("Special prize sealed for the next drawing");await refreshDevTools();}catch(error){toast(error.message);}});
   $$('[data-lottery-prize-action]').forEach(button=>button.addEventListener("click",async()=>{const action=button.dataset.lotteryPrizeAction;if(action==="delete"&&!confirm("Permanently delete this unawarded special prize?"))return;try{await api(`/api/dev-tools/lottery/prizes/${button.dataset.prizeId}`,{method:"PATCH",body:{action}});toast("Special-prize vault updated");await refreshDevTools();}catch(error){toast(error.message);}}));
   $$('[data-lottery-review]').forEach(button=>button.addEventListener("click",async()=>{let reason="";if(button.dataset.action==="flag"||button.dataset.action==="exclude")reason=prompt("Document the integrity reason for this action:")||"";if((button.dataset.action==="flag"||button.dataset.action==="exclude")&&!reason)return;try{await api(`/api/dev-tools/lottery/entries/${button.dataset.lotteryReview}/review`,{method:"PATCH",body:{action:button.dataset.action,reason}});toast("Lottery entry review updated");await refreshDevTools();}catch(error){toast(error.message);}}));
@@ -17724,7 +17724,7 @@ function renderFineSettlement(embedded = false) {
             ${["awaiting_codex", "needs_review"].includes(batch.status) ? `<button type="button" data-tax-verify="${batch.id}">Verify synced tax balances</button>` : ""}
           </article>`).join("") || `<div class="empty">No business tax settlement batches.</div>`}
       </section>
-      <section class="profile-link-card tax-issuance-flow"><div><p class="eyebrow">Resident payment route</p><h3>Issue the bill. MyFaircroft handles payment.</h3><p class="muted">Once issued, the business owner receives a notification and the full balance appears under MyFaircroft → Taxes. Staff collects the in-game payment, then provides one unused four-digit receipt PIN. Verification closes the bill and adds the tax receipt to the Faircroft Lottery fund.</p></div><ol><li><strong>01 · Issue</strong><span>Assess accrued tax above.</span></li><li><strong>02 · Notify</strong><span>The bill appears in MyFaircroft.</span></li><li><strong>03 · Verify</strong><span>The resident enters the receipt PIN.</span></li><li><strong>04 · Fund</strong><span>Paid taxes grow the lottery pool.</span></li></ol></section>
+      <section class="profile-link-card tax-issuance-flow"><div><p class="eyebrow">Resident payment route</p><h3>Issue the bill. My WRLD Network handles payment.</h3><p class="muted">Once issued, the business owner receives a notification and the full balance appears under My WRLD Network → Taxes. Staff collects the in-game payment, then provides one unused four-digit receipt PIN. Verification closes the bill and adds the tax receipt to the WRLD Network Lottery fund.</p></div><ol><li><strong>01 · Issue</strong><span>Assess accrued tax above.</span></li><li><strong>02 · Notify</strong><span>The bill appears in My WRLD Network.</span></li><li><strong>03 · Verify</strong><span>The resident enters the receipt PIN.</span></li><li><strong>04 · Fund</strong><span>Paid taxes grow the lottery pool.</span></li></ol></section>
       </div>
       ${state.fineSettlementPrompt ? `<section class="profile-link-card"><h3>Codex processing request</h3><textarea id="fine-codex-prompt" rows="8" readonly>${escapeHtml(state.fineSettlementPrompt)}</textarea><button type="button" data-copy-fine-prompt>Copy for Codex</button></section>` : ""}
     </div>`;
@@ -18015,7 +18015,7 @@ function bindDevTools() {
     } catch (error) { toast(error.message); }
   }));
   $("[data-dev-generate-fnn]")?.addEventListener("click", async (event) => {
-    if (!window.confirm("Replace today’s FNN edition? This will publish a newly generated edition to every reader.")) return;
+    if (!window.confirm("Replace today’s WNN edition? This will publish a newly generated edition to every reader.")) return;
     const button = event.currentTarget;
     button.disabled = true;
     state.fnnConsole = [];
@@ -18033,8 +18033,8 @@ function bindDevTools() {
         toast("The Gemini newsroom connection is not configured");
       } else {
         pushOperationsLog("fnn", "Draft returned. Validating headlines, sections, and source attribution.", "running");
-        pushOperationsLog("fnn", "Edition validated and published to Faircroft News Now.", "success");
-        toast("Today’s FNN edition has been published");
+        pushOperationsLog("fnn", "Edition validated and published to WRLD Network News.", "success");
+        toast("Today’s WNN edition has been published");
       }
     } catch (error) {
       pushOperationsLog("fnn", `Generation failed: ${error.message}`, "error");
@@ -18291,7 +18291,7 @@ function bindDevTools() {
       method: "PATCH",
       body: { press_pass_limit: values.get("press_pass_limit"), autopilot_enabled: values.get("autopilot_enabled") === "on", morning_time: values.get("morning_time"), evening_time: values.get("evening_time"), timezone: values.get("timezone") },
     });
-    toast("FNN newsroom settings updated");
+    toast("WNN newsroom settings updated");
     await refreshDevTools();
   });
   $$('[data-fnn-content-preview]').forEach((button) => button.addEventListener("click", () => {

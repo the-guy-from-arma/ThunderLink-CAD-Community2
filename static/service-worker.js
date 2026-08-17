@@ -1,11 +1,11 @@
-const CACHE = "wrld-network-v041-cad2-brand-v1";
+const CACHE = "wrld-network-v041-cad2-brand-v2";
 const ASSETS = [
   "/",
-  "/static/styles.css?v=0.4.1-cad2-wrld-brand-v1",
+  "/static/styles.css?v=0.4.1-cad2-wrld-brand-v2",
   "/static/ravenhood-mobile.css?v=0.4.1-ravenhood-engine-v1",
   "/static/insurance-v7.css?v=0.4.1-ravenhood-engine-v1",
   "/static/roadmap.css?v=0.1.1-ops4",
-  "/static/app.js?v=0.4.1-cad2-wrld-brand-v1",
+  "/static/app.js?v=0.4.1-cad2-wrld-brand-v2",
   "/static/thunderlink-eula-v1.0.txt",
   "/static/brand/platforms/windows.svg",
   "/static/brand/platforms/xbox.svg",

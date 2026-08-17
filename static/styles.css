@@ -19041,7 +19041,7 @@ textarea:focus {
 }
 @media (prefers-reduced-motion: reduce) { .recruit-workspace * { animation:none!important; } }
 
-/* Official Faircroft identity carried through the passport credential. */
+/* Official WRLD Network identity carried through the passport credential. */
 .passport-intro>div:first-child {
   position: relative;
   padding-left: 68px;
@@ -19055,14 +19055,14 @@ textarea:focus {
   height: 50px;
   border: 1px solid rgba(79, 207, 230, .34);
   border-radius: 12px;
-  background: #03060a url("/static/brand/faircroft-emblem.webp") center / 88% auto no-repeat;
+  background: #03060a url("/static/brand/wrld-network-logo.png") center / 88% auto no-repeat;
   box-shadow: 0 0 28px rgba(0, 223, 249, .12), 0 0 28px rgba(255, 20, 157, .1);
   transform: translateY(-50%);
 }
 .passport-coat {
   background:
     linear-gradient(rgba(8, 38, 47, .2), rgba(8, 38, 47, .2)),
-    #061018 url("/static/brand/faircroft-emblem.webp") center / 80% auto no-repeat;
+    #061018 url("/static/brand/wrld-network-logo.png") center / 80% auto no-repeat;
 }
 .passport-coat i,
 .passport-coat b { display: none; }
@@ -19070,7 +19070,7 @@ textarea:focus {
   overflow: hidden;
   border-color: rgba(39, 113, 129, .48);
   border-radius: 11px;
-  background: #061018 url("/static/brand/faircroft-emblem.webp") center / 88% auto no-repeat;
+  background: #061018 url("/static/brand/wrld-network-logo.png") center / 88% auto no-repeat;
   box-shadow: 0 5px 14px rgba(13, 55, 67, .18);
 }
 .passport-page-seal b { display: none; }
@@ -19084,7 +19084,7 @@ textarea:focus {
   height: 220px;
   opacity: .035;
   filter: grayscale(1) contrast(1.5);
-  background: url("/static/brand/faircroft-emblem.webp") center / contain no-repeat;
+  background: url("/static/brand/wrld-network-logo.png") center / contain no-repeat;
   pointer-events: none;
 }
 .passport-data-page>header,
@@ -19095,7 +19095,7 @@ textarea:focus {
   position: relative;
   color: transparent;
   background:
-    url("/static/brand/faircroft-emblem.webp") center / 72% auto no-repeat,
+    url("/static/brand/wrld-network-logo.png") center / 72% auto no-repeat,
     conic-gradient(from 45deg,rgba(39,203,203,.2),rgba(155,83,218,.22),rgba(229,193,64,.22),rgba(39,203,203,.2));
 }
 .passport-hologram b { color: transparent; }
@@ -19105,7 +19105,7 @@ textarea:focus {
   height: 32px;
   flex: 0 0 auto;
   border-radius: 7px;
-  background: #03070a url("/static/brand/faircroft-emblem.webp") center / 90% auto no-repeat;
+  background: #03070a url("/static/brand/wrld-network-logo.png") center / 90% auto no-repeat;
 }
 @media(max-width:720px) {
   .passport-intro>div:first-child { padding-left: 58px; }
