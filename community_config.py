@@ -63,6 +63,21 @@ class CommunityConfig:
                 "FCX_RUN_INTEGRATED_ENGINE cannot run inside the isolated CAD 2 service"
             )
 
+        owner_email = _required("OWNER_EMAIL").lower()
+        owner_password = _required("OWNER_PASSWORD")
+        owner_name = _required("OWNER_NAME")
+        placeholders = [name for name, value in (
+            ("OWNER_EMAIL", owner_email),
+            ("OWNER_PASSWORD", owner_password),
+            ("OWNER_NAME", owner_name),
+        ) if value.upper().startswith("CHANGE_ME")]
+        if placeholders:
+            raise RuntimeError(
+                f"Replace placeholder CAD 2 owner variables: {', '.join(placeholders)}"
+            )
+        if "@" not in owner_email or owner_email.startswith("@") or owner_email.endswith("@"):
+            raise RuntimeError("OWNER_EMAIL must be a valid email address")
+
         required_url("DATABASE_URL")
         return cls(
             community_id=community_id,

@@ -43,6 +43,10 @@ FCX_RUN_INTEGRATED_ENGINE=0
 FCX_BANK_ADAPTER_ENABLED=true
 FCX_BANK_SETTLEMENT_SECRET=<unique CAD 2 settlement secret>
 SECRET_KEY=<unique CAD 2 session secret>
+
+OWNER_EMAIL=<private CAD 2 owner login email>
+OWNER_PASSWORD=<strong unique CAD 2 owner password>
+OWNER_NAME=<CAD 2 owner display name>
 ```
 
 Do not add `FCX_DATABASE_URL`, a CAD 1 database URL, or CAD 1 Arma credentials
@@ -56,7 +60,11 @@ Railway starts `python launch_service.py`. The launcher refuses to start when:
 - the community/server identity resembles CAD 1;
 - the CAD 2 database cannot be reached;
 - the FCX credential is not assigned to `COMMUNITY_ID`; or
+- any `OWNER_EMAIL`, `OWNER_PASSWORD`, or `OWNER_NAME` Railway variable is missing;
 - local/global FCX engine controls are enabled.
+
+The owner login has no source-code fallback. Railway is the only deployment
+source for the primary CAD 2 owner identity and password.
 
 `GET /api/health` reports the CAD 2 database and FCX API separately without
 exposing database names, hosts, credentials, or API keys.

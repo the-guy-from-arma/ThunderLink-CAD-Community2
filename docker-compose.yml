@@ -29,8 +29,9 @@ services:
       FCX_BANK_ADAPTER_ENABLED: "true"
       FCX_BANK_SETTLEMENT_SECRET: ${FCX_BANK_SETTLEMENT_SECRET:?Set FCX_BANK_SETTLEMENT_SECRET before starting CAD 2}
       SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY before starting CAD 2}
-      OWNER_EMAIL: owner@rp.local
+      OWNER_EMAIL: ${OWNER_EMAIL:?Set OWNER_EMAIL before starting CAD 2}
       OWNER_PASSWORD: ${OWNER_PASSWORD:?Set OWNER_PASSWORD before starting CAD 2}
+      OWNER_NAME: ${OWNER_NAME:?Set OWNER_NAME before starting CAD 2}
       COOKIE_SECURE: "0"
     extra_hosts:
       - "host.docker.internal:host-gateway"

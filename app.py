@@ -113,9 +113,9 @@ SHADOWHAVEN_SFTP_SESSION_SEMAPHORE = threading.BoundedSemaphore(1)
 SECRET_KEY = os.environ.get("SECRET_KEY", "").strip()
 COOKIE_NAME = "rp_session"
 SESSION_DAYS = 7
-OWNER_EMAIL = os.environ.get("OWNER_EMAIL", "owner@rp.local").strip().lower()
+OWNER_EMAIL = os.environ.get("OWNER_EMAIL", "").strip().lower()
 OWNER_PASSWORD = os.environ.get("OWNER_PASSWORD", "")
-OWNER_NAME = os.environ.get("OWNER_NAME", "Server Owner")
+OWNER_NAME = os.environ.get("OWNER_NAME", "").strip()
 DESKTOP_INSTALLER_URL = os.environ.get(
     "DESKTOP_INSTALLER_URL",
     "https://github.com/the-guy-from-arma/forcraftgit/releases/latest/download/Faircroft-RP-Desktop-Setup.exe",
@@ -9963,6 +9963,26 @@ def apply_auto_license_approval(db: Database) -> int:
 
 
 def seed_owner(db: Database) -> None:
+    missing = [name for name, value in (
+        ("OWNER_EMAIL", OWNER_EMAIL),
+        ("OWNER_PASSWORD", OWNER_PASSWORD),
+        ("OWNER_NAME", OWNER_NAME),
+    ) if not str(value).strip()]
+    if missing:
+        raise RuntimeError(
+            f"Missing required Railway owner variables: {', '.join(missing)}"
+        )
+    placeholders = [name for name, value in (
+        ("OWNER_EMAIL", OWNER_EMAIL),
+        ("OWNER_PASSWORD", OWNER_PASSWORD),
+        ("OWNER_NAME", OWNER_NAME),
+    ) if value.strip().upper().startswith("CHANGE_ME")]
+    if placeholders:
+        raise RuntimeError(
+            f"Replace placeholder Railway owner variables: {', '.join(placeholders)}"
+        )
+    if "@" not in OWNER_EMAIL or OWNER_EMAIL.startswith("@") or OWNER_EMAIL.endswith("@"):
+        raise RuntimeError("OWNER_EMAIL must be a valid email address")
     existing = one(db, "SELECT * FROM users WHERE email = ?", (OWNER_EMAIL,))
     owner_roles = sorted(set([*roles_for(existing), "owner", "admin", "civ"])) if existing else ["admin", "civ", "owner"]
     if existing:
