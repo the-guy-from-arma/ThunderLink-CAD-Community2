@@ -14319,6 +14319,7 @@ function renderDevMarketSettings(market, users) {
         ${connection.error_type ? `<p class="cad2-fcx-error">Connection check: ${escapeHtml(humanLabel(connection.error_type))}</p>` : ""}
       </section>
       <section class="dev-card cad2-fcx-capabilities"><div><span>BOUNDARY ENFORCEMENT</span><h2>What CAD 2 can access</h2><p>${escapeHtml(market.ownership || "CAD 2 is a resident FCX client.")}</p></div><ul>${capabilities.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>
+      <section class="dev-card cad2-fcx-integrity"><span>INDEPENDENT MARKET GOVERNANCE</span><h2>FCX is governed outside this CAD</h2><p>FCX is an independent third-party market service. The Federal Exchange Commission controls listings, pricing policy, leverage, surveillance, investigations, and the integrity of the shared exchange.</p><p>CAD administrators provide authenticated resident access and identity linkage, but cannot rewrite global FCX records or override FEC audit controls.</p></section>
     </div>`;
   }
   const listings = market.securities || [], codes = market.codes || [], programs = market.programs || [], promotions = market.promotions || [];
