@@ -29,7 +29,7 @@ function createWindow() {
     minWidth: 1040,
     minHeight: 700,
     show: false,
-    title: "Faircroft RP",
+    title: "WRLD Network",
     backgroundColor: "#070b12",
     icon: path.join(__dirname, "..", "build", "faircroft.ico"),
     autoHideMenuBar: true,
@@ -92,16 +92,16 @@ app.on("window-all-closed", () => {
 
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
-autoUpdater.on("checking-for-update", () => sendUpdateState("checking", "Checking for a Faircroft update…"));
-autoUpdater.on("update-available", (info) => sendUpdateState("downloading", `Downloading Faircroft ${info.version}…`, { version: info.version }));
-autoUpdater.on("update-not-available", () => sendUpdateState("current", "Faircroft RP is up to date."));
+autoUpdater.on("checking-for-update", () => sendUpdateState("checking", "Checking for a WRLD Network update…"));
+autoUpdater.on("update-available", (info) => sendUpdateState("downloading", `Downloading WRLD Network ${info.version}…`, { version: info.version }));
+autoUpdater.on("update-not-available", () => sendUpdateState("current", "WRLD Network is up to date."));
 autoUpdater.on("download-progress", (progress) => sendUpdateState("downloading", `Downloading update… ${Math.round(progress.percent)}%`, { percent: progress.percent }));
 autoUpdater.on("update-downloaded", async (info) => {
-  sendUpdateState("ready", `Faircroft ${info.version} is ready to install.`, { version: info.version });
+  sendUpdateState("ready", `WRLD Network ${info.version} is ready to install.`, { version: info.version });
   const result = await dialog.showMessageBox(mainWindow, {
     type: "info",
-    title: "Faircroft update ready",
-    message: `Faircroft RP ${info.version} has been downloaded.`,
+    title: "WRLD Network update ready",
+    message: `WRLD Network ${info.version} has been downloaded.`,
     detail: "Restart now to install the update, or choose Later to install automatically when you close the app.",
     buttons: ["Restart and update", "Later"],
     defaultId: 0,

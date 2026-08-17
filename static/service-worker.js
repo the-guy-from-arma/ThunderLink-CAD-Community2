@@ -1,11 +1,11 @@
-const CACHE = "faircroft-rp-v041-cad2-fcx-boundary-v2";
+const CACHE = "wrld-network-v041-cad2-brand-v1";
 const ASSETS = [
   "/",
-  "/static/styles.css?v=0.4.1-cad2-fcx-boundary-v2",
+  "/static/styles.css?v=0.4.1-cad2-wrld-brand-v1",
   "/static/ravenhood-mobile.css?v=0.4.1-ravenhood-engine-v1",
   "/static/insurance-v7.css?v=0.4.1-ravenhood-engine-v1",
   "/static/roadmap.css?v=0.1.1-ops4",
-  "/static/app.js?v=0.4.1-cad2-fcx-boundary-v2",
+  "/static/app.js?v=0.4.1-cad2-wrld-brand-v1",
   "/static/thunderlink-eula-v1.0.txt",
   "/static/brand/platforms/windows.svg",
   "/static/brand/platforms/xbox.svg",
@@ -15,6 +15,10 @@ const ASSETS = [
   "/static/brand/icon-192.png",
   "/static/brand/icon-512.png",
   "/static/brand/apple-touch-icon.png",
+  "/static/brand/wrld-network-logo.png",
+  "/static/brand/wrld-icon-192.png",
+  "/static/brand/wrld-icon-512.png",
+  "/static/brand/wrld-apple-touch-icon.png",
   "/static/getting-started/01-used-cars.webp",
   "/static/getting-started/02-stick-route.webp",
   "/static/getting-started/02-stick-collection.webp",

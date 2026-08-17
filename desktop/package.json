@@ -1,9 +1,9 @@
 {
   "name": "faircroft-rp-desktop",
   "version": "1.0.0",
-  "description": "Official Faircroft RP desktop client",
+  "description": "Official WRLD Network desktop client",
   "main": "src/main.js",
-  "author": "Faircroft RP",
+  "author": "WRLD Network",
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
@@ -21,8 +21,8 @@
   },
   "build": {
     "appId": "online.faircroft.desktop",
-    "productName": "Faircroft RP",
-    "artifactName": "Faircroft-RP-Desktop-Setup.${ext}",
+    "productName": "WRLD Network",
+    "artifactName": "WRLD-Network-Desktop-Setup.${ext}",
     "directories": {
       "output": "release",
       "buildResources": "build"
@@ -47,7 +47,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Faircroft RP",
+      "shortcutName": "WRLD Network",
       "installerIcon": "build/faircroft.ico",
       "uninstallerIcon": "build/faircroft.ico",
       "installerHeaderIcon": "build/faircroft.ico",
