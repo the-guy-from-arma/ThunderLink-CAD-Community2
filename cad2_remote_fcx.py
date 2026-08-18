@@ -346,8 +346,11 @@ def build_market_payload(
         "history_range": requested_range,
         "history_range_start": str(market_response.get("history_range_start") or market_response.get("history_window_start") or ""),
         "history_range_end": str(market_response.get("history_range_end") or ""),
-        "pending_withdrawal_amount": 0,
-        "available_withdrawal_amount": 0,
+        # FCX wallet cash is reserved as soon as a withdrawal settlement is
+        # created. available_buying_power also excludes queued buy orders and
+        # is therefore the safe amount available to the Bank Bridge.
+        "pending_withdrawal_amount": _number(remote_account.get("pending_withdrawal_amount")),
+        "available_withdrawal_amount": wallet_balance,
         "portfolio_value": round(portfolio_value, 2),
         "account_equity": round(wallet_balance + portfolio_value, 2),
         "market_open": market_open,

@@ -40,6 +40,18 @@ class _Config:
 
 
 class Cad2RemoteFcxTests(unittest.TestCase):
+    def test_settled_buying_power_is_available_for_whole_dollar_withdrawal(self):
+        client = types.SimpleNamespace(
+            market=lambda *_args, **_kwargs: {"permissions": {}, "market": {"market_open": False}, "securities": []},
+            portfolio=lambda *_args: {"account": {"status": "active", "cash_balance": 95100, "available_buying_power": 95028.65}, "holdings": [], "orders": []},
+        )
+        with patch.object(cad2_remote_fcx, "_client", return_value=client), \
+             patch.object(cad2_remote_fcx, "resolve_account", return_value={"account_id": "acct-42"}), \
+             patch.object(cad2_remote_fcx.CommunityConfig, "load", return_value=_Config()):
+            payload = cad2_remote_fcx.build_market_payload(user={"id": 42, "name": "Resident"}, identity_id="bohemia-42", game_bank_balance=0, game_bank_synced_at="")
+
+        self.assertEqual(payload["available_withdrawal_amount"], 95028.65)
+
     def test_unlinked_resident_receives_read_only_live_market(self):
         client = _Client()
         with patch.object(cad2_remote_fcx, "_client", return_value=client), patch.object(
