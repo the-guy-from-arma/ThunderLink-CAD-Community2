@@ -37,6 +37,8 @@ from cad2_remote_fcx import (
     build_market_payload as build_cad2_remote_fcx_payload,
     connection_status as cad2_remote_fcx_connection_status,
     create_order as create_cad2_remote_fcx_order,
+    create_margin_order as create_cad2_remote_fcx_margin_order,
+    close_margin_position as close_cad2_remote_fcx_margin_position,
     create_wallet_transfer as create_cad2_remote_fcx_wallet_transfer,
     redeem_promotion as redeem_cad2_remote_fcx_promotion,
     remote_market_enabled as cad2_remote_market_enabled,
@@ -19117,7 +19119,12 @@ class RoleplayHandler(BaseHTTPRequestHandler):
         if err:
             self.error(403 if user else 401, err); return
         if CAD2_REMOTE_FCX_ENABLED:
-            self.error(501, "Shared FCX margin trading is not enabled for CAD 2 yet."); return
+            assert user is not None
+            try:
+                result = create_cad2_remote_fcx_margin_order(user=dict(user), identity_id=cad2_remote_fcx_context(db, user)["identity_id"], payload=self.read_json())
+            except (ValueError, FcxClientError, RuntimeError) as exc:
+                self.error(502, f"FCX-Control could not open the leveraged position: {exc}"); return
+            self.send_json(201, {"ok": True, "remote_fcx": True, **result}); return
         assert user is not None
         settings = get_system_settings(db)
         if not settings["market_margin_enabled"]:
@@ -19204,7 +19211,12 @@ class RoleplayHandler(BaseHTTPRequestHandler):
         if err:
             self.error(403 if user else 401, err); return
         if CAD2_REMOTE_FCX_ENABLED:
-            self.error(501, "Shared FCX margin trading is not enabled for CAD 2 yet."); return
+            assert user is not None
+            try:
+                result = close_cad2_remote_fcx_margin_position(user=dict(user), identity_id=cad2_remote_fcx_context(db, user)["identity_id"], position_id=position_id)
+            except (ValueError, FcxClientError, RuntimeError) as exc:
+                self.error(502, f"FCX-Control could not close the leveraged position: {exc}"); return
+            self.send_json(200, {"ok": True, "remote_fcx": True, **result}); return
         assert user is not None
         settings = get_system_settings(db)
         position_security = one(db, """SELECT s.ticker FROM market_margin_positions p
